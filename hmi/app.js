@@ -136,12 +136,9 @@ function renderStatus() {
 
 function renderStations() {
   const state = getState();
-  const fault = getDiscrete("CELL_FAULT_ACTIVE");
-  const stateIndex = snapshot.states.findIndex((item) => item.code === state.code);
   document.querySelectorAll(".station").forEach((station) => {
-    const stationIndex = snapshot.states.findIndex((item) => item.code === station.dataset.state);
     station.classList.toggle("active", station.dataset.state === state.code);
-    station.classList.toggle("done", !fault && stationIndex >= 0 && stationIndex < stateIndex);
+    station.classList.remove("done");
   });
 }
 

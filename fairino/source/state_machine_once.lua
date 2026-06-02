@@ -203,6 +203,7 @@ function state_check_next_cycle()
             set_running_lamps()
             current_state = S40_SELECT_FILTER_DISPENSER
         else
+            if move_home() == false then return end
             set_ready_lamps()
             current_state = S850_BATCH_COMPLETE
         end
@@ -221,7 +222,7 @@ function state_batch_complete()
     if hmi_reset_requested() then
         cycle_counter = 0
         stop_after_cycle_requested = 0
-        current_state = S30_WAIT_START
+        current_state = S00_INIT
         return
     end
 

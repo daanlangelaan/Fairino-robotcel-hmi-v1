@@ -212,6 +212,18 @@ async function sendFairinoProgramStop() {
   }
 }
 
+async function sendFairinoProgramStart() {
+  const response = await fetch(`${fairinoHttpBase}/action/set`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cmd: 101, data: {} }),
+  });
+  const text = await response.text();
+  if (!response.ok || text.trim() !== "success") {
+    throw new Error(`Fairino program start rejected: ${response.status} ${text}`);
+  }
+}
+
 async function readModbusSnapshot() {
   const coilStart = coils[0].address;
   const holdingStart = holdingRegisters[0].address;
@@ -517,6 +529,11 @@ async function handleApi(req, res, url) {
         await setModbusCoil("HMI_STOP_REQ", false);
         await setModbusCoil("HMI_ESTOP_REQ", false);
         await pulseModbusCoil("HMI_RESET_REQ", 5000);
+        try {
+          await sendFairinoProgramStart();
+        } catch (error) {
+          pushLog(`Fairino program start na reset fout: ${error.message}`);
+        }
       }
       if (body.command === "ack") await pulseModbusCoil("HMI_ACK_REQ", 2000);
       sendJson(res, 200, await snapshot());
