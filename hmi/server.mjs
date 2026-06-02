@@ -9,6 +9,7 @@ const bridgeMode = process.env.HMI_BRIDGE_MODE || "mock";
 const fairinoHost = process.env.FAIRINO_HOST || "192.168.92.128";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
 const unitId = Number(process.env.FAIRINO_UNIT_ID || 1);
+const fairinoHttpBase = process.env.FAIRINO_HTTP_BASE || `http://${fairinoHost}`;
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -197,6 +198,18 @@ async function setModbusCoil(name, value) {
   const address = addressOf(coils, name);
   if (address === undefined) return;
   await writeCoil(address, Boolean(value));
+}
+
+async function sendFairinoProgramStop() {
+  const response = await fetch(`${fairinoHttpBase}/action/set`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cmd: 102, data: {} }),
+  });
+  const text = await response.text();
+  if (!response.ok || text.trim() !== "success") {
+    throw new Error(`Fairino program stop rejected: ${response.status} ${text}`);
+  }
 }
 
 async function readModbusSnapshot() {
@@ -492,7 +505,14 @@ async function handleApi(req, res, url) {
         await pulseModbusCoil("HMI_START_REQ", 5000);
       }
       if (body.command === "stop") await setModbusCoil("HMI_STOP_REQ", true);
-      if (body.command === "estop") await setModbusCoil("HMI_ESTOP_REQ", true);
+      if (body.command === "estop") {
+        await setModbusCoil("HMI_ESTOP_REQ", true);
+        try {
+          await sendFairinoProgramStop();
+        } catch (error) {
+          pushLog(`Fairino program stop fout: ${error.message}`);
+        }
+      }
       if (body.command === "reset") {
         await setModbusCoil("HMI_STOP_REQ", false);
         await setModbusCoil("HMI_ESTOP_REQ", false);
