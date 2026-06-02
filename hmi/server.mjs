@@ -193,6 +193,12 @@ async function pulseModbusCoil(name, durationMs = 500) {
   }, durationMs);
 }
 
+async function setModbusCoil(name, value) {
+  const address = addressOf(coils, name);
+  if (address === undefined) return;
+  await writeCoil(address, Boolean(value));
+}
+
 async function readModbusSnapshot() {
   const coilStart = coils[0].address;
   const holdingStart = holdingRegisters[0].address;
@@ -271,19 +277,20 @@ function stepMachine() {
   }
 
   if (values.coils.HMI_RESET_REQ) {
+    values.coils.HMI_STOP_REQ = false;
+    values.coils.HMI_ESTOP_REQ = false;
+    simInputs.safety_ok = true;
     resetMachine();
     values.coils.HMI_RESET_REQ = false;
   }
 
   if (values.coils.HMI_STOP_REQ) {
     machine.running = false;
-    values.coils.HMI_STOP_REQ = false;
     pushLog("Stop request ontvangen");
   }
 
   if (values.coils.HMI_ESTOP_REQ) {
     simInputs.safety_ok = false;
-    values.coils.HMI_ESTOP_REQ = false;
     pushLog("Noodstop request ontvangen");
   }
 
@@ -481,23 +488,34 @@ async function handleApi(req, res, url) {
     const body = await readJson(req);
     if (bridgeMode === "modbus") {
       if (body.command === "start") {
+        await setModbusCoil("HMI_STOP_REQ", false);
         await pulseModbusCoil("HMI_START_REQ", 5000);
       }
-      if (body.command === "stop") await pulseModbusCoil("HMI_STOP_REQ", 2000);
-      if (body.command === "estop") await pulseModbusCoil("HMI_ESTOP_REQ", 5000);
-      if (body.command === "reset") await pulseModbusCoil("HMI_RESET_REQ", 5000);
+      if (body.command === "stop") await setModbusCoil("HMI_STOP_REQ", true);
+      if (body.command === "estop") await setModbusCoil("HMI_ESTOP_REQ", true);
+      if (body.command === "reset") {
+        await setModbusCoil("HMI_STOP_REQ", false);
+        await setModbusCoil("HMI_ESTOP_REQ", false);
+        await pulseModbusCoil("HMI_RESET_REQ", 5000);
+      }
       if (body.command === "ack") await pulseModbusCoil("HMI_ACK_REQ", 2000);
       sendJson(res, 200, await snapshot());
       return true;
     }
 
-    if (body.command === "start") pulseCoil("HMI_START_REQ");
-    if (body.command === "stop") pulseCoil("HMI_STOP_REQ");
+    if (body.command === "start") {
+      values.coils.HMI_STOP_REQ = false;
+      pulseCoil("HMI_START_REQ");
+    }
+    if (body.command === "stop") values.coils.HMI_STOP_REQ = true;
     if (body.command === "estop") {
-      pulseCoil("HMI_ESTOP_REQ");
+      values.coils.HMI_ESTOP_REQ = true;
       simInputs.safety_ok = false;
     }
     if (body.command === "reset") {
+      values.coils.HMI_STOP_REQ = false;
+      values.coils.HMI_ESTOP_REQ = false;
+      simInputs.safety_ok = true;
       pulseCoil("HMI_RESET_REQ");
       resetMachine();
     }

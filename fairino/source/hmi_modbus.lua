@@ -56,9 +56,8 @@ function hmi_stop_requested()
     if HMI_MODBUS_ENABLED == 1 then
         current = hmi_bool(ModbusSlaveReadDI(HMI_STOP_REQ, 1))
     end
-    local rising = hmi_rising_edge(current, HMI_LAST_STOP_REQ)
     HMI_LAST_STOP_REQ = current
-    return rising
+    return current == 1
 end
 
 function hmi_estop_requested()
@@ -67,9 +66,8 @@ function hmi_estop_requested()
         current = hmi_bool(ModbusSlaveReadDI(HMI_ESTOP_REQ, 1))
     end
 
-    local rising = hmi_rising_edge(current, HMI_LAST_ESTOP_REQ)
     HMI_LAST_ESTOP_REQ = current
-    return rising
+    return current == 1
 end
 
 function hmi_reset_requested()

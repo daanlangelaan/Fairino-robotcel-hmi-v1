@@ -8,7 +8,7 @@ Dit document beschrijft hoe de Fairino SimMachine VM, Lua-cycle en lokale HMI we
 - Fairino Modbus TCP slave: `192.168.92.130:502`
 - Lokale HMI: `http://127.0.0.1:8787/`
 - HMI bridge mode: `modbus`
-- Actieve Lua build met cycle-stop/noodstop: `mini_cell_a_cycle_order_hmi_cycle_stop_estop_20260602_112904.lua`
+- Actieve Lua build met latched cycle-stop/noodstop: `mini_cell_a_cycle_order_hmi_latched_stop_estop_20260602_114857.lua`
 - Laatste bron-build: [fairino/source/build_variant.ps1](../fairino/source/build_variant.ps1)
 
 De HMI gebruikt alleen Modbus voor celbediening. De HMI Start-knop schrijft dus `HMI_START_REQ`; hij start niet zelf het Fairino teaching-programma via de WebApp API. Het Fairino Lua-programma moet eerst draaien en in `S30_WAIT_START` staan.
@@ -138,17 +138,18 @@ Reset zet de batch teller terug naar 0 en brengt de cel terug naar S30_WAIT_STAR
 Bij Stop vanuit de HMI:
 
 ```text
-HMI_STOP_REQ pulse gaat kort naar 1.
+HMI_STOP_REQ gaat naar 1 en blijft hoog staan.
 Lua maakt de lopende cyclus af.
 Na S180/S190 start Lua geen volgende filter, maar gaat terug naar S30_WAIT_START.
+Reset of een nieuwe start zet HMI_STOP_REQ terug naar 0.
 ```
 
 Bij Noodstop vanuit de HMI:
 
 ```text
-HMI_ESTOP_REQ pulse gaat kort naar 1.
+HMI_ESTOP_REQ gaat naar 1 en blijft hoog staan.
 Lua gaat naar S990_SAFETY_STOP, zet outputs uit en meldt foutcode 991.
-Reset mag pas terug naar init als de safety-conditie weer OK is.
+Reset zet HMI_ESTOP_REQ terug naar 0 en mag pas terug naar init als de safety-conditie weer OK is.
 ```
 
 Snelle check via PowerShell:

@@ -77,16 +77,16 @@ We gebruiken voorlopig het general-purpose bereik vanaf `100`, omdat de Fairino 
 
 ## Flankafhandeling
 
-Start, reset, stop en noodstop zijn commando's, geen vaste toestanden.
+Start en reset zijn korte commando's. Stop en noodstop zijn latched commando's.
 
-- HMI zet coil kort naar `1`.
+- HMI zet start/reset kort naar `1`.
 - Fairino/Lua ziet opgaande flank.
 - Fairino/Lua verwerkt commando.
 - HMI/bridge zet coil terug naar `0`.
 
-`HMI_STOP_REQ` is een gecontroleerde cycle-stop: de lopende cyclus wordt afgemaakt, daarna start Lua geen volgende cyclus.
+`HMI_STOP_REQ` is een gecontroleerde cycle-stop: de HMI zet de coil naar `1` en laat hem hoog staan. Lua maakt de lopende cyclus af, daarna start Lua geen volgende cyclus. Reset of een nieuwe start zet de stop-coil terug naar `0`.
 
-`HMI_ESTOP_REQ` is een softwarematige noodstop voor de HMI/simulator: Lua gaat naar `S990_SAFETY_STOP`, zet outputs uit en meldt fault `991`. Een echte noodstop moet altijd hardwarematig/veiligheidsmatig buiten deze software geborgd blijven.
+`HMI_ESTOP_REQ` is een softwarematige noodstop voor de HMI/simulator: de HMI zet de coil naar `1` en laat hem hoog staan. Lua gaat naar `S990_SAFETY_STOP`, zet outputs uit en meldt fault `991`. Reset zet de noodstop-coil terug naar `0`. Een echte noodstop moet altijd hardwarematig/veiligheidsmatig buiten deze software geborgd blijven.
 
 De lokale bridge simuleert dit nu al met pulsen.
 
