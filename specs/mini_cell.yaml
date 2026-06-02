@@ -1,0 +1,115 @@
+# Mini-cell proof-of-concept for Fairino-as-controller.
+# Purpose: prove Lua state machine, IO, motion, fault, and reset behavior
+# before scaling to the full filter/check-valve robot cell.
+
+states:
+  S00_INIT:
+    description: Initialize outputs and internal variables.
+    next: S20_WAIT_READY
+
+  S20_WAIT_READY:
+    description: Wait until safety is OK and no fault is active.
+    transitions:
+      - condition: safety_not_ok
+        next: S990_SAFETY_STOP
+      - condition: ready
+        next: S30_WAIT_START
+
+  S30_WAIT_START:
+    description: Machine ready, waiting for start button or HMI start request.
+    transitions:
+      - condition: safety_not_ok
+        next: S990_SAFETY_STOP
+      - condition: start_request
+        next: S60_PICK_FILTER
+
+  S60_PICK_FILTER:
+    description: Move to pick point, close gripper, verify product present.
+    fault_on_failure: F003
+    next: S80_CLAMP_FILTER
+
+  S80_CLAMP_FILTER:
+    description: Close clamp and verify clamp closed sensor.
+    fault_on_failure: F006
+    next: S180_CYCLE_COMPLETE
+
+  S180_CYCLE_COMPLETE:
+    description: Increment counter and return to wait start for the POC.
+    next: S30_WAIT_START
+
+  S900_FAULT:
+    description: Process fault active, wait for reset.
+    next: S910_WAIT_RESET
+
+  S910_WAIT_RESET:
+    description: Wait until reset is requested and safety is OK.
+    transitions:
+      - condition: reset_request_and_safety_ok
+        next: S00_INIT
+
+  S990_SAFETY_STOP:
+    description: Safety chain not OK. Outputs safe, wait for safety recovery and reset.
+    transitions:
+      - condition: reset_request_and_safety_ok
+        next: S00_INIT
+
+io:
+  inputs:
+    DI_SAFETY_OK:
+      port: 0
+      description: Safety relay OK input for POC.
+    DI_START_BUTTON:
+      port: 1
+      description: Start button.
+    DI_RESET_BUTTON:
+      port: 2
+      description: Reset button.
+    DI_FILTER_PRESENT:
+      port: 3
+      description: Product present at pick position.
+    DI_GRIPPER_FILTER_PRESENT:
+      port: 4
+      description: Filter detected in gripper.
+    DI_CLAMP_CLOSED:
+      port: 5
+      description: Clamp closed end sensor.
+
+  outputs:
+    DO_GRIPPER_CLOSE:
+      port: 0
+      description: Gripper close output. Same Ctrl-DO0 pattern as earlier tests.
+    DO_CLAMP_CLOSE:
+      port: 1
+      description: Clamp close output.
+    DO_LAMP_GREEN:
+      port: 2
+      description: Auto/running indication.
+    DO_LAMP_ORANGE:
+      port: 3
+      description: Ready indication.
+    DO_LAMP_RED:
+      port: 4
+      description: Fault or safety indication.
+
+parameters:
+  GRIPPER_CLOSE_TIME_MS: 300
+  CLAMP_SETTLE_TIME_MS: 300
+  INPUT_POLL_MS: 50
+  PICK_SENSOR_TIMEOUT_MS: 3000
+  GRIPPER_SENSOR_TIMEOUT_MS: 3000
+  CLAMP_SENSOR_TIMEOUT_MS: 3000
+
+faults:
+  F003:
+    description: Filter not picked or gripper detection missing.
+    reset_required: true
+  F006:
+    description: Clamp did not close within timeout.
+    reset_required: true
+
+robot_points:
+  - P_HOME
+  - P_PICK_APPROACH
+  - P_PICK
+  - P_PLACE_APPROACH
+  - P_PLACE

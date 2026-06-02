@@ -1,0 +1,16 @@
+# Runtime logs
+*.log
+hmi/hmi_modbus_server.out.log
+hmi/hmi_modbus_server.err.log
+
+# Local editor and OS noise
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+
+# Dependency folders if tools are added later
+node_modules/
+.venv/
+__pycache__/
+

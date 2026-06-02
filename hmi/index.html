@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fairino Cel HMI</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Robotcel Filter Keerklep</h1>
+      <p>Fairino FR5 celbesturing via Modbus TCP</p>
+    </div>
+    <div class="status-strip" aria-label="Cel status">
+      <span id="runState" class="status-pill status-idle">Ready</span>
+      <span id="activeState" class="status-code">S00_INIT</span>
+      <span id="cycleCount" class="status-code">Cycles 0</span>
+      <span id="modbusState" class="status-code comm-status"><span id="modbusLamp" class="comm-lamp"></span>Modbus</span>
+      <span id="robotCommsState" class="status-code comm-status"><span id="robotCommsLamp" class="comm-lamp"></span>Robot HB</span>
+      <span id="bridgeState" class="status-code">Bridge mock</span>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="HMI tabs">
+    <button class="tab active" data-tab="user">User</button>
+    <button class="tab" data-tab="troubleshoot">Troubleshoot</button>
+  </nav>
+
+  <main class="layout">
+    <section id="userTab" class="tab-page active">
+      <section class="user-grid">
+        <div class="operator-panel">
+          <div class="traffic-light" aria-label="Stoplicht">
+            <span id="lampRed" class="lamp red"></span>
+            <span id="lampAmber" class="lamp amber"></span>
+            <span id="lampGreen" class="lamp green"></span>
+          </div>
+
+        <div class="operator-status">
+          <h2 id="operatorTitle">Ready</h2>
+          <p id="operatorMessage">Wachten op start</p>
+          <strong id="faultBanner" class="fault-banner hidden">Geen storing</strong>
+        </div>
+        </div>
+
+        <div class="batch-panel">
+          <label for="batchTarget">Batch aantal</label>
+          <div class="batch-controls">
+            <input id="batchTarget" type="number" min="1" max="9999" value="10">
+            <button id="setBatchBtn">Instellen</button>
+          </div>
+          <div class="batch-counts">
+            <span><strong id="batchDone">0</strong> gereed</span>
+            <span><strong id="batchTargetView">10</strong> doel</span>
+          </div>
+        </div>
+
+        <div class="big-actions">
+          <button id="startBtn" class="primary action">Start</button>
+          <button id="stopBtn" class="action">Stop</button>
+          <button id="resetBtn" class="action">Reset</button>
+          <button id="estopBtn" class="danger action">Noodstop</button>
+        </div>
+      </section>
+
+      <section class="machine-band" aria-label="Machine overzicht">
+        <div class="machine-band-header">
+          <div>
+            <h2>Procesflow</h2>
+            <p>Filter en keerklep worden apart aangeboden, daarna verlijmd en afgevoerd naar de droogrij.</p>
+          </div>
+          <span class="status-code">Auto cycle</span>
+        </div>
+        <div class="cell-view">
+          <div class="station" data-state="S40_SELECT_FILTER_DISPENSER">
+            <strong>Filter dispenser</strong>
+            <span>Selecteren</span>
+          </div>
+          <div class="station" data-state="S50_DISPENSE_FILTER">
+            <strong>Filter klaarzetten</strong>
+            <span>Doseren</span>
+          </div>
+          <div class="station" data-state="S60_PICK_FILTER">
+            <strong>Filter pick</strong>
+            <span>Grijper sluit</span>
+          </div>
+          <div class="station" data-state="S70_PLACE_FILTER_IN_CLAMP">
+            <strong>Filter in clamp</strong>
+            <span>Plaatsen</span>
+          </div>
+          <div class="station" data-state="S80_CLAMP_FILTER">
+            <strong>Clamp</strong>
+            <span>Klem sluit</span>
+          </div>
+          <div class="station" data-state="S90_DISPENSE_CHECK_VALVE">
+            <strong>Keerklep dispenser</strong>
+            <span>Doseren</span>
+          </div>
+          <div class="station" data-state="S100_PICK_CHECK_VALVE">
+            <strong>Keerklep pick</strong>
+            <span>Grijper sluit</span>
+          </div>
+          <div class="station" data-state="S110_APPLY_GLUE">
+            <strong>Lijmstation</strong>
+            <span>J6 ServoJ rotatie</span>
+          </div>
+          <div class="station" data-state="S120_INSERT_CHECK_VALVE">
+            <strong>Keerklep insert</strong>
+            <span>Keerklep plaatsen</span>
+          </div>
+          <div class="station" data-state="S130_PRESS_CHECK_VALVE">
+            <strong>Aandrukken</strong>
+            <span>Controle</span>
+          </div>
+          <div class="station" data-state="S140_UNCLAMP_FILTER">
+            <strong>Unclamp</strong>
+            <span>Klem open</span>
+          </div>
+          <div class="station" data-state="S150_PICK_FINISHED_FILTER">
+            <strong>Gereed filter pick</strong>
+            <span>Uit clamp</span>
+          </div>
+          <div class="station" data-state="S160_PLACE_IN_DRYING_ROW">
+            <strong>Droogrij</strong>
+            <span>Product plaatsen</span>
+          </div>
+          <div class="station" data-state="S170_INDEX_DRYING_ROW">
+            <strong>Droogrij index</strong>
+            <span>Een positie</span>
+          </div>
+          <div class="station" data-state="S180_CYCLE_COMPLETE">
+            <strong>Cyclus klaar</strong>
+            <span>Terug naar ready</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="troubleshootTab" class="tab-page">
+      <section class="control-panel" aria-label="Troubleshoot bediening">
+        <div class="toolbar">
+          <button id="ackBtn">Ack</button>
+          <button id="resetCountersBtn">Reset tellers</button>
+        </div>
+        <div class="mode-row">
+          <span id="heartbeatView" class="status-code">HB 0</span>
+          <span id="stateValueView" class="status-code">STATE 0</span>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Mock inputs</h2>
+            <button id="goodInputsBtn" class="small">Alles OK</button>
+          </div>
+          <div id="simInputs" class="io-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>HMI -> Fairino</h2>
+          <div id="commandRegisters" class="register-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Fairino -> HMI</h2>
+          <div id="statusRegisters" class="register-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>State machine</h2>
+          <div id="states" class="state-list"></div>
+        </div>
+
+        <div class="panel wide-panel">
+          <h2>Eventlog</h2>
+          <div id="log" class="log" aria-live="polite"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

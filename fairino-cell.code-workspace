@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "fairinoproject",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "*.lua": "lua",
+      "*.yaml": "yaml"
+    },
+    "editor.rulers": [
+      100
+    ],
+    "editor.tabSize": 4,
+    "files.trimTrailingWhitespace": true
+  },
+  "extensions": {
+    "recommendations": [
+      "sumneko.lua",
+      "redhat.vscode-yaml"
+    ]
+  }
+}

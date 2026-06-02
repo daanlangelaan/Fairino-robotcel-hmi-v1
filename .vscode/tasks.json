@@ -1,0 +1,79 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Fairino State Machine Once",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build_state_machine_once.cmd",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Fairino Simple Once",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build_once.cmd",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Fairino Clamp Fault Test",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build_clamp_fault_test.cmd",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Variant Filter Empty",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build_variant_filter_empty.cmd",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Variant Good Cycle",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build_variant_good_cycle.cmd",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Fairino Glue Test",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build_glue_test.cmd",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Variant Glue J6 Test",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build_variant_glue_j6_test.cmd",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

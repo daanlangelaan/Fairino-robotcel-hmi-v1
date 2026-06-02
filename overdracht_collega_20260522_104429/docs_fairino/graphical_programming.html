@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10. Graphical programming &mdash; FAIRINO Collaborative Robot User Manual 3.9.5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="11. Node graph programming" href="node_editor_software.html" />
+    <link rel="prev" title="9. Coding" href="coding.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="fairino-doc-en" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/CobotsManual/graphical.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Collaborative robot</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html#product-matrix">Product matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#quick-start">Quick start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="intro.html#manual">Manual</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="foreword.html">1. Foreword</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot_brief_introduction.html">2. Robot brief introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html">3. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_start_robot.html">4. Quick start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="teaching_pendant_software.html">5. Teaching pendant software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">6. Base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html">7. Safety</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot_peripherals.html">8. Peripherals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coding.html">9. Coding</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">10. Graphical programming</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">10.1. Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logic-graphical-programming-commands">10.2. Logic Graphical Programming Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#variable-class-graphical-programming-command">10.3. Variable class graphical programming command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-class-graphical-programming-command">10.4. Function class graphical programming command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motion-graphic-programming-commands">10.5. Motion graphic programming commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#control-class-graphical-programming-commands">10.6. Control class graphical programming commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#peripheral-graphical-programming-commands">10.7. Peripheral graphical programming commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#welding-graphical-programming-commands">10.8. Welding Graphical Programming Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#force-control-graphical-programming-commands">10.9. Force control graphical programming commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#communication-graphic-programming-commands">10.10. Communication graphic programming commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#advanced-graphical-programming-commands">10.11. Advanced Graphical Programming Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#graphical-programming-command-usage-example">10.12. Graphical programming command usage example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="node_editor_software.html">11. Node graph programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="points.html">12. Teaching Points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html">13. Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="application.html">14. Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process.html">15. Process Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system.html">16. System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="teach_pendant.html">17. Teach pendant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="custom_protocol_slave.html">18. Custom protocol slave commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html">19. Appendix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="term.html">20. Term</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#changelog">Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SDKManual/index.html">SDK Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../VMMachine/vm_intro.html">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FRCap/frcap_intro.html">FRCap Plug-in system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LuaProgram/lua_intro.html">FR LUA Programming Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RobotCommunication/cnde_intro.html">Robot Communication</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Open platform</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html">frcobot_ros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#frcobot-ros2">frcobot_ros2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#moveit2">moveIt2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Download</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../download.html">Brochure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#qualification-certification">Qualification Certification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#secondary-development">Secondary Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#ontology-dimensional-drawings">Ontology &amp; Dimensional Drawings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-cad-files">2D CAD Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-models">3D Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#fairino-simmachine">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#palletizer-frcap">Palletizer frcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#cpp-sdk">CPP SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#c-sdk">C# SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#python-sdk">Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#java-sdk">Java SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#status-feedback-protocol">Status Feedback Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#communication-command-protocol">Communication Command Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#robot-software">Robot software</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FAIRINO Collaborative Robot User Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="intro.html">Collaborative robot</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">10. </span>Graphical programming</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/CobotsManual/graphical.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="graphical-programming">
+<h1><span class="section-number">10. </span>Graphical programming<a class="headerlink" href="#graphical-programming" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="introduction">
+<h2><span class="section-number">10.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
+<p>Since the teaching pendant is generally not connected to external peripherals such as keyboard and mouse, when accessing the robot WebAPP on the teaching pendant side, users can edit the robot teaching program through the graphical programming function. Functional standardization functions are implemented using the Blockly library, which can be integrated into the WebAPP system, and custom code blocks can be implemented as needed. After dragging and dropping programming, it is converted into a LUA program and sent and run through the existing instruction protocol.</p>
+<p>By using graphical programming, it can be simple and easy to understand, easy to operate, and Chinese language operation.</p>
+<p>The page is divided into three areas: “operation bar”, “toolbox toolbar” and “workspace code editing area”. The overall layout design is as follows.</p>
+<a class="reference internal image-reference" href="../_images/0016.png"><img alt="../_images/0016.png" class="align-center" src="../_images/0016.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.1 Graphical programming interface</strong></p><p><strong>Operation bar</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Load</strong>: responsible for reloading the workspace;</p></li>
+<li><p><strong>Import</strong>: responsible for importing related graphical programming programs;</p></li>
+<li><p><strong>Export</strong>: responsible for exporting the saved graphical programming programs in the workspace. The “Save” button function is to save the code block as the corresponding teaching program after editing is completed;</p></li>
+<li><p><strong>Save</strong>: responsible for saving the edited graphical code block;</p></li>
+<li><p><strong>Clear</strong>: responsible for quickly clearing the code editing area;</p></li>
+<li><p><strong>Code</strong>: responsible for translating code blocks into Lua code.</p></li>
+</ol>
+<p><strong>Toolbox</strong></p>
+<ol class="arabic simple">
+<li><p>Code blocks containing all instructions and logic codes can be dragged to the workspace to create code blocks and edit them;</p></li>
+<li><p>The Toolbox toolbar section will be further classified according to the instruction type;</p></li>
+<li><p>Logic instructions: if-else, while, etc;</p></li>
+<li><p>Basic motion instructions: PTP, LIN, ARC, etc. Instructions are classified according to application scenarios: gluing, welding, conveyor belts, etc. You can easily find the required code blocks during use.</p></li>
+</ol>
+<p><strong>Workspace</strong>: Graphical code blocks can be edited and displayed in the code editing area.</p>
+</section>
+<section id="logic-graphical-programming-commands">
+<h2><span class="section-number">10.2. </span>Logic Graphical Programming Commands<a class="headerlink" href="#logic-graphical-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Logic Graphical Programming Commands include loops, numbers and other logic commands.</p>
+<a class="reference internal image-reference" href="../_images/0036.png"><img alt="../_images/0036.png" class="align-center" src="../_images/0036.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.2 Logic Graphical Programming</strong></p><section id="if-else-judgment-instruction">
+<h3><span class="section-number">10.2.1. </span>If/Else Judgment Instruction<a class="headerlink" href="#if-else-judgment-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “If/Else Judgment Instruction” code block to enter the graphical editing interface workspace. (This instruction requires a certain programming foundation. If you need help, please contact us)</p>
+<a class="reference internal image-reference" href="../_images/0214.png"><img alt="../_images/0214.png" class="align-center" src="../_images/0214.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.2-1 If/Else Judgment Instruction Code Block</strong></p></section>
+<section id="while-instruction">
+<h3><span class="section-number">10.2.2. </span>While Instruction<a class="headerlink" href="#while-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “While Instruction” code block to enter the graphical editing interface workspace. (This instruction requires a certain programming foundation. If you need help, please contact us)</p>
+<p>Add the input waiting condition after While, add the motion instruction code block inside while, and click Save. (For ease of operation, you can enter any do content and edit other instructions in the program to insert instead)</p>
+<a class="reference internal image-reference" href="../_images/0224.png"><img alt="../_images/0224.png" class="align-center" src="../_images/0224.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.2-2 While instruction code block</strong></p></section>
+<section id="jump-instruction">
+<h3><span class="section-number">10.2.3. </span>Jump instruction<a class="headerlink" href="#jump-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Jump instruction” code block to enter the graphical editing interface workspace. (This instruction requires a certain programming foundation. If you need help, please contact us)</p>
+<ul class="simple">
+<li><p>Jump name: Enter the jump name to determine the jump position</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0234.png"><img alt="../_images/0234.png" class="align-center" src="../_images/0234.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.2-3 Jump instruction code block</strong></p><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Jump name cannot start with a number</p>
+</div>
+</section>
+</section>
+<section id="variable-class-graphical-programming-command">
+<h2><span class="section-number">10.3. </span>Variable class graphical programming command<a class="headerlink" href="#variable-class-graphical-programming-command" title="Permalink to this heading"></a></h2>
+<p>Variable class graphical programming commands include create variable commands.</p>
+<a class="reference internal image-reference" href="../_images/0046.png"><img alt="../_images/0046.png" class="align-center" src="../_images/0046.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.3 Variable class graphical programming</strong></p><section id="variable-instruction">
+<h3><span class="section-number">10.3.1. </span>Variable instruction<a class="headerlink" href="#variable-instruction" title="Permalink to this heading"></a></h3>
+<p>Click the “Create” button to enter the variable name to be defined.</p>
+<p>Drag the “Variable instruction” code block to enter the graphical editing interface workspace.</p>
+<p>“Variable” instruction node, parameters:</p>
+<a class="reference internal image-reference" href="../_images/0244.png"><img alt="../_images/0244.png" class="align-center" src="../_images/0244.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.3-1 Variable instruction code block</strong></p></section>
+</section>
+<section id="function-class-graphical-programming-command">
+<h2><span class="section-number">10.4. </span>Function class graphical programming command<a class="headerlink" href="#function-class-graphical-programming-command" title="Permalink to this heading"></a></h2>
+<p>Function class graphical programming command includes create function command.</p>
+<a class="reference internal image-reference" href="../_images/0056.png"><img alt="../_images/0056.png" class="align-center" src="../_images/0056.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.4 Function class graphical programming</strong></p><section id="function-method-instruction">
+<h3><span class="section-number">10.4.1. </span>Function method instruction<a class="headerlink" href="#function-method-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Function method instruction” code block to enter the graphical editing interface workspace.</p>
+<p>“Function method” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Function name: the name of the function to be run.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0254.png"><img alt="../_images/0254.png" class="align-center" src="../_images/0254.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.4-1 Function method instruction code block</strong></p></section>
+</section>
+<section id="motion-graphic-programming-commands">
+<h2><span class="section-number">10.5. </span>Motion graphic programming commands<a class="headerlink" href="#motion-graphic-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Motion graphic programming commands include PTP, Lin, ARC and other motion commands.</p>
+<a class="reference internal image-reference" href="../_images/0066.png"><img alt="../_images/0066.png" class="align-center" src="../_images/0066.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5 Motion graphic programming</strong></p><section id="point-to-point-instruction">
+<h3><span class="section-number">10.5.1. </span>Point-to-point instruction<a class="headerlink" href="#point-to-point-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “point-to-point instruction” code block to enter the graphical editing interface workspace.</p>
+<p>You can select the point you want to reach. The smooth transition time setting can make the movement from this point to the next point continuous. For the offset setting, you can choose to offset based on the base coordinate system and offset based on the tool coordinate system, and pop up the x, y, z, rx, ry, rz offset settings. The specific PTP path is the optimal path automatically planned by the motion controller.</p>
+<p>“Point to point” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Point name: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Stop: false/true</p></li>
+<li><p>Smooth transition (ms): Smooth transition time 0 ~ 500</p></li>
+<li><p>Whether to offset No/base coordinate offset/tool ​​coordinate offset When No is selected, the dx~drz parameter values ​​are not effective</p></li>
+<li><p>dx~drz: offset</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0265.png"><img alt="../_images/0265.png" class="align-center" src="../_images/0265.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-1 Point-to-point instruction code block</strong></p></section>
+<section id="straight-line-instruction">
+<h3><span class="section-number">10.5.2. </span>Straight line instruction<a class="headerlink" href="#straight-line-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Straight line instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction function is similar to the “point to point” instruction, but the path to the point reached by this instruction is a straight line.</p>
+<p>“Straight line” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Point name: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Stop: false/true, when true is selected, the smooth transition parameter value is not effective</p></li>
+<li><p>Smooth transition (mm): smooth transition radius 0 ~ 1000</p></li>
+<li><p>Whether to seek: false/true</p></li>
+<li><p>Seek point variable: REF0~99/RES0~99, when false is selected for whether to seek, the parameter is not effective;</p></li>
+<li><p>Whether to offset: No</p></li>
+<li><p>Joint overspeed protection: No/Yes</p></li>
+<li><p>Processing strategy: Standard/Stop with error when overspeeding/Adaptive deceleration</p></li>
+<li><p>Allowed deceleration threshold: 0~100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0275.png"><img alt="../_images/0275.png" class="align-center" src="../_images/0275.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-2 Straight line instruction code block</strong></p></section>
+<section id="straight-line-adjustable-angular-velocity-at-transition-point-instruction">
+<h3><span class="section-number">10.5.3. </span>Straight line (adjustable angular velocity at transition point) instruction<a class="headerlink" href="#straight-line-adjustable-angular-velocity-at-transition-point-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Straight line (adjustable angular velocity at transition point) instruction” code block to enter the graphical editing interface workspace.</p>
+<p>The function of this instruction is similar to the “point to point” instruction, but this instruction includes adjustable angular velocity at transition point.</p>
+<p>“Straight line (adjustable angular velocity at transition point)” command node, parameters:</p>
+<ul class="simple">
+<li><p>Maximum angular velocity: 0~300</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0285.png"><img alt="../_images/0285.png" class="align-center" src="../_images/0285.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-3 Straight line (adjustable angular velocity at transition point) command code block</strong></p></section>
+<section id="straight-line-seampos-command">
+<h3><span class="section-number">10.5.4. </span>Straight line (seamPos) command<a class="headerlink" href="#straight-line-seampos-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Straight line (seamPos) command” code block to enter the graphical editing interface workspace.</p>
+<p>This command function is used to use laser sensors in welding scenarios.</p>
+<p>“Straight line (seamPos)” command node, parameters:</p>
+<ul class="simple">
+<li><p>Point name: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Stop: false/true, when true is selected, the smooth transition parameter value is not effective</p></li>
+<li><p>Smooth transition (mm): smooth transition radius 0 ~ 1000</p></li>
+<li><p>Weld cache data selection: execution planning data/execution record data;</p></li>
+<li><p>Plate type: corrugated plate/corrugated plate/fence plate/oil drum/corrugated shell steel;</p></li>
+<li><p>Whether to offset: No/base coordinate offset/tool ​​coordinate offset/laser raw data offset When no is selected, the dx~drz parameter value is not effective</p></li>
+<li><p>dx~drz: offset</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0294.png"><img alt="../_images/0294.png" class="align-center" src="../_images/0294.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-4 Straight line (seamPos) command code block</strong></p></section>
+<section id="arc-command">
+<h3><span class="section-number">10.5.5. </span>Arc command<a class="headerlink" href="#arc-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Arc command” code block to enter the graphical editing interface workspace.</p>
+<p>Arc motion contains two points, the first point is the transition point in the middle of the arc, and the second point is the end point. Both the transition point and the end point can be set to offset or not. You can choose to offset based on the base coordinate system and offset based on the tool coordinate system, set the x, y, z, rx, ry, rz offset, and the end point can set the smooth transition radius to achieve a continuous motion effect</p>
+<p>“Arc” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Arc middle point: teaching point</p></li>
+<li><p>Whether to offset: No/base coordinate offset/tool ​​coordinate offset When no is selected, the dx~drz parameter value is not effective</p></li>
+<li><p>dx~drz: offset</p></li>
+<li><p>Arc end point: teaching point</p></li>
+<li><p>Whether to offset: No/base coordinate offset/tool ​​coordinate offset When no is selected, the dx~drz parameter value is not effective</p></li>
+<li><p>dx~drz: offset</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Stop: false/true, when true is selected, the smooth transition parameter value is not effective</p></li>
+<li><p>Smooth transition (mm): smooth transition radius 0 ~ 1000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0304.png"><img alt="../_images/0304.png" class="align-center" src="../_images/0304.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5-5 Arc instruction code block</strong></p></section>
+<section id="full-circle-command">
+<h3><span class="section-number">10.5.6. </span>Full circle command<a class="headerlink" href="#full-circle-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “full circle command” code block to enter the graphical editing interface workspace.</p>
+<p>Click the “full circle” command node to enter the node diagram editing interface.</p>
+<p>Full circle motion includes two points, the first point is the full circle middle transition point 1, the second point is the full circle middle transition point 2, transition point 2 can be set whether to offset, the offset is effective for both transition point 1 and transition point 2.</p>
+<p>“Full circle” command node, parameters:</p>
+<ul class="simple">
+<li><p>Full circle middle point 1: teaching point</p></li>
+<li><p>Full circle middle point 2: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Whether to offset: No/base coordinate offset/tool ​​coordinate offset When No is selected, the dx~drz parameter value is not effective</p></li>
+<li><p>dx~drz: offset</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0313.png"><img alt="../_images/0313.png" class="align-center" src="../_images/0313.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-6 Full circle instruction code block</strong></p></section>
+<section id="spiral-instruction">
+<h3><span class="section-number">10.5.7. </span>Spiral instruction<a class="headerlink" href="#spiral-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Spiral instruction” code block to enter the graphical editing interface workspace.</p>
+<p>The spiral motion includes three points, which form a circle. In the third point setting page, there are several parameter settings, including the number of spiral turns, attitude correction angle, radius increment and axis direction increment. The number of spiral turns is the number of spiral motion turns. The attitude correction angle corrects the attitude at the end of the spiral and the attitude of the first point of the spiral. The radius increment is the increment of each circle radius, and the axis direction increment is the increment of the spiral axis direction. Set whether to offset. The offset is effective for the entire spiral trajectory.</p>
+<p>“Spiral” command node, parameters:</p>
+<ul class="simple">
+<li><p>Spiral middle point 1: teaching point</p></li>
+<li><p>Spiral middle point 2: teaching point</p></li>
+<li><p>Spiral middle point 3: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Offset: No/base coordinate offset/tool ​​coordinate offset When No is selected, the dx~drz parameter values ​​are not effective</p></li>
+<li><p>dx~drz: offset</p></li>
+<li><p>Spiral turns: 0 ~ 100</p></li>
+<li><p>Posture angle correction rx (°): -1000 ~ 1000</p></li>
+<li><p>Posture angle correction ry (°): -1000 ~ 1000</p></li>
+<li><p>Posture angle correction rz (°): -1000 ~ 1000</p></li>
+<li><p>Radius increment (mm): -100 ~ 100</p></li>
+<li><p>Rotation axis direction increment (mm): -100 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0324.png"><img alt="../_images/0324.png" class="align-center" src="../_images/0324.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5-7 Spiral instruction code block</strong></p></section>
+<section id="new-spiral-instruction">
+<h3><span class="section-number">10.5.8. </span>New spiral instruction<a class="headerlink" href="#new-spiral-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “New Spiral Instruction” code block to enter the graphical editing interface workspace.</p>
+<p>Click the “New Spiral” instruction node to enter the node graph editing interface.</p>
+<p>The new spiral motion is an optimized version of the spiral motion. This instruction only requires one point plus the configuration of various parameters to realize the spiral motion. The robot takes the current position as the starting point. The user sets the debugging speed, whether to offset, the number of spiral turns, spiral inclination, initial radius, radius increment, axis direction increment and rotation direction. The number of spiral turns refers to the number of spiral turns of the spiral line. The spiral inclination refers to the angle between the tool Z axis and the horizontal direction. The posture correction angle corrects the posture at the end of the spiral line and the posture of the first point of the spiral line. The initial radius refers to the radius of the first circle. The radius increment refers to the increment of each circle radius. The axis direction increment refers to the increment of the spiral axis direction. The rotation direction is clockwise and counterclockwise.</p>
+<p>“New spiral” command node, parameters:</p>
+<ul class="simple">
+<li><p>Spiral start point: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Offset: No/base coordinate offset/tool ​​coordinate offset When No is selected, the dx~drz parameter values ​​are not effective</p></li>
+<li><p>dx~drz: offset</p></li>
+<li><p>Spiral turns: 0 ~ 100</p></li>
+<li><p>Spiral inclination (°): -100 ~ 100</p></li>
+<li><p>Initial radius: 0 ~ 100</p></li>
+<li><p>Radius increment (mm): -100 ~ 100</p></li>
+<li><p>Rotation axis direction increment (mm): -100 ~ 100</p></li>
+<li><p>Rotation direction: clockwise/counterclockwise</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0334.png"><img alt="../_images/0334.png" class="align-center" src="../_images/0334.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-8 New spiral instruction code block</strong></p></section>
+<section id="horizontal-spiral-instruction">
+<h3><span class="section-number">10.5.9. </span>Horizontal spiral instruction<a class="headerlink" href="#horizontal-spiral-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Horizontal spiral instruction” code block to enter the graphical editing interface workspace.</p>
+<p>The “H-Spiral” instruction is a horizontal space spiral motion. This instruction is set after the single-segment motion (straight line) instruction.</p>
+<p>“Horizontal spiral” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Spiral radius: 0~100mm</p></li>
+<li><p>Spiral angular velocity: 0~2rev/s</p></li>
+<li><p>Rotation direction: spiral clockwise/counterclockwise</p></li>
+<li><p>Spiral inclination: 0~40°</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0344.png"><img alt="../_images/0344.png" class="align-center" src="../_images/0344.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5-9 Horizontal spiral instruction code block</strong></p></section>
+<section id="spline-instruction">
+<h3><span class="section-number">10.5.10. </span>Spline instruction<a class="headerlink" href="#spline-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Spline instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is divided into three parts: spline group start, spline segment and spline group end. The spline group start is the start mark of the spline motion. The spline segment currently only contains the SPL segment in the node diagram. The spline group end is the end mark of the spline motion.</p>
+<p>“Spline-SPTP” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Point name: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0354.png"><img alt="../_images/0354.png" class="align-center" src="../_images/0354.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5-10 Spline instruction code block</strong></p></section>
+<section id="new-spline-instruction">
+<h3><span class="section-number">10.5.11. </span>New spline instruction<a class="headerlink" href="#new-spline-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “New spline instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is a spline instruction algorithm optimization instruction, which will replace the existing spline instruction in the future. This instruction is divided into three parts: multi-point trajectory start, multi-point trajectory segment and multi-point trajectory end. Multi-point trajectory start is the starting mark of multi-point trajectory movement. Multi-point trajectory segment is to set each trajectory point. Click the icon to enter the point adding interface. Multi-point trajectory end is the end mark of multi-point trajectory movement. Here you can set the control mode and debugging speed. The control mode is divided into given control point and given path point.</p>
+<p>“New Spline” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Control mode: teach point</p></li>
+<li><p>Global average connection time: integer type, greater than 10, default value is 2000ms</p></li>
+</ul>
+<p>“New Spline-SPL” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Point name: teach point</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>Smooth transition radius: 0 ~ 1000</p></li>
+<li><p>Is it the last point: No/Yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0364.png"><img alt="../_images/0364.png" class="align-center" src="../_images/0364.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-11 New Spline Instruction Code Block</strong></p></section>
+<section id="swing-instruction">
+<h3><span class="section-number">10.5.12. </span>Swing Instruction<a class="headerlink" href="#swing-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Swing Instruction” code block to enter the graphical editing interface workspace.</p>
+<p>“Swing” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Number: 0~7</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0374.png"><img alt="../_images/0374.png" class="align-center" src="../_images/0374.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5-12 Swing instruction code block</strong></p></section>
+<section id="point-offset-instruction">
+<h3><span class="section-number">10.5.13. </span>Point offset instruction<a class="headerlink" href="#point-offset-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “point offset instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is an overall offset instruction. Enter each offset. The intermediate motion instructions will be offset based on the base coordinates (or workpiece coordinates).</p>
+<p>“Point offset” command node, parameters:</p>
+<ul class="simple">
+<li><p>∆x: offset, -300~300</p></li>
+<li><p>∆y: offset, -300~300</p></li>
+<li><p>∆z: offset, -300~300</p></li>
+<li><p>∆rx: offset, -300~300</p></li>
+<li><p>∆ry: offset, -300~300</p></li>
+<li><p>∆rz: offset, -300~300</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0383.png"><img alt="../_images/0383.png" class="align-center" src="../_images/0383.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5-13 Point offset command code block</strong></p></section>
+<section id="servo-command">
+<h3><span class="section-number">10.5.14. </span>Servo command<a class="headerlink" href="#servo-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Servo command” code block to enter the graphical editing interface workspace.</p>
+<p>Servo control (Cartesian space motion) instructions, which can control the robot motion through absolute posture control or based on the current posture offset.</p>
+<p>“Servo” command node, parameters:</p>
+<ul class="simple">
+<li><p>Movement mode: absolute position/base coordinate offset/tool ​​coordinate offset</p></li>
+<li><p>x: offset, -300~300</p></li>
+<li><p>y: offset, -300~300</p></li>
+<li><p>z: offset, -300~300</p></li>
+<li><p>rx: offset, -300~300</p></li>
+<li><p>ry: offset, -300~300</p></li>
+<li><p>rz: offset, -300~300</p></li>
+<li><p>Proportional coefficient x: 0~1</p></li>
+<li><p>Proportional coefficient y: 0~1</p></li>
+<li><p>Proportional coefficient z: 0~1</p></li>
+<li><p>Proportional coefficient rx: 0~1</p></li>
+<li><p>Proportional coefficient ry: 0~1</p></li>
+<li><p>Proportional coefficient rz: 0~1</p></li>
+<li><p>Acceleration (%): 0~100</p></li>
+<li><p>Speed ​​(%): 0~100</p></li>
+<li><p>Command cycle (s): 0.001~0.016</p></li>
+<li><p>Filter time (s): 0~1</p></li>
+<li><p>Scale up: 0~100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0393.png"><img alt="../_images/0393.png" class="align-center" src="../_images/0393.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-14 Servo command code block</strong></p></section>
+<section id="trajectory-command">
+<h3><span class="section-number">10.5.15. </span>Trajectory command<a class="headerlink" href="#trajectory-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Trajectory command” code block to enter the graphical editing interface workspace.</p>
+<p>In this command, the user first needs to have a recorded trajectory.</p>
+<p>“Trajectory” command node, parameters:</p>
+<ul class="simple">
+<li><p>Select trajectory file: recorded trajectory</p></li>
+<li><p>Debug speed (%): 0 ~ 100, default value is 25</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0403.png"><img alt="../_images/0403.png" class="align-center" src="../_images/0403.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-15 Trajectory command code block</strong></p></section>
+<section id="trajectoryj-command">
+<h3><span class="section-number">10.5.16. </span>TrajectoryJ command<a class="headerlink" href="#trajectoryj-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “TrajectoryJ command” code block to enter the graphical editing interface workspace.</p>
+<p>In this command, the user first needs to have a recorded trajectory, and the trajectory file can be pre-imported in the teaching program interface. The trajectory command and trajectoryJ command are suitable for the general interface of the camera directly giving the trajectory. When there is a discrete trajectory point file in a fixed format, it can be imported into the system to make the robot move according to the trajectory of the imported file.</p>
+<p>“Track J” command node, parameters:</p>
+<ul class="simple">
+<li><p>Select track file: recorded track</p></li>
+<li><p>Debug speed (%): 0 ~ 100, default value is 25</p></li>
+<li><p>Track mode: path point/control point</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0412.png"><img alt="../_images/0412.png" class="align-center" src="../_images/0412.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-16 Track J command code block</strong></p></section>
+<section id="track-reproduction-command">
+<h3><span class="section-number">10.5.17. </span>Track reproduction command<a class="headerlink" href="#track-reproduction-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Track reproduction command” code block to enter the graphical editing interface workspace.</p>
+<p>In this command, the user first needs to have a recorded track.</p>
+<p>When programming, first use the point-to-point command to reach the corresponding track starting point, then select the track in the track reproduction command, select the smooth track, and set the debugging speed. The track loading command is mainly used to pre-read the track file and extract it into a track command for better application in conveyor belt tracking scenarios.</p>
+<p>“Trajectory Reproduction” command node, parameters:</p>
+<ul class="simple">
+<li><p>Trajectory name: recorded trajectory</p></li>
+<li><p>Smooth trajectory: No/Yes</p></li>
+<li><p>Debug speed (%): 0 ~ 100, default value is 25</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0423.png"><img alt="../_images/0423.png" class="align-center" src="../_images/0423.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-17 Trajectory Reproduction Command Code Block</strong></p></section>
+<section id="dmp-command">
+<h3><span class="section-number">10.5.18. </span>DMP Command<a class="headerlink" href="#dmp-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “DMP Command” code block to enter the graphical editing interface workspace.</p>
+<p>DMP is a method of trajectory imitation learning, which requires planning the reference trajectory in advance. In the command editing interface, select the teaching point as the new starting point, click “Add” and “Apply” to save the command. The specific path of DMP is a new trajectory that imitates the reference trajectory with a new starting point.</p>
+<p>“DMP” command node, parameters:</p>
+<ul class="simple">
+<li><p>Point name: teaching point</p></li>
+<li><p>Debug speed (%): 0 ~ 100, default value is 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0434.png"><img alt="../_images/0434.png" class="align-center" src="../_images/0434.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-18 DMP command code block</strong></p></section>
+<section id="tool-conversion-instruction">
+<h3><span class="section-number">10.5.19. </span>Tool conversion instruction<a class="headerlink" href="#tool-conversion-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Tool conversion instruction” code block to enter the graphical editing interface workspace.</p>
+<p>Select the tool coordinate system to be automatically converted, click “Add” and “Apply” to save the instruction. The tool coordinate system are automatically converted.</p>
+<p>“Tool conversion” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Tool coordinate system: Tool coordinate system table</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0444.png"><img alt="../_images/0444.png" class="align-center" src="../_images/0444.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.5-19 Tool conversion instruction code block</strong></p></section>
+<section id="workpiece-conversion-instruction">
+<h3><span class="section-number">10.5.20. </span>Workpiece conversion instruction<a class="headerlink" href="#workpiece-conversion-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Workpiece conversion instruction” code block to enter the graphical editing interface workspace.</p>
+<p>Select the workpiece coordinate system to be automatically converted, the points in the workpiece coordinate system are automatically converted.</p>
+<p>“Workpiece conversion” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Workpiece coordinate system: Workpiece coordinate system table</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0454.png"><img alt="../_images/0454.png" class="align-center" src="../_images/0454.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.5-20 Workpiece conversion instruction code block</strong></p></section>
+</section>
+<section id="control-class-graphical-programming-commands">
+<h2><span class="section-number">10.6. </span>Control class graphical programming commands<a class="headerlink" href="#control-class-graphical-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Control class graphical programming commands include Wait, IO and other control commands.</p>
+<a class="reference internal image-reference" href="../_images/0075.png"><img alt="../_images/0075.png" class="align-center" src="../_images/0075.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6 Control Class Graphical Programming Commands</strong></p><section id="wait-command">
+<h3><span class="section-number">10.6.1. </span>Wait Command<a class="headerlink" href="#wait-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Wait Command” code block to enter the graphical editing interface workspace.</p>
+<p>This command is a delay command, which is divided into four parts: “WaitMs”, “WaitDI”, “WaitMultiDI” and “WaitAI”.</p>
+<ol class="arabic simple">
+<li><p>“Wait” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Wait time (ms): The delay waiting time unit is milliseconds, enter the number of milliseconds to wait</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0464.png"><img alt="../_images/0464.png" class="align-center" src="../_images/0464.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-1 Wait command code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Wait DI” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>DI port number: Ctrl-DI0 ~ Ctrl-CI7(WaitDI,[0~15]), End-DI0 ~ End-DI1(WaitToolDI,[0~1])</p></li>
+<li><p>Status: false/true</p></li>
+<li><p>Maximum time (ms): 0 ~ 10000</p></li>
+<li><p>Wait timeout processing: stop error/continue execution/keep waiting</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0473.png"><img alt="../_images/0473.png" class="align-center" src="../_images/0473.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-2 Wait for DI instruction code block</strong></p><ol class="arabic simple" start="3">
+<li><p>“Wait for multiple DI” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Condition: and/or</p></li>
+<li><p>Condition selection: select the port number of the bit state to be turned on, separated by commas, such as DI0, DI1</p></li>
+<li><p>True value corresponding port: select the port number of the true value, separated by commas, such as DI0, DI1</p></li>
+<li><p>Maximum time (ms): 0 ~ 10000, maximum waiting time</p></li>
+<li><p>Waiting timeout processing: stop error/continue execution/wait forever</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0483.png"><img alt="../_images/0483.png" class="align-center" src="../_images/0483.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-3 Wait for multiple DI instruction code block</strong></p><ol class="arabic simple" start="4">
+<li><p>“Wait for AI” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Condition: and/or</p></li>
+<li><p>AI port number: Ctrl-AI0 ~ Ctrl-AI1(WaitAI,[0~1]), End-AI0(WaitToolAI,[0])</p></li>
+<li><p>Condition: greater than/less than</p></li>
+<li><p>Value (%): 1 ~ 100</p></li>
+<li><p>Maximum time (ms): 0 ~ 10000</p></li>
+<li><p>Waiting timeout processing: stop reporting errors/continue execution/keep waiting. When waiting for timeout processing, the maximum time defaults to 0</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0493.png"><img alt="../_images/0493.png" class="align-center" src="../_images/0493.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-4 Waiting for AI command code block</strong></p></section>
+<section id="mode-switching-command">
+<h3><span class="section-number">10.6.2. </span>Mode switching command<a class="headerlink" href="#mode-switching-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “mode switching command” code block to enter the graphical editing interface workspace.</p>
+<p>This command can switch the robot to manual mode. It is usually added at the end of a program so that the user can automatically switch the robot to manual mode and drag the robot after the program ends.</p>
+<p>“Mode switch” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Mode switch: manual mode</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0503.png"><img alt="../_images/0503.png" class="align-center" src="../_images/0503.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-5 Mode switch instruction code block</strong></p></section>
+<section id="pause-instruction">
+<h3><span class="section-number">10.6.3. </span>Pause instruction<a class="headerlink" href="#pause-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Pause instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is a pause instruction. Insert this instruction in the program. When the program executes this instruction, the robot will be in a paused state. If you want to continue running, click the “Pause/Resume” button in the control area.</p>
+<p>“Pause” command node, parameters:</p>
+<ul class="simple">
+<li><p>Pause type: no function, cylinder not in place, etc.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0513.png"><img alt="../_images/0513.png" class="align-center" src="../_images/0513.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-6 Pause command code block</strong></p></section>
+<section id="coordinate-system-command">
+<h3><span class="section-number">10.6.4. </span>Coordinate system command<a class="headerlink" href="#coordinate-system-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Set tool coordinate system”/”Set workpiece coordinate system” code block to enter the graphical editing interface workspace.</p>
+<ol class="arabic simple">
+<li><p>“Set tool coordinate system” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Tool coordinate system name: toolcoord1 ~ toolcoord19(SetToolList,[0~19]), etoolcoord0 ~ etoolcoord14(SetExToolList, [0~14])</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0522.png"><img alt="../_images/0522.png" class="align-center" src="../_images/0522.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-7 Set tool coordinate system command code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Set workpiece coordinate system” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Workpiece coordinate system name: wobjcoord1 ~ wobjcoord14</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0532.png"><img alt="../_images/0532.png" class="align-center" src="../_images/0532.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-8 Set workpiece coordinate system instruction code block</strong></p></section>
+<section id="simulation-ai-instruction">
+<h3><span class="section-number">10.6.5. </span>Simulation AI instruction<a class="headerlink" href="#simulation-ai-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Set AO”/”Get AI” code block to enter the graphical editing interface workspace.</p>
+<p>In this instruction, there are two functions: setting analog output (SetAO/SPLCSetAO) and getting analog input (GetAI/SPLCGetAI).</p>
+<ol class="arabic simple">
+<li><p>“Set AO” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Port: Ctrl-AO0 ~ Ctrl-AO1 (blocking: SetAO, non-blocking: SPLCSetAO, [0~1]), End-AO0 (blocking: SetToolAO, non-blocking: SPLCSetToolAO, [0])</p></li>
+<li><p>Value (%): 0 ~ 100</p></li>
+<li><p>Whether to block: blocking/non-blocking</p></li>
+<li><p>Whether to apply thread: no/yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0542.png"><img alt="../_images/0542.png" class="align-center" src="../_images/0542.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-9 Set AO instruction code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Get AI” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Port: Ctrl-AI0 ~ Ctrl-DI1 (blocking: GetAI, non-blocking: SPLCGetAI, [0~1]), End-AI0 (blocking: GetToolAI, non-blocking: SPLCGetToolAI, [0])</p></li>
+<li><p>Condition: greater than/less than</p></li>
+<li><p>Value (%): 0 ~ 100</p></li>
+<li><p>Maximum time (ms): 0 ~ 10000</p></li>
+<li><p>Blocking: Blocking/Non-blocking</p></li>
+<li><p>Apply thread: No/Yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0553.png"><img alt="../_images/0553.png" class="align-center" src="../_images/0553.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-10 Get AI instruction code block</strong></p></section>
+<section id="digital-io-instructions">
+<h3><span class="section-number">10.6.6. </span>Digital IO Instructions<a class="headerlink" href="#digital-io-instructions" title="Permalink to this heading"></a></h3>
+<p>Drag the “Set DO”/”Get DI” code block to enter the graphical editing interface workspace.</p>
+<p>The instructions are IO instructions, which are divided into two parts: Set IO (SetDO/SPLCSetDO) and Get IO (GetDI/SPLCGetDI).</p>
+<ol class="arabic simple">
+<li><p>“Set DO” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Port: Ctrl-DO0 ~ Ctrl-CO7 (blocking: SetDO, non-blocking: SPLCSetDO, [0~15]), End-DO0 ~ End-DO1 (blocking: SetToolDO, non-blocking: SPLCSetToolDO, [0~1])</p></li>
+<li><p>Status: false/true</p></li>
+<li><p>Blocking: blocking/non-blocking</p></li>
+<li><p>Smooth trajectory: Break/Serious</p></li>
+<li><p>Apply thread: No/Yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0563.png"><img alt="../_images/0563.png" class="align-center" src="../_images/0563.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-11 Set DO instruction code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Get DI” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Port: Ctrl-DI0 ~ Ctrl-CI7 (blocking: GetDI, non-blocking: SPLCGetDI, [0~15]), End-DI0 ~ End-DI1(Blocking: GetToolDI, Non-blocking: SPLCGetToolDI, [0~1])</p></li>
+<li><p>Blocking: Blocking/Non-blocking</p></li>
+<li><p>Status: false/true</p></li>
+<li><p>Maximum waiting time (ms): 0 ~ 10000</p></li>
+<li><p>Apply thread: No/Yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0573.png"><img alt="../_images/0573.png" class="align-center" src="../_images/0573.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.6-12 Get DI instruction code block</strong></p></section>
+<section id="motion-do-instruction">
+<h3><span class="section-number">10.6.7. </span>Motion DO instruction<a class="headerlink" href="#motion-do-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Motion DO instruction” code block to enter the graphical editing interface work area.</p>
+<p>This instruction implements the function of continuously outputting DO signals according to the set interval during linear motion.</p>
+<ol class="arabic simple">
+<li><p>“Motion DO continuous output” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Port: Ctrl-DO0 ~ Ctrl-DO0(MoveDOStart,[0~15]), End-DO1(MoveDOStart,[0~1])</p></li>
+<li><p>Setting interval (mm): 0 ~ 500</p></li>
+<li><p>Output pulse duty cycle (%): 0 ~ 99</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>“Motion DO single output” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Port: Ctrl-DO0 ~ Ctrl-DO0(MoveDOOnceStart,[0~15]), End-DO1(MoveDOOnceStart,[0~1])</p></li>
+<li><p>Output mode: uniform speed output/free configuration</p></li>
+<li><p>Set time (ms): 0 ~ 1000 (the uniform speed output mode defaults to -1)</p></li>
+<li><p>Reset time (ms): 0 ~ 1000 (the uniform speed output mode defaults to -1)</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0583.png"><img alt="../_images/0583.png" class="align-center" src="../_images/0583.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-13 “Motion DO single/continuous output” instruction code block</strong></p></section>
+<section id="motion-ao-instruction">
+<h3><span class="section-number">10.6.8. </span>Motion AO instruction<a class="headerlink" href="#motion-ao-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Motion AO instruction” code block to enter the graphical editing interface workspace.</p>
+<p>When this instruction is used with the motion instruction, it can output the AO signal in proportion to the real-time TCP speed during the motion process.</p>
+<p>“Move AO” command node, parameters:</p>
+<ul class="simple">
+<li><p>Control box AO number: Ctrl-AO0 ~ Ctrl-AO1 (MoveAOStart, [0~1]), End-AO0 (MoveToolAOStart, 0)</p></li>
+<li><p>Maximum TCP speed: 0 ~ 100</p></li>
+<li><p>Maximum TCP speed AO percentage: 0 ~ 100</p></li>
+<li><p>Dead zone compensation value AO percentage: 0 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0593.png"><img alt="../_images/0593.png" class="align-center" src="../_images/0593.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-14 “Move AO” command code block</strong></p></section>
+<section id="collision-level-command">
+<h3><span class="section-number">10.6.9. </span>Collision level command<a class="headerlink" href="#collision-level-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Collision level command” code block to enter the graphical editing interface workspace.</p>
+<p>This command sets the collision level. Through this command, the collision level of each axis can be adjusted in real time during program operation, and the application scenario can be deployed more flexibly.</p>
+<p>“Collision level” command node, parameters:</p>
+<ul class="simple">
+<li><p>Standard level: standard level/custom percentage</p></li>
+<li><p>joint1-joint6(N): 0 ~ 100, collision threshold, array type</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0603.png"><img alt="../_images/0603.png" class="align-center" src="../_images/0603.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-15 Collision level command code block</strong></p></section>
+<section id="acceleration-command">
+<h3><span class="section-number">10.6.10. </span>Acceleration command<a class="headerlink" href="#acceleration-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “acceleration command” code block to enter the graphical editing interface workspace.</p>
+<p>The “acceleration” command is to realize the function of setting the robot acceleration separately. By adjusting the motion command acceleration scaling factor, the acceleration and deceleration time can be increased or decreased, and the robot action beat time can be adjusted.</p>
+<p>“Acceleration” command node, parameters:</p>
+<ul class="simple">
+<li><p>Acceleration percentage (%): 0 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0613.png"><img alt="../_images/0613.png" class="align-center" src="../_images/0613.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.6-16 Acceleration command code block</strong></p></section>
+</section>
+<section id="peripheral-graphical-programming-commands">
+<h2><span class="section-number">10.7. </span>Peripheral graphical programming commands<a class="headerlink" href="#peripheral-graphical-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Peripheral graphical programming commands include peripheral commands such as grippers, spray guns, and extended axes.</p>
+<a class="reference internal image-reference" href="../_images/0084.png"><img alt="../_images/0084.png" class="align-center" src="../_images/0084.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7 Peripheral graphical programming commands</strong></p><section id="gripper-commands">
+<h3><span class="section-number">10.7.1. </span>Gripper commands<a class="headerlink" href="#gripper-commands" title="Permalink to this heading"></a></h3>
+<p>Drag the “gripper movement”, “gripper activation” and “gripper reset” code blocks to enter the graphical editing interface workspace.</p>
+<p>In the command, the number of the configured and activated gripper is displayed, the settings of the gripper opening and closing, opening and closing speed, and opening and closing torque are displayed in percentages, and the blocking function option is displayed. If blocking is selected, the gripper movement needs to wait for the previous motion instruction to be executed before execution. If non-blocking is selected, the gripper movement is parallel to the previous motion instruction.</p>
+<ol class="arabic simple">
+<li><p>“Gripper Movement” node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Gripper number: the number of the activated gripper</p></li>
+<li><p>Gripper position: 0~100</p></li>
+<li><p>Opening and closing speed: 0~100</p></li>
+<li><p>Opening and closing torque: 0~100</p></li>
+<li><p>Maximum time (ms): 0~30000</p></li>
+<li><p>Blocking: false/true</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0623.png"><img alt="../_images/0623.png" class="align-center" src="../_images/0623.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-1 Gripper Movement Instruction Code Block</strong></p><p>Gripper reset instruction, display the configured gripper number, and you can add the gripper reset instruction to the program.</p>
+<ol class="arabic simple" start="2">
+<li><p>“Gripper reset” node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Gripper number: the number of the activated gripper</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0633.png"><img alt="../_images/0633.png" class="align-center" src="../_images/0633.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-2 Gripper reset instruction code block</strong></p><p>Gripper activation instruction, display the configured gripper number, you can add the gripper activation instruction to the program.</p>
+<ol class="arabic simple" start="3">
+<li><p>“Gripper activation” node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Gripper number: the number of the activated gripper</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0644.png"><img alt="../_images/0644.png" class="align-center" src="../_images/0644.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-3 Gripper activation instruction code block</strong></p></section>
+<section id="spray-gun-instruction">
+<h3><span class="section-number">10.7.2. </span>Spray gun instruction<a class="headerlink" href="#spray-gun-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Spray gun instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This command is related to spraying, controlling the spray gun to “start spraying”, “stop spraying”, “start cleaning gun” and “stop cleaning gun”. When editing the relevant nodes of this program, you need to confirm that the spray gun peripherals have been configured, otherwise it cannot be saved. See the robot peripherals section for details.</p>
+<a class="reference internal image-reference" href="../_images/0653.png"><img alt="../_images/0653.png" class="align-center" src="../_images/0653.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-4 Start spraying instruction code block</strong></p><a class="reference internal image-reference" href="../_images/0663.png"><img alt="../_images/0663.png" class="align-center" src="../_images/0663.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-5 Stop spraying instruction code block</strong></p><a class="reference internal image-reference" href="../_images/0673.png"><img alt="../_images/0673.png" class="align-center" src="../_images/0673.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-6 Start gun cleaning instruction code block</strong></p><a class="reference internal image-reference" href="../_images/0683.png"><img alt="../_images/0683.png" class="align-center" src="../_images/0683.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-7 Stop gun cleaning instruction code block</strong></p></section>
+<section id="extended-axis-instruction-controller-plc">
+<h3><span class="section-number">10.7.3. </span>Extended axis instruction (controller+PLC)<a class="headerlink" href="#extended-axis-instruction-controller-plc" title="Permalink to this heading"></a></h3>
+<p>Drag the “Extended axis instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is used in combination with the PTP instruction for scenarios using external axes. It can decompose the movement of a point in the X-axis direction in space into external axis movement. Select the external axis number, select synchronous movement mode, and select the point to be reached.</p>
+<p>It is divided into UDP communication loading/configuration, asynchronous movement, synchronous PTP/LIN movement, synchronous ARC movement, return to zero instruction and enable instruction.</p>
+<p>“UDP communication configuration” command node, enter the IP address, port number and communication cycle;</p>
+<a class="reference internal image-reference" href="../_images/0692.png"><img alt="../_images/0692.png" class="align-center" src="../_images/0692.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-8 UDP communication configuration command code block</strong></p><p>“Asynchronous motion” command node, parameters:</p>
+<ul class="simple">
+<li><p>Point name: teaching point</p></li>
+<li><p>Debug speed (%): 0~100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0702.png"><img alt="../_images/0702.png" class="align-center" src="../_images/0702.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-9 Asynchronous motion command code block</strong></p><p>“Synchronous PTP/LIN motion” command node, parameters:</p>
+<ul class="simple">
+<li><p>Motion selection: PTP/LIN</p></li>
+<li><p>Point name: teaching point</p></li>
+<li><p>Debug speed (%): 0~100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0711.png"><img alt="../_images/0711.png" class="align-center" src="../_images/0711.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-10 “Synchronous PTP/LIN motion” instruction code block</strong></p><p>“Synchronous ARC motion” instruction node, default motion mode is ARC, parameters:</p>
+<p>Point name: teaching point</p>
+<p>Debug speed (%): 0~100</p>
+<a class="reference internal image-reference" href="../_images/0721.png"><img alt="../_images/0721.png" class="align-center" src="../_images/0721.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.7-11 “Synchronous ARC motion” instruction code block</strong></p><p>“Extended axis return to zero” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Extended axis number: 1~4</p></li>
+<li><p>Return to zero mode: current position return to zero/negative limit return to zero/positive limit return to zero</p></li>
+<li><p>Home speed: 0~2000, default position 5</p></li>
+<li><p>Zero point clamp speed: 0~2000, default is 1</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0731.png"><img alt="../_images/0731.png" class="align-center" src="../_images/0731.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.7-12 Extended axis return to zero instruction code block</strong></p><p>“Extended axis enable” instruction node,, parameters:</p>
+<ul class="simple">
+<li><p>Extended axis number: 1~4</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0741.png"><img alt="../_images/0741.png" class="align-center" src="../_images/0741.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-13 Extended axis enable instruction code block</strong></p></section>
+<section id="extended-axis-instruction-controller-servo-drive">
+<h3><span class="section-number">10.7.4. </span>Extended axis instruction (controller+servo drive)<a class="headerlink" href="#extended-axis-instruction-controller-servo-drive" title="Permalink to this heading"></a></h3>
+<p>Drag the “Extended axis instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction can configure the extended axis parameters. Set different parameters according to different control modes. The configured extended axis can set its zero point.</p>
+<p>It is divided into servo ID, control mode, servo enable and servo return to zero; the control mode is further divided into position mode and speed mode. These two nodes need to be used in conjunction with the control mode, otherwise they cannot take effect if added separately.</p>
+<p>“Servo ID” command node, parameters:</p>
+<ul class="simple">
+<li><p>Servo ID: 1~15</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0751.png"><img alt="../_images/0751.png" class="align-center" src="../_images/0751.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-14 Servo ID command code block</strong></p><p>“Control mode” command node, parameters:</p>
+<ul class="simple">
+<li><p>Servo ID: 1~15</p></li>
+<li><p>Control mode: Position mode/Speed ​​mode</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0762.png"><img alt="../_images/0762.png" class="align-center" src="../_images/0762.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-15 Control mode command code block</strong></p><p>“Servo enable” command node, parameters:</p>
+<ul class="simple">
+<li><p>Servo ID: 1~15</p></li>
+<li><p>Servo enable: Servo enable/disable</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0772.png"><img alt="../_images/0772.png" class="align-center" src="../_images/0772.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-16 Servo enable command code block</strong></p><p>“Servo return to zero” command node, parameters:</p>
+<ul class="simple">
+<li><p>Servo ID: 1~15</p></li>
+<li><p>Return to zero mode: current position return to zero/negative limit return to zero/positive limit return to zero</p></li>
+<li><p>Homing speed: 0~2000, default position 5</p></li>
+<li><p>Zero point clamp speed: 0~2000, default is 1</p></li>
+<li><p>Acceleration percentage: 1~100, default is 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0782.png"><img alt="../_images/0782.png" class="align-center" src="../_images/0782.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.7-17 Servo return to zero command code block</strong></p><p>“Position mode” command node, parameters:</p>
+<ul class="simple">
+<li><p>Servo ID: 1~15</p></li>
+<li><p>Target position: unlimited</p></li>
+<li><p>Homing speed: unlimited</p></li>
+<li><p>Acceleration percentage: 1~100, default is 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0792.png"><img alt="../_images/0792.png" class="align-center" src="../_images/0792.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.7-18 Position mode command code block</strong></p><p>“Speed ​​mode” command node, parameters:</p>
+<ul class="simple">
+<li><p>Servo ID: 1~15</p></li>
+<li><p>Target speed: unlimited</p></li>
+<li><p>Acceleration percentage: 1~100, default is 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0802.png"><img alt="../_images/0802.png" class="align-center" src="../_images/0802.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.7-19 Speed ​​mode command code block</strong></p></section>
+<section id="conveyor-belt-command">
+<h3><span class="section-number">10.7.5. </span>Conveyor belt command<a class="headerlink" href="#conveyor-belt-command" title="Permalink to this heading"></a></h3>
+<p>This command contains four commands: IO real-time detection, position real-time detection, tracking on and tracking off. See the robot peripherals chapter for details</p>
+<p>“IO real-time detection” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Maximum waiting time: 0~10000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0812.png"><img alt="../_images/0812.png" class="align-center" src="../_images/0812.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-20 IO real-time detection instruction code block</strong></p><p>“Position real-time detection” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Working mode: Tracking grabbing/Tracking motion/TPD tracking</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0822.png"><img alt="../_images/0822.png" class="align-center" src="../_images/0822.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-21 Position real-time detection instruction code block</strong></p><p>“Tracking on”, “Tracking off” instruction nodes, parameters:</p>
+<p>Working mode: Tracking grabbing/Tracking motion/TPD tracking</p>
+<a class="reference internal image-reference" href="../_images/0832.png"><img alt="../_images/0832.png" class="align-center" src="../_images/0832.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-22 Tracking on/off instruction code block</strong></p></section>
+<section id="polishing-instruction">
+<h3><span class="section-number">10.7.6. </span>Polishing instruction<a class="headerlink" href="#polishing-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Polishing instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is used for polishing scenes. When using it, you need to unload the driver first and then load the driver, and then set the polishing device to enable.</p>
+<p>Then set the speed, contact force, extension distance and control mode of the polishing device. At the same time, you can clear the polishing device errors and clear the device force sensor.</p>
+<a class="reference internal image-reference" href="../_images/0842.png"><img alt="../_images/0842.png" class="align-center" src="../_images/0842.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-23 Communication driver load/unload instruction code block</strong></p><p>“Device enable” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Device enable: up enable/down enable</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0852.png"><img alt="../_images/0852.png" class="align-center" src="../_images/0852.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-24 Device enable instruction code block</strong></p><a class="reference internal image-reference" href="../_images/0862.png"><img alt="../_images/0862.png" class="align-center" src="../_images/0862.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-25 Device error clear instruction code block</strong></p><a class="reference internal image-reference" href="../_images/0872.png"><img alt="../_images/0872.png" class="align-center" src="../_images/0872.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-26 Device force sensor clear command code block</strong></p><p>“Speed” command node, parameters:</p>
+<ul class="simple">
+<li><p>Speed: 0~5500</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0882.png"><img alt="../_images/0882.png" class="align-center" src="../_images/0882.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-27 Device speed command code block</strong></p><p>“Set force” command node, parameters:</p>
+<ul class="simple">
+<li><p>Set force: 0~200</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0892.png"><img alt="../_images/0892.png" class="align-center" src="../_images/0892.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-28 Set force command code block</strong></p><p>“Extend distance” command node, parameters:</p>
+<ul class="simple">
+<li><p>Extend distance: 0~12</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0902.png"><img alt="../_images/0902.png" class="align-center" src="../_images/0902.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-29 Extension distance instruction code block</strong></p><p>“Polishing contact force” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Contact force: 0~10000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0912.png"><img alt="../_images/0912.png" class="align-center" src="../_images/0912.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-30 Polishing contact force instruction code block</strong></p><p>“Set force transition time” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Set force transition time: 0~10000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0922.png"><img alt="../_images/0922.png" class="align-center" src="../_images/0922.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-31 Set force transition time instruction code block</strong></p><p>“Workpiece weight” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Workpiece weight: 0~10000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0932.png"><img alt="../_images/0932.png" class="align-center" src="../_images/0932.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-32 Workpiece weight instruction code block</strong></p><p>“Control mode” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Control mode: return to zero mode/position mode/torque mode</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0942.png"><img alt="../_images/0942.png" class="align-center" src="../_images/0942.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.7-33 Control mode instruction code block</strong></p></section>
+</section>
+<section id="welding-graphical-programming-commands">
+<h2><span class="section-number">10.8. </span>Welding Graphical Programming Commands<a class="headerlink" href="#welding-graphical-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Welding Graphical Programming Commands include positioning, segment welding, welding, laser tracking and other welding commands.</p>
+<a class="reference internal image-reference" href="../_images/0093.png"><img alt="../_images/0093.png" class="align-center" src="../_images/0093.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8 Welding Graphical Programming Commands</strong></p><section id="segment-welding-instructions">
+<h3><span class="section-number">10.8.1. </span>Segment welding instructions<a class="headerlink" href="#segment-welding-instructions" title="Permalink to this heading"></a></h3>
+<p>Drag the “Segment welding instruction” code block to enter the graphical editing interface work area.</p>
+<p>This instruction is a special welding instruction, mainly used for cyclic intermittent welding scenarios with one section of welding and one section of non-welding.</p>
+<p>Between the starting point and the end point, use this instruction, select the segment welding mode, select the starting point and end point, set the debugging speed, set the DO port for arc starting, execution length, non-execution length, set the function mode according to the actual application scenario, and the swing selection and rounding rules can realize the segment welding function.</p>
+<p>For detailed operations, see the program teaching page segment welding instruction.</p>
+<ol class="arabic simple">
+<li><p>“Arc off/arc on” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>I/O type: controller IO/extension IO</p></li>
+<li><p>Welding process number: 0 ~ 7</p></li>
+<li><p>Maximum waiting time (ms): 0 ~ 10000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0952.png"><img alt="../_images/0952.png" class="align-center" src="../_images/0952.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-1 “Arc off/arc on” command code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Segment welding” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Segment welding mode: no change of posture/change of posture</p></li>
+<li><p>Starting point: teaching point</p></li>
+<li><p>End point: teaching point</p></li>
+<li><p>Debug speed (%): 0~100, default is 100</p></li>
+<li><p>Execution length: 0~1000</p></li>
+<li><p>Non-execution length: 0~1000</p></li>
+<li><p>Function mode: 0~100, default is 100</p></li>
+<li><p>Swing selection: execute segment without swing/execute segment swing</p></li>
+<li><p>Rounding rules: no rounding/loop rounding/single-segment rounding</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0962.png"><img alt="../_images/0962.png" class="align-center" src="../_images/0962.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-2 Segment welding instruction code block</strong></p></section>
+<section id="welding-instruction">
+<h3><span class="section-number">10.8.2. </span>Welding instruction<a class="headerlink" href="#welding-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “welding instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is mainly used for welding machine peripherals. Before adding this instruction, please confirm whether the welding machine configuration in the user peripherals is complete. For details, see the robot peripherals chapter.</p>
+<ol class="arabic simple">
+<li><p>“Welding Voltage” Command Node, Parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>I/O Type: Controller IO / Extended IO</p></li>
+<li><p>Welding Voltage: Minimum value is 0</p></li>
+<li><p>Welding Current Control AO: Ctrl-AO0 / Ctrl-AO1</p></li>
+<li><p>Smoothing Selection: Break / Serious</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0972.png"><img alt="../_images/0972.png" class="align-center" src="../_images/0972.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-3 Welding Voltage Command Code Block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Welding Current” Command Node, Parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>I/O Type: Controller IO / Extended IO</p></li>
+<li><p>Welding Current: Minimum value is 0</p></li>
+<li><p>Welding Current Control AO: Ctrl-AO0 / Ctrl-AO1</p></li>
+<li><p>Smoothing Selection: Break / Serious</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0981.png"><img alt="../_images/0981.png" class="align-center" src="../_images/0981.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-4 Welding machine current command code block</strong></p><ol class="arabic simple" start="3">
+<li><p>“Gas supply/gas off” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>I/O type: controller IO/extension IO</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/0991.png"><img alt="../_images/0991.png" class="align-center" src="../_images/0991.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-5 “Gas supply/gas off” command code block</strong></p><ol class="arabic simple" start="4">
+<li><p>“Forward wire feeding/stop forward wire feeding” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>I/O type: controller IO/extension IO</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1001.png"><img alt="../_images/1001.png" class="align-center" src="../_images/1001.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-6 “Forward wire feeding/stop forward wire feeding” command code block</strong></p><ol class="arabic simple" start="5">
+<li><p>“Reverse wire feeding/stop reverse wire feeding” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>I/O type: controller IO/extension IO</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1011.png"><img alt="../_images/1011.png" class="align-center" src="../_images/1011.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-7 “Reverse wire feeding/stop reverse wire feeding” command code block</strong></p></section>
+<section id="laser-tracking-command">
+<h3><span class="section-number">10.8.3. </span>Laser tracking command<a class="headerlink" href="#laser-tracking-command" title="Permalink to this heading"></a></h3>
+<p>Drag the “Laser tracking command” code block to enter the graphical editing interface workspace.</p>
+<p>This command contains three parts: laser command, tracking command and positioning command. Before adding this command, please confirm whether the laser tracking sensor in the user’s peripherals has been successfully configured. See the robot peripherals section for details.</p>
+<ol class="arabic simple">
+<li><p>“Turn sensor on/off” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Select weld type: 0 ~ 49</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1021.png"><img alt="../_images/1021.png" class="align-center" src="../_images/1021.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-8 “Turn sensor on/off—weld type” command code block</strong></p><ul class="simple">
+<li><p>Select task number: 0 ~ 255</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1031.png"><img alt="../_images/1031.png" class="align-center" src="../_images/1031.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-9 “Turn sensor on/off—task number” command code block</strong></p><ul class="simple">
+<li><p>Solution: 0 ~ 5</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1041.png"><img alt="../_images/1041.png" class="align-center" src="../_images/1041.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-10 “Turn sensor on/off—solution” command code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Load/unload sensor” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Function selection: Ruiniu RRT-SV2-BP/Chuangxiang CXZK-RBTA4L</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1051.png"><img alt="../_images/1051.png" class="align-center" src="../_images/1051.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-11 “Load/unload sensor” instruction code block</strong></p><ol class="arabic simple" start="3">
+<li><p>“Start/stop laser tracking” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: custom configuration coordinate system</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1061.png"><img alt="../_images/1061.png" class="align-center" src="../_images/1061.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-12 “Start/stop laser tracking” instruction code block</strong></p><ol class="arabic simple" start="4">
+<li><p>“Laser Sensor Record” Command Node, Parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Function Selection: Stop Recording / Real-time Tracking / Start Recording / Path Playback</p></li>
+<li><p>Function Selection: Delay Time / Delay Distance</p></li>
+<li><p>Time: 0 ~ 10000</p></li>
+<li><p>Extended Axis Number: 1 ~ 4</p></li>
+<li><p>Distance: 0 ~ 10000</p></li>
+<li><p>Compensation Sensitivity Coefficient: 0 ~ 1</p></li>
+<li><p>Speed: 0 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1071.png"><img alt="../_images/1071.png" class="align-center" src="../_images/1071.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-13 “Laser Sensor Record” Command Code Block</strong></p><ol class="arabic simple" start="5">
+<li><p>“Sensor Point Movement” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: Custom configuration coordinate system</p></li>
+<li><p>Movement mode: PTP/Lin</p></li>
+<li><p>Debug speed (%): 0 ~ 100</p></li>
+<li><p>State reference point: Teaching Point</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1081.png"><img alt="../_images/1081.png" class="align-center" src="../_images/1081.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-14 “Sensor Point Movement” instruction code block</strong></p><ol class="arabic simple" start="6">
+<li><p>“Laser Tracking Reappearance” instruction node, parameters:</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/1091.png"><img alt="../_images/1091.png" class="align-center" src="../_images/1091.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-15 “Laser Tracking Reappearance” instruction code block</strong></p><ol class="arabic simple" start="7">
+<li><p>“Positioning Start/End” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: Custom configuration coordinate system</p></li>
+<li><p>Direction: -x/-x/-y/-y/-z/-z/Specify direction</p></li>
+<li><p>Direction point: If “Specify direction” is not selected, the parameter is invalid</p></li>
+<li><p>Speed ​​(%): 0 ~ 100</p></li>
+<li><p>Length (mm): 0 ~ 1000</p></li>
+<li><p>Maximum position seeking time (ms): 0 ~ 10000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1101.png"><img alt="../_images/1101.png" class="align-center" src="../_images/1101.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-16 “Position seeking start/end” instruction code block</strong></p></section>
+<section id="laser-recording-instruction">
+<h3><span class="section-number">10.8.4. </span>Laser recording instruction<a class="headerlink" href="#laser-recording-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Laser recording instruction” code block to enter the graphical editing interface work area.</p>
+<p>This instruction realizes the laser tracking and recording start and end point extraction function, so that the robot can automatically move to the starting position. It is suitable for occasions where the movement starts from the outside of the workpiece and the laser tracking and recording is performed. At the same time, the host computer can obtain the information of the start and end points in the recorded data for subsequent movement.</p>
+<p>The adjustable laser tracking repetition speed function enables the robot to record at a very fast speed and then reproduce at the normal welding speed, which can improve work efficiency.</p>
+<ol class="arabic simple">
+<li><p>“Laser Sensor Record” Command Node, Parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Function Selection: Stop Recording / Real-time Tracking / Start Recording / Path Playback</p></li>
+<li><p>Function Selection: Delay Time / Delay Distance</p></li>
+<li><p>Time: 0 ~ 10000</p></li>
+<li><p>Extended Axis Number: 1 ~ 4</p></li>
+<li><p>Distance: 0 ~ 10000</p></li>
+<li><p>Compensation Sensitivity Coefficient: 0 ~ 1</p></li>
+<li><p>Speed: 0 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1111.png"><img alt="../_images/1111.png" class="align-center" src="../_images/1111.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-17 Weld data record command code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Get weld start/end point” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Movement mode: PTP/LIN</p></li>
+<li><p>Speed ​​(%): 0~100, default is 30</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1121.png"><img alt="../_images/1121.png" class="align-center" src="../_images/1121.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-18 “Get weld start/end point” command code block</strong></p></section>
+<section id="welding-wire-positioning-instruction">
+<h3><span class="section-number">10.8.5. </span>Welding wire positioning instruction<a class="headerlink" href="#welding-wire-positioning-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Welding wire positioning instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is generally used in welding scenarios and requires the welding machine to be used in combination with the robot IO and motion instructions. It is divided into positioning start, positioning end, positioning point setting, offset calculation and contact point data writing.</p>
+<p>“Wire position finding start/end” command node, parameters:</p>
+<ul class="simple">
+<li><p>Reference position: do not update/update</p></li>
+<li><p>Position finding speed: 0~100</p></li>
+<li><p>Position finding distance: 0~1000</p></li>
+<li><p>Automatic return mark: do not automatically return/automatically return</p></li>
+<li><p>Automatic return speed: 0~100</p></li>
+<li><p>Automatic return distance: 0~1000</p></li>
+<li><p>Position finding method: teaching point positioning/position finding with offset</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1131.png"><img alt="../_images/1131.png" class="align-center" src="../_images/1131.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-19 “Wire position finding start/end” command code block</strong></p><p>The position finding point setting adds points according to the weld type and calculation method.</p>
+<ul class="simple">
+<li><p>When the type is fillet weld and the calculation method is 1D (one of xyz), the point to be added is selected from point a and point b;</p></li>
+<li><p>When the type is fillet weld and the calculation method is 2D (two of xyz), the point to be added is selected from point a, point b, point e, and point f;</p></li>
+<li><p>When the type is fillet weld and the calculation method is 3D (xyz), the point to be added is selected from point a, point b, point c, point d, point e, and point f;</p></li>
+<li><p>When the type is fillet weld and the calculation method is 2D- (two of xyz, one of rxryrz), the point to be added is selected from point a, point b, point c, point d, point e, and point f;</p></li>
+<li><p>When the type is inner and outer diameter and the calculation method is 2D2D (two of xyz), the point to be added is selected from point a and point b;</p></li>
+<li><p>When the type is point and the calculation method is 3D (xyz), the point to be added is selected from point a, point b, point c, point d, point e, and point f;</p></li>
+<li><p>When the type is camera and the calculation method is 3D-(xyzrxryrz), the point to be added is selected from point a and point b;</p></li>
+<li><p>When the type is surface and the calculation method is 3D-(xyzrxryrz), the point to be added is selected from point a and point b;</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1141.png"><img alt="../_images/1141.png" class="align-center" src="../_images/1141.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-20 “Point Finding Setting Guide” instruction code block</strong></p><p>Calculate the offset and set the reference point and contact point according to the weld type and calculation method.</p>
+<ul class="simple">
+<li><p>When the type is fillet weld and the calculation method is 1D (one of xyz), set reference point 1 and contact point 1;</p></li>
+<li><p>When the type is fillet weld and the calculation method is 2D (two of xyz), set reference point 1, reference point 2, contact point 1, and contact point 2;</p></li>
+<li><p>When the type is fillet weld and the calculation method is 3D (xyz), set reference point 1, reference point 2, reference point 3, contact point 1, contact point 2, and contact point 3;</p></li>
+<li><p>When the type is fillet weld and the calculation method is 2D- (two of xyz, one of rxryrz), set reference point 1, reference point 2, reference point 3, contact point 1, contact point 2, and contact point 3;</p></li>
+<li><p>When the type is inner and outer diameter and the calculation method is 2D2D (two of xyz), set reference point 1, reference point 2, reference point 3, contact point 1, contact point 2, and contact point 3;</p></li>
+<li><p>When the type is point and the calculation method is 3D (xyz), set contact point 1 and contact point 2;</p></li>
+<li><p>When the type is camera and the calculation method is 3D-(xyzrxryrz), set contact point 1 and contact point 2;</p></li>
+<li><p>When the type is surface and the calculation method is 3D-(xyzrxryrz), set contact point 1, contact point 2, contact point 3, contact point 4, contact point 5, and contact point 6;</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1151.png"><img alt="../_images/1151.png" class="align-center" src="../_images/1151.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-21 “Calculate offset” instruction code block</strong></p><p>“Write contact point data” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Contact point name: RES0~99</p></li>
+<li><p>Contact point name: data format is {0,0,0,0,0,0};</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1161.png"><img alt="../_images/1161.png" class="align-center" src="../_images/1161.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-22 “Contact point data write” instruction code block</strong></p></section>
+<section id="arc-tracking-instruction">
+<h3><span class="section-number">10.8.6. </span>Arc tracking instruction<a class="headerlink" href="#arc-tracking-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Arc tracking instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction implements robot weld tracking and uses weld deviation detection to compensate the trajectory. Arc sensors can be used to detect weld deviation.</p>
+<p>“Arc tracking on/off” command node, parameters:</p>
+<ul class="simple">
+<li><p>Arc tracking lag time (ms): reference value 50</p></li>
+<li><p>Deviation compensation: off/on</p></li>
+<li><p>Adjustment coefficient: 0 ~ 300</p></li>
+<li><p>Compensation time (cyc): 0 ~ 300</p></li>
+<li><p>Maximum compensation amount per time (mm): 0 ~ 300</p></li>
+<li><p>Total maximum compensation amount (mm): 0 ~ 300</p></li>
+<li><p>Upper and lower coordinate system selection: swing</p></li>
+<li><p>Upper and lower reference current setting method: feedback/constant</p></li>
+<li><p>Upper and lower reference current (A): 0 ~ 300</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1171.png"><img alt="../_images/1171.png" class="align-center" src="../_images/1171.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.8-23 Arc tracking instruction code block</strong></p></section>
+<section id="posture-adjustment-instruction">
+<h3><span class="section-number">10.8.7. </span>Posture adjustment instruction<a class="headerlink" href="#posture-adjustment-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Posture Adjustment Instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is for the welding tracking adaptive adjustment of the welding gun posture scene. You need to teach the three points PosA, PosB, and PosC first, otherwise you cannot add nodes.</p>
+<p>After recording the three corresponding posture points, add the posture adaptive adjustment instruction according to the actual movement direction of the robot. See the robot peripherals chapter for details.</p>
+<p>“Start posture adjustment” command node, parameters:</p>
+<ul class="simple">
+<li><p>Plate type: Corrugated board/Corrugated board/Fence board/Corrugated carapace steel</p></li>
+<li><p>Movement direction: From left to right/From right to left</p></li>
+<li><p>Posture adjustment time (ms): 0 ~ 1000</p></li>
+<li><p>First segment length (mm):</p></li>
+<li><p>Inflection point type: From top to bottom/From bottom to top</p></li>
+<li><p>Second segment length (mm):</p></li>
+<li><p>Third segment length (mm):</p></li>
+<li><p>Fourth segment length (mm):</p></li>
+<li><p>Fifth segment length (mm):</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1181.png"><img alt="../_images/1181.png" class="align-center" src="../_images/1181.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.8-24 Posture adjustment command code block</strong></p></section>
+</section>
+<section id="force-control-graphical-programming-commands">
+<h2><span class="section-number">10.9. </span>Force control graphical programming commands<a class="headerlink" href="#force-control-graphical-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Force control graphical programming commands include force control set, torque recording and other force control commands.</p>
+<a class="reference internal image-reference" href="../_images/0104.png"><img alt="../_images/0104.png" class="align-center" src="../_images/0104.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9 Force control graphical programming commands</strong></p><section id="force-control-commands">
+<h3><span class="section-number">10.9.1. </span>Force control commands<a class="headerlink" href="#force-control-commands" title="Permalink to this heading"></a></h3>
+<p>Drag the “force control command” code block to enter the graphical editing interface workspace.</p>
+<p>The command includes nine commands: FT_Guard (collision detection), FT_Control (constant force control), FT_Compliance (compliance control), FT_Spiral (spiral insertion), FT_Rot ​​(rotation insertion), FT_Lin (linear insertion), FT_FindSurface (surface positioning), FT_CalCenter (center positioning), FT_Click (click force detection), see the robot peripherals chapter for details.</p>
+<ol class="arabic simple">
+<li><p>“Open/Close Collision Detection” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: Custom configured coordinate system</p></li>
+<li><p>Fx-Tx true value: true/false</p></li>
+<li><p>Fx-Tx current value: Enter according to actual situation</p></li>
+<li><p>Fx-Tx maximum threshold: Enter according to actual situation</p></li>
+<li><p>Fx-Tx minimum threshold: Enter according to actual situation</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1191.png"><img alt="../_images/1191.png" class="align-center" src="../_images/1191.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-1 Open/Close Collision Detection Command Code Block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Open/Close Control” command node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: Custom configured coordinate system</p></li>
+<li><p>Fx-Tx true value: true/false</p></li>
+<li><p>Fx-Tx current value: Adjust according to actual situation</p></li>
+<li><p>F_P_gain - F_D_gain: Adjust according to actual situation, cannot be 0</p></li>
+<li><p>Adaptive start/stop state: Stop/Open</p></li>
+<li><p>ILC control start/stop status: stop/training/practical operation</p></li>
+<li><p>Maximum adjustment distance (mm): 0 ~ 1000</p></li>
+<li><p>Maximum adjustment angle (°): 0 ~ 1000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1201.png"><img alt="../_images/1201.png" class="align-center" src="../_images/1201.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-2 Open/close control instruction code block</strong></p><ol class="arabic simple" start="3">
+<li><p>“Open/close smooth control” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Send position adjustment coefficient: 0 ~ 1</p></li>
+<li><p>Smooth opening force threshold (N): 0 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1211.png"><img alt="../_images/1211.png" class="align-center" src="../_images/1211.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-3 Open/close smooth control instruction code block</strong></p><ol class="arabic simple" start="4">
+<li><p>“Spiral insertion” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: tool coordinate system/base coordinate system</p></li>
+<li><p>Radius feed per revolution (mm): 0 ~ 100, reference value: 0.7</p></li>
+<li><p>Force or torque threshold (N/Nm): 0 ~ 100, reference value: 50</p></li>
+<li><p>Maximum exploration time (ms): 0 ~ 60000, reference value: 60000</p></li>
+<li><p>Maximum linear velocity (mm/s): 0 ~ 100, reference value: 5</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1221.png"><img alt="../_images/1221.png" class="align-center" src="../_images/1221.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-4 Helical insertion instruction code block</strong></p><ol class="arabic simple" start="5">
+<li><p>“Rotation insertion” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: tool coordinate system/base coordinate system</p></li>
+<li><p>Rotation angular velocity (°/s): 0 ~ 100, reference value: 0.7</p></li>
+<li><p>Trigger force or end torque (N/Nm): 0 ~ 100, reference value: 50</p></li>
+<li><p>Maximum rotation angle (°): 0 ~ 100, reference value: 5</p></li>
+<li><p>Direction of force: direction z/direction mz</p></li>
+<li><p>Maximum rotation angular acceleration (°/s^2): 0 ~ 100</p></li>
+<li><p>Insertion direction: positive/negative</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1231.png"><img alt="../_images/1231.png" class="align-center" src="../_images/1231.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-5 Rotational insertion instruction code block</strong></p><ol class="arabic simple" start="6">
+<li><p>“Linear insertion” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: tool coordinate system/base coordinate system</p></li>
+<li><p>Action termination force threshold (N): 0 ~ 100</p></li>
+<li><p>Linear speed (mm/s): 0 ~ 100, reference value: 1</p></li>
+<li><p>Linear acceleration (°/s^2): 0 ~ 100</p></li>
+<li><p>Maximum insertion distance (mm): 0 ~ 100</p></li>
+<li><p>Insertion direction: positive/negative</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1241.png"><img alt="../_images/1241.png" class="align-center" src="../_images/1241.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-6 Linear insertion instruction code block</strong></p><ol class="arabic simple" start="7">
+<li><p>“Surface positioning” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Coordinate system name: tool coordinate system/base coordinate</p></li>
+<li><p>Moving direction: positive/negative</p></li>
+<li><p>Moving axis: X/Y/Z</p></li>
+<li><p>Exploration linear speed (mm/s): 0 ~ 100</p></li>
+<li><p>Exploration acceleration (mm/s^2): 0 ~ 100</p></li>
+<li><p>Maximum exploration distance (mm): 0 ~ 100</p></li>
+<li><p>Action termination force threshold (N): 0 ~ 100</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1251.png"><img alt="../_images/1251.png" class="align-center" src="../_images/1251.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-7 Surface positioning instruction code block</strong></p><ol class="arabic simple" start="8">
+<li><p>“Middle plane start/end calculation” instruction node:</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/1261.png"><img alt="../_images/1261.png" class="align-center" src="../_images/1261.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-8 Middle plane start/end calculation instruction code block</strong></p></section>
+<section id="torque-recording-instruction">
+<h3><span class="section-number">10.9.2. </span>Torque recording instruction<a class="headerlink" href="#torque-recording-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Torque recording instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is a torque recording instruction, which includes three instructions: “Torque Recording Start/”Torque Recording Stop” and “Torque Recording Reset”.</p>
+<p>Realize the torque real-time recording collision detection function.</p>
+<p>Click the “Torque Recording Start” button to continuously record the collision situation during the operation of the motion instruction. The recorded real-time torque is used as the theoretical value of the collision detection judgment to reduce the probability of false alarms.</p>
+<p>When the set threshold range is exceeded, the duration of the collision detection is recorded.</p>
+<p>Click the “Torque Recording Stop” button to stop recording. Click “Torque Recording Reset” to restore the status to the default state.</p>
+<ol class="arabic simple">
+<li><p>“Torque Recording Start” instruction node, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Smoothing selection: unsmoothed (original data)/smoothed (smoothed data)</p></li>
+<li><p>Joint negative threshold (Nm): -100 ~ 0</p></li>
+<li><p>Joint positive threshold (Nm): 0 ~ 100</p></li>
+<li><p>Joint continuous collision detection time (ms): 0 ~ 1000</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1281.png"><img alt="../_images/1281.png" class="align-center" src="../_images/1281.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.9-9 Torque record start instruction code block</strong></p><ol class="arabic simple" start="2">
+<li><p>“Torque record end” instruction node</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/1291.png"><img alt="../_images/1291.png" class="align-center" src="../_images/1291.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-10 Torque record end instruction code block</strong></p><ol class="arabic simple" start="3">
+<li><p>“Torque record reset” instruction node</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/1301.png"><img alt="../_images/1301.png" class="align-center" src="../_images/1301.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.9-11 Torque record reset instruction code block</strong></p></section>
+</section>
+<section id="communication-graphic-programming-commands">
+<h2><span class="section-number">10.10. </span>Communication graphic programming commands<a class="headerlink" href="#communication-graphic-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Communication graphic programming commands include modbus master station settings (client), modbus slave station settings, register reading and other communication commands.</p>
+<a class="reference internal image-reference" href="../_images/0114.png"><img alt="../_images/0114.png" class="align-center" src="../_images/0114.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10 Communication Graphical Programming Commands</strong></p><section id="modbus-commands">
+<h3><span class="section-number">10.10.1. </span>Modbus Commands<a class="headerlink" href="#modbus-commands" title="Permalink to this heading"></a></h3>
+<p>Drag the “Modbus Command” code block to enter the graphical editing interface workspace.</p>
+<p>This command function is a bus function based on the ModbusTCP protocol. Users can control the robot to communicate with the ModbusTCP client or server (master and slave communication) through relevant commands, and read and write coils, discrete quantities, and registers. For more ModbusTCP operation functions, please contact us for consultation.</p>
+<p>Before using the modbus node function, you need to configure the master station, slave station, and DI, DO, AI, and AO names in the teaching program ModbusTCP configuration.</p>
+<ol class="arabic simple">
+<li><p>Master digital output settings, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Modbus master station name: Configure according to actual conditions</p></li>
+<li><p>DO name: Configure according to actual conditions</p></li>
+<li><p>Number of registers: Integer type 0 ~ 128</p></li>
+<li><p>Register value: Determined according to the number of registers, multiple values ​​can be entered. For example, if the quantity is 3, the values ​​are 1, 0, 1</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/131.png"><img alt="../_images/131.png" class="align-center" src="../_images/131.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-1 Master station “read/write digital output” instruction code block</strong></p><ol class="arabic simple" start="2">
+<li><p>Master station digital input settings, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Modbus master station name: configure according to actual situation</p></li>
+<li><p>DI name: configure according to actual situation</p></li>
+<li><p>Number of registers: integer type 0 ~ 128</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/132.png"><img alt="../_images/132.png" class="align-center" src="../_images/132.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-2 Master station “read digital input” instruction code block</strong></p><ol class="arabic simple" start="3">
+<li><p>Master station analog output settings, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Modbus master station name: configure according to actual situation</p></li>
+<li><p>AO name: configure according to actual situation</p></li>
+<li><p>Number of registers: integer type 0 ~ 128</p></li>
+<li><p>Register value: Determined by the number of registers, multiple values ​​can be entered. For example, if the quantity is 3, the values ​​are 1, 0, 1</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/133.png"><img alt="../_images/133.png" class="align-center" src="../_images/133.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-3 Master station “read/write analog output” instruction code block</strong></p><ol class="arabic simple" start="4">
+<li><p>Master station analog input setting, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Modbus master station name: configure according to actual situation</p></li>
+<li><p>AI name: configure according to actual situation</p></li>
+<li><p>Number of registers: integer type 0 ~ 128</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1341.png"><img alt="../_images/1341.png" class="align-center" src="../_images/1341.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-4 Master station “read analog input” instruction code block</strong></p><ol class="arabic simple" start="5">
+<li><p>Master station wait digital input setting, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Modbus master station name: configure according to actual situation</p></li>
+<li><p>DI name: configure according to actual situation</p></li>
+<li><p>Waiting state: true/false</p></li>
+<li><p>Timeout time (ms): integer type 0 ~ 128</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1351.png"><img alt="../_images/1351.png" class="align-center" src="../_images/1351.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-5 Master station “wait for digital input” instruction code block</strong></p><ol class="arabic simple" start="6">
+<li><p>Master station wait analog word input setting, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Modbus master station name: Configure according to actual situation</p></li>
+<li><p>AI name: Configure according to actual situation</p></li>
+<li><p>Waiting state: greater than/less than</p></li>
+<li><p>Number of registers: Integer type 0 ~ 128</p></li>
+<li><p>Register value: Determined by the number of registers, multiple values ​​can be entered.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1361.png"><img alt="../_images/1361.png" class="align-center" src="../_images/1361.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-6 Master station “Wait for analog input instruction code block”</strong></p><ol class="arabic simple" start="7">
+<li><p>Slave station digital output settings, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>DO name: Configure according to actual situation</p></li>
+<li><p>Number of registers: Integer type 0 ~ 128</p></li>
+<li><p>Register value: Determined by the number of registers, multiple values ​​can be entered. For example, the number is 3, the value is 1,0,1</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1371.png"><img alt="../_images/1371.png" class="align-center" src="../_images/1371.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-7 Slave station “Read/write digital output” instruction code block</strong></p><ol class="arabic simple" start="8">
+<li><p>Slave station digital input settings, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>DI name: Configure according to actual situation</p></li>
+<li><p>Number of registers: Integer type 0 ~ 128</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1381.png"><img alt="../_images/1381.png" class="align-center" src="../_images/1381.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-8 Slave “Read Digital Input” Instruction Code Block</strong></p><ol class="arabic simple" start="9">
+<li><p>Slave Analog Output Settings, Parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>AO Name: Configure according to actual situation</p></li>
+<li><p>Number of Registers: Integer 0 ~ 128</p></li>
+<li><p>Register Value: Determined by the number of registers, multiple values ​​can be entered. For example, if the number is 3, the values ​​are 1, 0, 1</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1391.png"><img alt="../_images/1391.png" class="align-center" src="../_images/1391.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-9 Slave “Read/Write Analog Output” Instruction Code Block</strong></p><ol class="arabic simple" start="10">
+<li><p>Slave Analog Input Settings, Parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>AI Name: Configure according to actual situation</p></li>
+<li><p>Number of Registers: Integer 0 ~ 128</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1401.png"><img alt="../_images/1401.png" class="align-center" src="../_images/1401.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-10 Slave station “read analog input” instruction code block</strong></p><ol class="arabic simple" start="11">
+<li><p>Slave station wait digital input setting, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>DI name: configure according to actual situation</p></li>
+<li><p>Waiting state: true/false</p></li>
+<li><p>Timeout (ms): integer type</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1411.png"><img alt="../_images/1411.png" class="align-center" src="../_images/1411.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Chart 10.10-11 Slave station “wait digital input” instruction code block</strong></p><ol class="arabic simple" start="12">
+<li><p>Slave station wait analog input setting, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>AI name: configure according to actual situation</p></li>
+<li><p>Waiting state: greater than/less than</p></li>
+<li><p>Number of registers: integer type 0 ~ 128</p></li>
+<li><p>Register value: determined according to the number of registers, multiple values ​​can be entered.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1421.png"><img alt="../_images/1421.png" class="align-center" src="../_images/1421.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-12 Slave “Wait for analog input” instruction code block</strong></p><ol class="arabic simple" start="13">
+<li><p>Read register instruction, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Function code: 0x01-coil/0x02-discrete/0x03-holding register/0x04-input register</p></li>
+<li><p>Register, coil, discrete address: enter according to actual situation</p></li>
+<li><p>Register, coil, discrete quantity number: 0 ~ 255</p></li>
+<li><p>Address: enter according to actual situation</p></li>
+<li><p>Whether to apply thread: No/Yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1431.png"><img alt="../_images/1431.png" class="align-center" src="../_images/1431.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-13 “Read register” instruction code block</strong></p><ol class="arabic simple" start="14">
+<li><p>Read register data instruction, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Register, coil, discrete quantity number: 0 ~ 255</p></li>
+<li><p>Whether to apply thread: No/Yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1441.png"><img alt="../_images/1441.png" class="align-center" src="../_images/1441.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-14 “Read register data” instruction code block</strong></p><ol class="arabic simple" start="15">
+<li><p>Write register instruction, parameters:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Function code: 0x01-coil/0x02-discrete/0x03-holding register/0x04-input register</p></li>
+<li><p>Register, coil address: enter according to actual situation</p></li>
+<li><p>Number of registers, coils: 0 ~ 255</p></li>
+<li><p>Byte array: enter according to actual situation</p></li>
+<li><p>Address: enter according to actual situation</p></li>
+<li><p>Whether to apply thread: No/Yes</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1451.png"><img alt="../_images/1451.png" class="align-center" src="../_images/1451.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.10-15 “Write register instruction” instruction code block</strong></p></section>
+</section>
+<section id="advanced-graphical-programming-commands">
+<h2><span class="section-number">10.11. </span>Advanced Graphical Programming Commands<a class="headerlink" href="#advanced-graphical-programming-commands" title="Permalink to this heading"></a></h2>
+<p>Advanced graphical programming commands include advanced commands such as dofile calling subroutines, auxiliary threads, and folding instructions.</p>
+<a class="reference internal image-reference" href="../_images/0124.png"><img alt="../_images/0124.png" class="align-center" src="../_images/0124.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.11 Advanced Graphical Programming Commands</strong></p><section id="folding-instructions">
+<h3><span class="section-number">10.11.1. </span>Folding Instructions<a class="headerlink" href="#folding-instructions" title="Permalink to this heading"></a></h3>
+<p>Drag the “Folding Instructions” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction provides multi-line code block folding display, which is convenient for users to read code blocks.</p>
+<p>“Fold” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Code block name: name the fold code block</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1461.png"><img alt="../_images/1461.png" class="align-center" src="../_images/1461.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.11-1 Fold instruction code block</strong></p></section>
+<section id="call-subroutine-instruction">
+<h3><span class="section-number">10.11.2. </span>Call subroutine instruction<a class="headerlink" href="#call-subroutine-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “Call subroutine instruction” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is the call subroutine instruction. Insert this instruction in the program. When the program executes this instruction, the robot will be in a paused state. If you want to continue running, click the “Pause/Resume” button in the control area.</p>
+<p>“Call subroutine” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>dofile file: create the generated file name</p></li>
+<li><p>Which layer to call: first layer/second layer</p></li>
+<li><p>id number: corresponding position id of the layer</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1471.png"><img alt="../_images/1471.png" class="align-center" src="../_images/1471.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.11-2 Call subroutine instruction code block</strong></p></section>
+<section id="auxiliary-thread-instruction">
+<h3><span class="section-number">10.11.3. </span>Auxiliary thread instruction<a class="headerlink" href="#auxiliary-thread-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “auxiliary thread” code block to enter the graphical editing interface workspace.</p>
+<p>The Thread command is an auxiliary thread function. Users can define an auxiliary thread to run simultaneously with the main thread. The auxiliary thread mainly interacts with external devices for data, supports socket communication, robot DI status acquisition, robot DO status setting, robot status information acquisition, and data interaction with the main thread. The data obtained by the main thread through the auxiliary thread is used to control the judgment of the robot’s motion logic.</p>
+<p>“Auxiliary thread” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Method name: auxiliary thread name</p></li>
+<li><p>Call function: auxiliary thread call function value</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1481.png"><img alt="../_images/1481.png" class="align-center" src="../_images/1481.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.11-3 Auxiliary thread code block</strong></p></section>
+<section id="point-table-instruction">
+<h3><span class="section-number">10.11.4. </span>Point table instruction<a class="headerlink" href="#point-table-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “point table” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is mainly used to switch between system mode and point table mode. By switching the point table, the teaching points in different point tables are applied. For details, see Chapter 12 - Teaching Points.</p>
+<p>“Point table” instruction node, parameters:</p>
+<ul class="simple">
+<li><p>Point table mode: switch different point table names</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1491.png"><img alt="../_images/1491.png" class="align-center" src="../_images/1491.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.11-4 Point table code block</strong></p></section>
+<section id="focus-follow-instruction">
+<h3><span class="section-number">10.11.5. </span>Focus follow instruction<a class="headerlink" href="#focus-follow-instruction" title="Permalink to this heading"></a></h3>
+<p>Drag the “focus follow” code block to enter the graphical editing interface workspace.</p>
+<p>This instruction is mainly used to focus on one point and follow the movement during the robot movement.</p>
+<p>“Focus follow” command node, parameters:</p>
+<ul class="simple">
+<li><p>Parameter ratio: 0~100, default value 50</p></li>
+<li><p>Feedforward parameter: 0~1000, default value 19</p></li>
+<li><p>Maximum angular velocity acceleration limit: 0~10000, default value 1440</p></li>
+<li><p>Maximum angular velocity limit: 0~1000, default value 180</p></li>
+<li><p>Lock X-axis direction: reference input vector/horizontal/vertical</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/1501.png"><img alt="../_images/1501.png" class="align-center" src="../_images/1501.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.11-5 Focus follow code block</strong></p></section>
+</section>
+<section id="graphical-programming-command-usage-example">
+<h2><span class="section-number">10.12. </span>Graphical programming command usage example<a class="headerlink" href="#graphical-programming-command-usage-example" title="Permalink to this heading"></a></h2>
+<p>After selecting the graphical programming type, click the graphical code block to be used, and you can drag and splice it in the workspace.</p>
+<p>For example, select PTP and Lin motion instructions and control instruction Waitms for splicing. The outer layer can nest a folding advanced instruction and enter the comment name to achieve code block folding operation.</p>
+<p>Click the drop-down box to select the instruction parameter type, and the input box can be filled in with instruction parameter data. The following are examples of graphical programming commands:</p>
+<a class="reference internal image-reference" href="../_images/0134.png"><img alt="../_images/0134.png" class="align-center" src="../_images/0134.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-1 Example of graphical programming commands</strong></p><p>After completing the splicing of graphical programming instructions and filling in parameters, fill in the workspace name and click the “Save” icon to save this program. Select the “workspace” that has been written, click Start Run, and you can execute this program.</p>
+<section id="modularization-of-graphical-programming-code-blocks">
+<h3><span class="section-number">10.12.1. </span>Modularization of graphical programming code blocks<a class="headerlink" href="#modularization-of-graphical-programming-code-blocks" title="Permalink to this heading"></a></h3>
+<p>In order to improve the readability of graphical programming codes, the modularization function of graphical programming code blocks has been added, namely, advanced instructions: folding instruction code blocks.</p>
+<a class="reference internal image-reference" href="../_images/0144.png"><img alt="../_images/0144.png" class="align-center" src="../_images/0144.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-2 Folding instruction code block</strong></p><ol class="arabic simple">
+<li><p>Write a code block instruction, add a folding instruction code block in the outer layer, and write the remarks of the instruction in the input box.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/0154.png"><img alt="../_images/0154.png" class="align-center" src="../_images/0154.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-3 Folding instruction effect diagram</strong></p><ol class="arabic simple" start="2">
+<li><p>Right-click “Fold Block” in the right-click operation bar, and the instruction code block will be folded. The code block is folded into a line and the program can be executed correctly when folded.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/0165.png"><img alt="../_images/0165.png" class="align-center" src="../_images/0165.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-4 Folded effect diagram</strong></p><ol class="arabic simple" start="3">
+<li><p>Scroll the mouse to realize the page zoom function, the specific effect is as follows:</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/0175.png"><img alt="../_images/0175.png" class="align-center" src="../_images/0175.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-5 Page zoom function effect diagram</strong></p></section>
+<section id="graphical-programming-same-name-overwrite">
+<h3><span class="section-number">10.12.2. </span>Graphical programming same name overwrite<a class="headerlink" href="#graphical-programming-same-name-overwrite" title="Permalink to this heading"></a></h3>
+<p>On the graphical programming page, after creating/loading a file, change the workspace name and click Save. If the changed workspace name file already exists, the “Teaching point already exists” pop-up box will be triggered, as shown below.</p>
+<a class="reference internal image-reference" href="../_images/0185.png"><img alt="../_images/0185.png" class="align-center" src="../_images/0185.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-6 Graphical programming program overwriting</strong></p><p><strong>Step1</strong>: Click the “Cancel” button to continue the previous operation.</p>
+<p><strong>Step2</strong>: Click the “Synchronize and update teaching program” checkbox, and then click the “Overwrite” button, the lua program on the current graphical programming page will overwrite the lua program of the changed workspace file name.</p>
+</section>
+<section id="graphical-programming-program-not-saved-verification">
+<h3><span class="section-number">10.12.3. </span>Graphical programming program not saved verification<a class="headerlink" href="#graphical-programming-program-not-saved-verification" title="Permalink to this heading"></a></h3>
+<p>On the graphical programming page, after opening/creating a new program, if the graphical programming program is changed but not saved.</p>
+<p>If you click the “Open” file operation, the “Save this program” pop-up box will be triggered, prompting “The current program has changed, do you want to save the changes to this program?”, as shown in the figure below.</p>
+<a class="reference internal image-reference" href="../_images/0194.png"><img alt="../_images/0194.png" class="align-center" src="../_images/0194.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-7 Current page program is not saved verification</strong></p><p><strong>Step1</strong>: Click the “Don’t Save” button to continue the previous “Open” file operation.</p>
+<p><strong>Step2</strong>: Click the “Save” button, the unsaved Lua program is saved successfully, and the previous “Open” file operation is continued.</p>
+<p>If you leave the graphical programming page and switch to other pages, the “Do you want to save this program” prompt will also be triggered, and you will still stay on the current graphical programming page, as shown below.</p>
+<a class="reference internal image-reference" href="../_images/0204.png"><img alt="../_images/0204.png" class="align-center" src="../_images/0204.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 10.12-8 Switch page program is not saved verification</strong></p><p><strong>Step1</strong>: Click the “Don’t Save” button to jump to the previously selected page.</p>
+<p><strong>Step2</strong>: Click the “Save” button, the unsaved Lua program is saved successfully, and jumps to the previously selected page. If the saved program name already exists, it prompts that the teaching point already exists, whether to overwrite. After canceling/overwriting, jump to the previously selected page.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="coding.html" class="btn btn-neutral float-left" title="9. Coding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="node_editor_software.html" class="btn btn-neutral float-right" title="11. Node graph programming" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2026, Fairino (Suzhou) Robot Technology Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. CNDE function operation &mdash; FAIRINO Collaborative Robot User Manual 3.9.5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Robot input and output register" href="cnde_register.html" />
+    <link rel="prev" title="2. CNDE data frame protocol format" href="cnde_protocol.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="fairino-doc-en" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/RobotCommunication/cnde_func.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../CobotsManual/intro.html">Collaborative robot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SDKManual/index.html">SDK Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../VMMachine/vm_intro.html">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FRCap/frcap_intro.html">FRCap Plug-in system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LuaProgram/lua_intro.html">FR LUA Programming Script</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cnde_intro.html">Robot Communication</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cnde_introduction.html">1. Introduction to CNDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cnde_protocol.html">2. CNDE data frame protocol format</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. CNDE function operation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#input-configuration-and-input-data">3.1. Input configuration and input data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-configuration-and-output-data">3.2. Output configuration and output data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#output-configuration">3.2.1. Output configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#output-start-and-stop">3.2.2. Output start and stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-client-receives-the-output-data">3.2.3. The client receives the output data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cnde-auxiliary-function">3.3. CNDE auxiliary function</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#messages">3.3.1. Messages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#switch-the-version-number-of-cnde-protocol-of-robot">3.3.2. Switch the version number of CNDE protocol of robot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acquire-that-version-information-of-the-robot-soft-firmware">3.3.3. Acquire that version information of the robot soft firmware</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#end-effector-transparent-transmission-function-periodic-data-acquisition-cnde">3.4. End-Effector Transparent Transmission Function Periodic Data Acquisition (CNDE)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cnde-configuration-description">3.4.1. CNDE Configuration Description</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cnde_register.html">4. Robot input and output register</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Open platform</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html">frcobot_ros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#frcobot-ros2">frcobot_ros2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#moveit2">moveIt2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Download</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../download.html">Brochure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#qualification-certification">Qualification Certification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#secondary-development">Secondary Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#ontology-dimensional-drawings">Ontology &amp; Dimensional Drawings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-cad-files">2D CAD Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-models">3D Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#fairino-simmachine">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#palletizer-frcap">Palletizer frcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#cpp-sdk">CPP SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#c-sdk">C# SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#python-sdk">Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#java-sdk">Java SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#status-feedback-protocol">Status Feedback Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#communication-command-protocol">Communication Command Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#robot-software">Robot software</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FAIRINO Collaborative Robot User Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="cnde_intro.html">Robot Communication</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>CNDE function operation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/RobotCommunication/cnde_func.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cnde-function-operation">
+<h1><span class="section-number">3. </span>CNDE function operation<a class="headerlink" href="#cnde-function-operation" title="Permalink to this heading"></a></h1>
+<section id="input-configuration-and-input-data">
+<h2><span class="section-number">3.1. </span>Input configuration and input data<a class="headerlink" href="#input-configuration-and-input-data" title="Permalink to this heading"></a></h2>
+<p>The client sends data frames to the robot through CNDE to control the robot’s DO, AO output, input registers, etc. Before sending the input data, it is necessary to configure the functional content to be controlled. Table 2-1 shows the format of CNDE input configuration content, including recipe number and a series of input configuration function names (Table 1-2); The corresponding table 3-2 is the content format of input data, including recipe number and input data byte group.</p>
+<p>CNDE data input supports up to 8 recipes. When sending input data, the robot will match the recipe number in the received data to the corresponding recipe configuration function name group, and analyze the data to get the input data value of each function name, and then control the robot according to the input data.</p>
+<p class="centered">
+<strong>Table 3-1 Input Configuration Content Format</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Name</strong></p></td>
+<td><p><strong>Recipe number</strong></p></td>
+<td><p><strong>Function name string</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Length (byte)</p></td>
+<td><p>1</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Content</p></td>
+<td><p>0 ~ 7</p></td>
+<td><p>A series of input data function names</p></td>
+</tr>
+</tbody>
+</table>
+<p class="centered">
+<strong>Table 3-2 Input Data Content Format</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Name</strong></p></td>
+<td><p><strong>Recipe number</strong></p></td>
+<td><p><strong>Data byte group</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Length(byte)</p></td>
+<td><p>1</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Content</p></td>
+<td><p>0 ~ 7</p></td>
+<td><p>Input data content</p></td>
+</tr>
+</tbody>
+</table>
+<p>When inputting configuration, the robot controller will check each name after receiving the configuration name group. If the configured function names are correct, the robot will feed back the data type names of all configured functions divided by “,”; If the configured function name is wrong, the robot will feed back the corresponding error content. An example of the input configuration data frame (hexadecimal) is as follows:</p>
+<a class="reference internal image-reference" href="../_images/00117.png"><img alt="../_images/00117.png" class="align-center" src="../_images/00117.png" style="width: 6in;" /></a>
+<p>Among them, the total length of the configured input function name group is 54 bytes, plus 1 byte of the input recipe number, which is 55 bytes, which is converted into hexadecimal as 0x0037. In the Little-Endian mode, the data length in the corresponding input data frame is “37 00”.</p>
+<p>At this time, the robot will feed back a data frame with the type of messages (Message in section 3.3.1 of this article):</p>
+<a class="reference internal image-reference" href="../_images/00216.png"><img alt="../_images/00216.png" class="align-center" src="../_images/00216.png" style="width: 6in;" /></a>
+<p>The message type “00” indicates that this is a successful feedback message. The client can extract the “Input Data Configuration Type” and compare it with Table 1-3 to get the byte length of the input configuration. In this example, the total data length is 1*5+4*30+8*30 = 365 bytes.</p>
+<p>If the configuration name is entered incorrectly:</p>
+<a class="reference internal image-reference" href="../_images/00317.png"><img alt="../_images/00317.png" class="align-center" src="../_images/00317.png" style="width: 6in;" /></a>
+<p>The corresponding feedback information is:</p>
+<a class="reference internal image-reference" href="../_images/00418.png"><img alt="../_images/00418.png" class="align-center" src="../_images/00418.png" style="width: 6in;" /></a>
+<p>The input data can be input circularly according to a certain period, or only when necessary. The fastest period that the robot can process during cyclic input is 1ms, but the faster input period will bring some resource expenses to the robot system. It is suggested that you set the data input period reasonably according to the actual situation.</p>
+<p>In addition, when sending a data frame to the robot, the robot will not have feedback information unless the length of the sent data frame or the data is abnormal. An example of an input data frame is as follows, in which the input data recipe number and the input data byte length should be consistent with the input configuration:</p>
+<a class="reference internal image-reference" href="../_images/00517.png"><img alt="../_images/00517.png" class="align-center" src="../_images/00517.png" style="width: 6in;" /></a>
+</section>
+<section id="output-configuration-and-output-data">
+<h2><span class="section-number">3.2. </span>Output configuration and output data<a class="headerlink" href="#output-configuration-and-output-data" title="Permalink to this heading"></a></h2>
+<p>The client can customize the content and period of the state feedback through CNDE. Using the state feedback of the robot CNDE requires the following three steps: ①output configuration; ②Start the output; ③Receiving output data.</p>
+<section id="output-configuration">
+<h3><span class="section-number">3.2.1. </span>Output configuration<a class="headerlink" href="#output-configuration" title="Permalink to this heading"></a></h3>
+<p>The output configuration frame includes the output period and the output function name group (see Table 1-1 for all configurable names). The configurable range of the output period is 1 ~ 200ms, and the maximum number of output data bytes supports 4096byte. The output function name group is a series of output function name strings separated by “,”.After the client sends the output configuration frame, the robot will check the configured function names. If the configured function names are all supported by the current robot CNDE, the robot will feed back a series of data type combinations separated by “,”; Otherwise, if the verification of the output configuration name fails, the corresponding error message is fed back.</p>
+<p class="centered">
+<strong>Table 3-3 Output Configuration Contents</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Nmae</strong></p></td>
+<td><p><strong>Output period (ms)</strong></p></td>
+<td><p><strong>Function name string</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Length (byte)</p></td>
+<td><p>2</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>内容</p></td>
+<td><p>1-200</p></td>
+<td><p>Output function name group</p></td>
+</tr>
+</tbody>
+</table>
+<p>If the output configuration frame is as follows:</p>
+<a class="reference internal image-reference" href="../_images/00618.png"><img alt="../_images/00618.png" class="align-center" src="../_images/00618.png" style="width: 6in;" /></a>
+<p>Among them, the total length of the configured output function name group is 48 bytes, plus 2 bytes of the output period, totaling 50 bytes, which is converted into hexadecimal as 0x0032. In the Little-Endian mode, the data length in the corresponding input data frame is “32 00”.</p>
+<p>At this time, the robot will feed back a data frame with the type of message (Message in section 3.3.1 of this article):</p>
+<a class="reference internal image-reference" href="../_images/00717.png"><img alt="../_images/00717.png" class="align-center" src="../_images/00717.png" style="width: 6in;" /></a>
+<p>The message type “00” indicates that this is a successful feedback message. The client can extract the “output data configuration type” and compare it with Table 1-3 to get the byte length of the output configuration. In this example, the total data length is 1+8*10+4 = 85 bytes.</p>
+<p>If the input configuration name is wrong, such as “queue” wrongly written as “quene”:</p>
+<a class="reference internal image-reference" href="../_images/00816.png"><img alt="../_images/00816.png" class="align-center" src="../_images/00816.png" style="width: 6in;" /></a>
+<p>The corresponding feedback information is:</p>
+<a class="reference internal image-reference" href="../_images/00914.png"><img alt="../_images/00914.png" class="align-center" src="../_images/00914.png" style="width: 6in;" /></a>
+</section>
+<section id="output-start-and-stop">
+<h3><span class="section-number">3.2.2. </span>Output start and stop<a class="headerlink" href="#output-start-and-stop" title="Permalink to this heading"></a></h3>
+<p>After the CNDE output configuration of the robot is completed, send a start command to start the CNDE output, and the robot will perform state feedback output according to the configured output period and output content, and also send a CNDE stop output command, and the robot will stop the state feedback output. CNDE start and stop commands have no command content, and the corresponding data length is 0.</p>
+<p class="centered">
+<strong>Table 3-4 Start and Stop Contents of CNDE Output</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Name</strong></p></td>
+<td><p><strong>Data byte group</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Length (byte)</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Content</p></td>
+<td><p>without</p></td>
+</tr>
+</tbody>
+</table>
+<p>An example of starting the robot CNDE to output data frames is as follows:</p>
+<a class="reference internal image-reference" href="../_images/01015.png"><img alt="../_images/01015.png" class="align-center" src="../_images/01015.png" style="width: 3in;" /></a>
+</section>
+<section id="the-client-receives-the-output-data">
+<h3><span class="section-number">3.2.3. </span>The client receives the output data<a class="headerlink" href="#the-client-receives-the-output-data" title="Permalink to this heading"></a></h3>
+<p>After the CNDE data output of the robot is started, the client needs a cycle to receive the data information fed back by the robot, and the cycle receiving frequency of the client is higher than the configured output data frequency, otherwise data packet loss may occur. The contents of robot output data are shown in Table 3-5. The length of the byte group of robot output data is the sum of the byte lengths of all the function data configured for output, and the byte array is a combination of all the state data in the order of configured functions with 1 byte alignment.</p>
+<p class="centered">
+<strong>Table 3-5 CNDE Output Data Content</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Name</strong></p></td>
+<td><p><strong>Data byte group</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Length(byte)</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Content</p></td>
+<td><p>Output data byte group</p></td>
+</tr>
+</tbody>
+</table>
+<p>Examples of robot output data frames are as follows:</p>
+<a class="reference internal image-reference" href="../_images/01114.png"><img alt="../_images/01114.png" class="align-center" src="../_images/01114.png" style="width: 4in;" /></a>
+</section>
+</section>
+<section id="cnde-auxiliary-function">
+<h2><span class="section-number">3.3. </span>CNDE auxiliary function<a class="headerlink" href="#cnde-auxiliary-function" title="Permalink to this heading"></a></h2>
+<section id="messages">
+<h3><span class="section-number">3.3.1. </span>Messages<a class="headerlink" href="#messages" title="Permalink to this heading"></a></h3>
+<p>The client and the robot can send messages to each other through CNDE, including message types and message strings (Table 3-6), where the message types are defined in Table 3-7. When the CNDE client sends commands such as input configuration, output configuration, output start and output stop to the robot, the robot replies with a message.</p>
+<p>If the above commands are executed successfully, the feedback message type of the robot is “successful”, and the numerical code of the corresponding message type is 0x00；; On the other hand, if the above commands fail to be executed, the message type fed back by the robot is “error”, and the corresponding message type value is 0x03. The client can judge the command execution result according to the feedback message type, and if the message type is “error”, the error information can be extracted to analyze the cause of the error.</p>
+<p class="centered">
+<strong>Table 3-6 Content of Message</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Name</strong></p></td>
+<td><p><strong>Message type</strong></p></td>
+<td><p><strong>Message string</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Length(byte)</p></td>
+<td><p>1</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Content</p></td>
+<td><p>0 ~ 4</p></td>
+<td><p>Message string</p></td>
+</tr>
+</tbody>
+</table>
+<p class="centered">
+<strong>Table 3-7 Robot CNDE Message Types</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p><strong>Numerical value</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>SUCCESS</p></td>
+<td><p>0x00</p></td>
+</tr>
+<tr class="row-odd"><td><p>INFORMATION</p></td>
+<td><p>0x01</p></td>
+</tr>
+<tr class="row-even"><td><p>WARINING</p></td>
+<td><p>0x02</p></td>
+</tr>
+<tr class="row-odd"><td><p>ERROR</p></td>
+<td><p>0x03</p></td>
+</tr>
+<tr class="row-even"><td><p>FAULT</p></td>
+<td><p>0x04</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="switch-the-version-number-of-cnde-protocol-of-robot">
+<h3><span class="section-number">3.3.2. </span>Switch the version number of CNDE protocol of robot<a class="headerlink" href="#switch-the-version-number-of-cnde-protocol-of-robot" title="Permalink to this heading"></a></h3>
+<p>At present, there is only one version of the robot CNDE, and the version number is “FR-CNDE-V0001”, so this function is reserved and has not been put into use yet.</p>
+</section>
+<section id="acquire-that-version-information-of-the-robot-soft-firmware">
+<h3><span class="section-number">3.3.3. </span>Acquire that version information of the robot soft firmware<a class="headerlink" href="#acquire-that-version-information-of-the-robot-soft-firmware" title="Permalink to this heading"></a></h3>
+<p>The client sends an command to get the software firmware version information to the robot through CNDE, and the command content is empty. After receiving the request, the robot will feed back a message, including the robot model, robot software version, robot firmware version, robot hardware version and other related information.</p>
+</section>
+</section>
+<section id="end-effector-transparent-transmission-function-periodic-data-acquisition-cnde">
+<h2><span class="section-number">3.4. </span>End-Effector Transparent Transmission Function Periodic Data Acquisition (CNDE)<a class="headerlink" href="#end-effector-transparent-transmission-function-periodic-data-acquisition-cnde" title="Permalink to this heading"></a></h2>
+<section id="cnde-configuration-description">
+<h3><span class="section-number">3.4.1. </span>CNDE Configuration Description<a class="headerlink" href="#cnde-configuration-description" title="Permalink to this heading"></a></h3>
+<p>After the end-effector transparent transmission function is enabled, the “axle_gen_com_data” option and period can be configured in CNDE to obtain the periodic data of the peripheral read by the end-effector. The feedback data frame is defined as follows.</p>
+<p class="centered">
+<strong>Table 3-8  End-Effector Transparent Transmission Function Periodic Data CNDE Feedback Protocol Definition</strong></p><table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Byte 1</strong></p></td>
+<td><p><strong>Byte 2</strong></p></td>
+<td><p><strong>Byte 3-130</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>ErrorCode</p></td>
+<td><p>Len</p></td>
+<td><p>Data</p></td>
+</tr>
+<tr class="row-odd"><td><p>0 - Communication normal</p></td>
+<td><p>Length of periodic data</p></td>
+<td><p>Data frame buffer</p></td>
+</tr>
+<tr class="row-even"><td><p>1 - Communication abnormality between end-effector and robot</p></td>
+<td><p>Length cleared when error code is non-zero</p></td>
+<td><p>Buffer cleared when error code is non-zero</p></td>
+</tr>
+<tr class="row-odd"><td><p>2 - End-effector 485 communication abnormality</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Taking the DIO Health Care Moxibustion Head peripheral periodic data configuration as an example, the code shows the configuration to obtain the end-effector periodic transparent transmission data with an acquisition period of 50ms.</p>
+<p>End-Effector Transparent Transmission CNDE Configuration Code Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">tring</span> <span class="n">outputCfg</span> <span class="o">=</span> <span class="s2">&quot;axle_gen_com_data&quot;</span><span class="p">;</span>    <span class="o">//</span><span class="n">Obtain</span> <span class="n">end</span><span class="o">-</span><span class="n">effector</span> <span class="n">transparent</span> <span class="n">transmission</span> <span class="n">periodic</span> <span class="n">data</span>
+<span class="linenos"> 2</span><span class="n">byte</span><span class="p">[]</span> <span class="n">sendBuffer</span> <span class="o">=</span> <span class="n">new</span> <span class="n">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="p">};</span>
+<span class="linenos"> 3</span><span class="n">byte</span><span class="p">[]</span> <span class="n">cfgBuffer</span> <span class="o">=</span> <span class="n">Encoding</span><span class="o">.</span><span class="n">UTF8</span><span class="o">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">outputCfg</span><span class="p">);</span>
+<span class="linenos"> 4</span><span class="n">CNDEPkg</span> <span class="n">pkg</span>  <span class="o">=</span> <span class="n">new</span> <span class="n">CNDEPkg</span><span class="p">();</span>
+<span class="linenos"> 5</span><span class="n">pkg</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="o">//</span><span class="n">Output</span> <span class="n">configuration</span>
+<span class="linenos"> 6</span><span class="n">pkg</span><span class="o">.</span><span class="n">len</span> <span class="o">=</span> <span class="p">(</span><span class="n">ushort</span><span class="p">)(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">outputCfg</span><span class="o">.</span><span class="n">Length</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="n">pkg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Clear</span><span class="p">();</span>
+<span class="linenos"> 8</span><span class="n">UInt16</span> <span class="n">period</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>   <span class="o">//</span><span class="mi">50</span><span class="n">ms</span> <span class="n">update</span>
+<span class="linenos"> 9</span><span class="n">byte</span><span class="p">[]</span> <span class="n">periodBt</span> <span class="o">=</span> <span class="n">new</span> <span class="n">byte</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+<span class="linenos">10</span><span class="n">Int16ToByte</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">ref</span> <span class="n">periodBt</span><span class="p">);</span>
+<span class="linenos">11</span><span class="n">pkg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">AddRange</span><span class="p">(</span><span class="n">periodBt</span><span class="p">);</span>  <span class="o">//</span><span class="n">Communication</span> <span class="n">period</span>
+<span class="linenos">12</span><span class="n">pkg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">AddRange</span><span class="p">(</span><span class="n">cfgBuffer</span><span class="p">);</span>
+<span class="linenos">13</span><span class="n">pkg</span><span class="o">.</span><span class="n">ToBytes</span><span class="p">(</span><span class="n">ref</span> <span class="n">sendBuffer</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>CNDE-Based DIO Health Care Moxibustion Head Periodic Data Unpacking Code Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>if (pkg.type == 4)
+<span class="linenos"> 2</span>{
+<span class="linenos"> 3</span>    int size = Marshal.SizeOf(putDate);
+<span class="linenos"> 4</span>    IntPtr structPtr = Marshal.AllocHGlobal(size);
+<span class="linenos"> 5</span>    Marshal.Copy(pkg.data.ToArray(), 0, structPtr, size);
+<span class="linenos"> 6</span>    putDate = (OUTPKG)Marshal.PtrToStructure(structPtr, typeof(OUTPKG));
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    int errorcode = putDate.axle_gen_com_data[0];
+<span class="linenos"> 9</span>    int datalen = putDate.axle_gen_com_data[1];
+<span class="linenos">10</span>    // Filter out abnormal packets
+<span class="linenos">11</span>    if ((errorcode != 0) || (datalen == 0) ||
+<span class="linenos">12</span>    (putDate.axle_gen_com_data[2] != 0xAB) ||
+<span class="linenos">13</span>    (putDate.axle_gen_com_data[3] != 0xBA))
+<span class="linenos">14</span>    {
+<span class="linenos">15</span>        Console.WriteLine($&quot;rcv data is error&quot;);
+<span class="linenos">16</span>        continue;
+<span class="linenos">17</span>    }
+<span class="linenos">18</span>    // Package according to DIO Health Care Moxibustion Head protocol
+<span class="linenos">19</span>    int curTem = putDate.axle_gen_com_data[6];
+<span class="linenos">20</span>    int targetTem = putDate.axle_gen_com_data[7];
+<span class="linenos">21</span>    int genData1 = putDate.axle_gen_com_data[8] &lt;&lt; 8 | putDate.axle_gen_com_data[9];
+<span class="linenos">22</span>    int genData2 = putDate.axle_gen_com_data[10] &lt;&lt; 8 | putDate.axle_gen_com_data[11];
+<span class="linenos">23</span>    int genData3 = putDate.axle_gen_com_data[12] &lt;&lt; 8 | putDate.axle_gen_com_data[13];
+<span class="linenos">24</span>    int genData4 = putDate.axle_gen_com_data[14] &lt;&lt; 8 | putDate.axle_gen_com_data[15];
+<span class="linenos">25</span>    int genData5 = putDate.axle_gen_com_data[16] &lt;&lt; 8 | putDate.axle_gen_com_data[17];
+<span class="linenos">26</span>    int genData6 = putDate.axle_gen_com_data[18] &lt;&lt; 8 | putDate.axle_gen_com_data[19];
+<span class="linenos">27</span>
+<span class="linenos">28</span>    Console.WriteLine($&quot;the data is errorcode {errorcode};  datalen  {datalen}  curTem  {curTem}; targetTem  {targetTem}  genData1  {genData1}  genData2  {genData2}  genData3  {genData3}  genData4  {genData4}  genData5  {genData5}  genData6  {genData6}  &quot;);
+<span class="linenos">29</span>    udpClient.Client.ReceiveTimeout = 100;
+<span class="linenos">30</span>    Marshal.FreeHGlobal(structPtr);
+<span class="linenos">31</span>}
+</pre></div>
+</div>
+<p>End-Effector Transparent Transmission Function-Based DIO Health Care Moxibustion Head Non-Periodic Data Communication Code Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>void testAxleGenCom()
+<span class="linenos"> 2</span>{
+<span class="linenos"> 3</span>    int[] led_on = new int[6] { 0xAB, 0xBA, 0x12, 0x01, 0x01, 0x79 };
+<span class="linenos"> 4</span>    int[] led_off = new int[6] { 0xAB, 0xBA, 0x12, 0x01, 0x00, 0x78 };
+<span class="linenos"> 5</span>    int[] version = new int[5]{ 0xAB, 0xBA, 0x11, 0x00, 0x76 };
+<span class="linenos"> 6</span>    int[] state = new int[6] { 0xAB, 0xBA, 0x1B,0x01, 0xAA, 0x2B };
+<span class="linenos"> 7</span>    int[] cycleState = new int[6] { 0xAB, 0xBA, 0x12, 0x01, 0x00, 0x78 };
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    int[] rcvdata = new int[16];
+<span class="linenos">10</span>    int ret = 0;
+<span class="linenos">11</span>    int cnt = 1;
+<span class="linenos">12</span>
+<span class="linenos">13</span>    JointPos p1Joint = new JointPos(88.708, -86.178, 140.989, -141.825, -89.162, -49.879);
+<span class="linenos">14</span>    DescPose p1Desc = new DescPose(188.007, -377.850, 260.207, 178.715, 2.823, -131.466);
+<span class="linenos">15</span>
+<span class="linenos">16</span>    JointPos p2Joint = new JointPos(112.131, -75.554, 126.989, -139.027, -88.044, -26.477);
+<span class="linenos">17</span>    DescPose p2Desc = new DescPose(368.003, -377.848, 260.211, 178.715, 2.823, -131.465);
+<span class="linenos">18</span>
+<span class="linenos">19</span>    ExaxisPos exaxisPos = new ExaxisPos(0, 0, 0, 0);
+<span class="linenos">20</span>    DescPose offdese = new DescPose(0, 0, 0, 0, 0, 0);
+<span class="linenos">21</span>
+<span class="linenos">22</span>    //Enable end-effector transparent transmission function
+<span class="linenos">23</span>    robot.SetAxleGenComEnable(1);
+<span class="linenos">24</span>    robot.SetAxleLuaEnable(1);
+<span class="linenos">25</span>
+<span class="linenos">26</span>    while(cnt&lt;=10)
+<span class="linenos">27</span>    {
+<span class="linenos">28</span>        //Read version number
+<span class="linenos">29</span>        ret = robot.SndRcvAxleGenComCmdData(5, version, 10, ref rcvdata);
+<span class="linenos">30</span>        Console.WriteLine($&quot; hard version : {rcvdata[4]},hard code:{rcvdata[5]}, soft version:{rcvdata[6]} {rcvdata[7]}, soft code:{rcvdata[8]}&quot;);
+<span class="linenos">31</span>        if (ret != 0)
+<span class="linenos">32</span>        {
+<span class="linenos">33</span>            break;
+<span class="linenos">34</span>        }
+<span class="linenos">35</span>        Thread.Sleep(1000);
+<span class="linenos">36</span>        //Read moxibustion head presence status
+<span class="linenos">37</span>        ret = robot.SndRcvAxleGenComCmdData(6, state, 6, ref rcvdata);
+<span class="linenos">38</span>        Console.WriteLine($&quot; state : {rcvdata[4]}&quot;);
+<span class="linenos">39</span>        Thread.Sleep(1000);
+<span class="linenos">40</span>        //Turn on moxibustion head laser
+<span class="linenos">41</span>        ret = robot.SndRcvAxleGenComCmdData(6, led_on, 6, ref rcvdata);
+<span class="linenos">42</span>        Console.WriteLine($&quot;led on rcv data is: {rcvdata[0]},{rcvdata[1]}, {rcvdata[2]}, {rcvdata[3]}, {rcvdata[4]}, {rcvdata[5]}&quot;);
+<span class="linenos">43</span>        robot.MoveJ(p1Joint, p1Desc, 0, 0, 100, 100, 100, exaxisPos, -1, 0, offdese);
+<span class="linenos">44</span>        Thread.Sleep(4000);
+<span class="linenos">45</span>        //Turn off moxibustion head laser
+<span class="linenos">46</span>        ret = robot.SndRcvAxleGenComCmdData(6, led_off, 6, ref rcvdata);
+<span class="linenos">47</span>        Console.WriteLine($&quot;led off rcv data is: {rcvdata[0]},{rcvdata[1]}, {rcvdata[2]}, {rcvdata[3]}, {rcvdata[4]}, {rcvdata[5]}&quot;);
+<span class="linenos">48</span>        robot.MoveJ(p2Joint, p2Desc, 0, 0, 100, 100, 100, exaxisPos, -1, 0, offdese);
+<span class="linenos">49</span>        Thread.Sleep(1000);
+<span class="linenos">50</span>        Console.WriteLine($&quot;***********************complate No. {cnt}  SDK test*****************************&quot;);
+<span class="linenos">51</span>        cnt++;
+<span class="linenos">52</span>    }
+<span class="linenos">53</span>
+<span class="linenos">54</span>}
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cnde_protocol.html" class="btn btn-neutral float-left" title="2. CNDE data frame protocol format" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cnde_register.html" class="btn btn-neutral float-right" title="4. Robot input and output register" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2026, Fairino (Suzhou) Robot Technology Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

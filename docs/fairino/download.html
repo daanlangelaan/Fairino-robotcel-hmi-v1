@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brochure &mdash; FAIRINO Collaborative Robot User Manual 3.9.5 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="1. Plug-in Introduction" href="ROSGuide/moveIt2.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="fairino-doc-en" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/download.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CobotsManual/intro.html">Collaborative robot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SDKManual/index.html">SDK Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VMMachine/vm_intro.html">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FRCap/frcap_intro.html">FRCap Plug-in system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LuaProgram/lua_intro.html">FR LUA Programming Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCommunication/cnde_intro.html">Robot Communication</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Open platform</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ROSGuide/index.html">frcobot_ros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ROSGuide/index.html#frcobot-ros2">frcobot_ros2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ROSGuide/index.html#moveit2">moveIt2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Download</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Brochure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#qualification-certification">Qualification Certification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#secondary-development">Secondary Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#ontology-dimensional-drawings">Ontology &amp; Dimensional Drawings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#d-cad-files">2D CAD Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#d-models">3D Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#fairino-simmachine">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#palletizer-frcap">Palletizer frcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#cpp-sdk">CPP SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#c-sdk">C# SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#python-sdk">Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#java-sdk">Java SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#status-feedback-protocol">Status Feedback Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#communication-command-protocol">Communication Command Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#robot-software">Robot software</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FAIRINO Collaborative Robot User Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Brochure</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/download.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="toctree-wrapper compound">
+</div>
+<section id="brochure">
+<h1>Brochure<a class="headerlink" href="#brochure" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/bd8a0e09a044448752c2d1bc3273832e/FAIRINO%20Product%20Catalogue.pdf"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">Product</span> <span class="pre">Catalogue</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/b8fd15d7a4823ab1118491fb2aed476a/FAIRINO%20Accessories%20Ecosystem.pdf"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">Accessories</span> <span class="pre">Ecosystem</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="qualification-certification">
+<h1>Qualification Certification<a class="headerlink" href="#qualification-certification" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/d289f519204b4531db200ace26d7a3bb/FAIRINO%20ISO9001%20Quality%20Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">ISO9001</span> <span class="pre">Quality</span> <span class="pre">Certification</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/3b8ac8eea88b4383eb715b4190288731/FAIRINO_ISO14001_Environmental_Management_System_Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">ISO14001</span> <span class="pre">Environmental</span> <span class="pre">Management</span> <span class="pre">System</span> <span class="pre">Certification</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/de23bd61fc61c02430079b0306b06e5e/FAIRINO_ISO45001_Occupational_Health_and_Safety_Management_System_Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">ISO45001</span> <span class="pre">Occupational</span> <span class="pre">Health</span> <span class="pre">and</span> <span class="pre">Safety</span> <span class="pre">Management</span> <span class="pre">System</span> <span class="pre">Certification</span></code></a></p>
+</div></blockquote>
+<p>Robot Certification:</p>
+<table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Certificate/Model</strong></p></td>
+<td><p><strong>FR3</strong></p></td>
+<td><p><strong>FR3-C</strong></p></td>
+<td><p><strong>FR3-WML</strong></p></td>
+<td><p><strong>FR3-WMS</strong></p></td>
+<td><p><strong>FR5</strong></p></td>
+<td><p><strong>FR10</strong></p></td>
+<td><p><strong>FR16</strong></p></td>
+<td><p><strong>FR20</strong></p></td>
+<td><p><strong>FR30</strong></p></td>
+<td><p><strong>Download</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>High Protection IP65 Test Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/c93970c3e4c05c266f88f976e516ba98/High%20protection%20IP65%20test%20certification%20certificate.zip"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>NSF Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/d7b29871134abf5040496a29213f3bf0/NSF%20Certification%20Certificate.zip"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Crash Force Test Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/148034357a651aff4e9e7e0b3a97d9c9/Crash%20force%20test%20certification.zip"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>RoHS Test Certification Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/776ab42144ff897e00527cc8a7eb6b25/ROHS%20Certification%20%28FR3-FR30%29.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Explosion-proof Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/4900c171f1101d72767f242167e93a0f/Explosion-proof%20certification.zip"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CE-EMC Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/e2f631bf01db82bef5fdca44ede4aa72/CE-EMC%20certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CE-MD Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/7927696e15fcf91ced3a08d92d49305a/CE-MD%20certification.zip"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Functional Safety Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/2e995d7600c2b1729398e39cc122b03b/Functional%20safety%20certification.zip"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>KCs Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/fd701d395e470ddee3c082a8426a66fa/KCs%20Certification.zip"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SEMI Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/546dde281c6b85788444e019658c1c16/SEMI%20Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>NRTL Industrial Robot Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/bedb98874a00ca4683a502abf4f789f3/FR3-30%20Industrial%20Robot%20NRTL%20Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>NRTL Collaborative Robot Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/b0543ab60066916069ca3cd6b37920a9/NRTL%20Collaborative%20Robot%20certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Collaborative Robot RCM Registration Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/53da8b9f419199c479d3ec33fd00a990/Collaborative%20Robot%20RCM%20Registration%20Certificate.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Cleaning Robot CLASS3 Certificate</strong></p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>–</p></td>
+<td><p>–</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/23bdf1090b4d6a1db5079b55d14fa023/Cleaning%20Robot%20CLASS3%20Certificate%28FR3-FR16%29.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Control box certification:</p>
+<table class="sheet-center docutils align-center">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 61%" />
+<col style="width: 17%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Certification</strong></p></td>
+<td><p><strong>Product Model</strong></p></td>
+<td><p><strong>Download</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Control box CE(MD+EMC) certification</strong></p></td>
+<td><p>FRC100-AC-2000-A, FRC100-AC-5000-A</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/4ffc53f0bb5240be9107d38443404151/FRC100-AC-x000-A%20version%20control%20box%20CE%20%28MD%2BEMC%29%20certificate.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Component certification:</p>
+<table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 61%" />
+<col style="width: 17%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Certification</strong></p></td>
+<td><p><strong>Product Model</strong></p></td>
+<td><p><strong>Download</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Motor certification</strong></p></td>
+<td><p>FR60-100, FR60-200, FR80-470, FR130-960, FR130-1500</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/79378c23d058a39ddb1395550578709c/Parts-Motor%20Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Driver certification</strong></p></td>
+<td><p>FR01-SD6-14, FR01-SD6-17, FR01-SD8-25, FR01-SD13-32, FR01-SD13-40</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/eea7bba147d85d70801c5e7ede799186/Parts-Driver%20Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Power supply certification</strong></p></td>
+<td><p>FRP-800-4824</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/ddbada2da7d4e9a69cd082272a538a0d/Parts-Power%20Supply%20Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Core board certification</strong></p></td>
+<td><p>PETREL</p></td>
+<td><p><a class="reference download internal" download="" href="_downloads/bd0bdb99b7927cb7bb610caad2092dc2/Parts-Core%20Board%20Certification.pdf"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="secondary-development">
+<h1>Secondary Development<a class="headerlink" href="#secondary-development" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download external" download="" href="https://github.com/FAIR-INNOVATION/frcobot_ros/archive/refs/heads/master.zip"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">ROS1</span></code></a></p>
+<p><a class="reference download external" download="" href="https://github.com/FAIR-INNOVATION/frcobot_ros2/archive/refs/heads/main.zip"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">ROS2</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="ontology-dimensional-drawings">
+<h1>Ontology &amp; Dimensional Drawings<a class="headerlink" href="#ontology-dimensional-drawings" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/676bc180d9c94bdd97a18355a4b83ee8/FR3%20Drawings.zip"><code class="xref download docutils literal notranslate"><span class="pre">FR3</span> <span class="pre">Drawings</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/d0aec4a78c7e5520e502d33d18425649/FR5%20Drawings.zip"><code class="xref download docutils literal notranslate"><span class="pre">FR5</span> <span class="pre">Drawings</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/834fdc8d52dec00b13468df60e177010/FR10%20Drawings.zip"><code class="xref download docutils literal notranslate"><span class="pre">FR10</span> <span class="pre">Drawings</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/34ce263a3e2e66f9dbea28185c695f5b/FR16%20Drawings.zip"><code class="xref download docutils literal notranslate"><span class="pre">FR16</span> <span class="pre">Drawings</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/3c8541fece44b186c4aec11c6547e908/FR20%20Drawings.zip"><code class="xref download docutils literal notranslate"><span class="pre">FR20</span> <span class="pre">Drawings</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/acac4f18e462155ccb5485aa2cbb5f75/FR30%20Drawings.zip"><code class="xref download docutils literal notranslate"><span class="pre">FR30</span> <span class="pre">Drawings</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="d-cad-files">
+<h1>2D CAD Files<a class="headerlink" href="#d-cad-files" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/180f7ce812243f6f6559dfbfba8d31de/FRCobots-V6.0%20DWG%20Models.zip"><code class="xref download docutils literal notranslate"><span class="pre">FRCobots-V6.0</span> <span class="pre">DWG</span> <span class="pre">Format</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/e5c7a7d117a4abd1772cd73ec1aba60e/Mini%20Control%20Box%202kW%20%28DC%2BAC%29%20DWG.zip"><code class="xref download docutils literal notranslate"><span class="pre">Mini</span> <span class="pre">Control</span> <span class="pre">Box</span> <span class="pre">2kW</span> <span class="pre">(DC+AC)</span> <span class="pre">DWG</span> <span class="pre">Format</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/8a27c3271d5c284a55011ac7e176737f/Control%20Box%205kW%20%28DC%2BAC%29%20DWG.zip"><code class="xref download docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Box</span> <span class="pre">5kW</span> <span class="pre">(DC+AC)</span> <span class="pre">DWG</span> <span class="pre">Format</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/20b1c78da509ba3f49653551fe8db985/Teach%20Pendant%20DWG.zip"><code class="xref download docutils literal notranslate"><span class="pre">Teach</span> <span class="pre">Pendant</span> <span class="pre">DWG</span> <span class="pre">Format</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/152989f2268e5f751af41eccbe88f9a8/Button%20Box%20DWG.zip"><code class="xref download docutils literal notranslate"><span class="pre">Button</span> <span class="pre">Box</span> <span class="pre">DWG</span> <span class="pre">Format</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="d-models">
+<h1>3D Models<a class="headerlink" href="#d-models" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/be14e7f562a20c816ec90f322fb3b29f/FRCobots-V5.0%20STEP%20Models.zip"><code class="xref download docutils literal notranslate"><span class="pre">FRCobots-V5.0</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/49cdf31534d0899683fd176e86a223d1/FRCobots-V6.0%20STEP%20Models.zip"><code class="xref download docutils literal notranslate"><span class="pre">FRCobots-V6.0</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/ab969d556af419834b9ad1b763d24103/Mini%20control%20box%202kw%20%28DC%2BAC%29.zip"><code class="xref download docutils literal notranslate"><span class="pre">Mini</span> <span class="pre">Control</span> <span class="pre">Box</span> <span class="pre">2kw</span> <span class="pre">(DC</span> <span class="pre">+</span> <span class="pre">AC)</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/da0affb3875082f4c2d0775471c75511/Control%20box%205kw%20%28DC%2BAC%29.zip"><code class="xref download docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Box</span> <span class="pre">5kw</span> <span class="pre">(DC+AC)</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/8afe38bb0f5dfd39ea1610402569726e/Teaching%20Pendant.zip"><code class="xref download docutils literal notranslate"><span class="pre">Teaching</span> <span class="pre">Pendant</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/c556a42ff034de6147d7cb9539abf247/Button%20Box.zip"><code class="xref download docutils literal notranslate"><span class="pre">Button</span> <span class="pre">Box</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/224950a65cbfa83e460d5ff5ea2dc561/CNC%20Workstation.zip"><code class="xref download docutils literal notranslate"><span class="pre">CNC</span> <span class="pre">Workstation</span> <span class="pre">STEP</span> <span class="pre">Model</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/dfe2f48fe9d7cbb14e422980fc34d1ec/Palletizing.zip"><code class="xref download docutils literal notranslate"><span class="pre">Palletizing</span> <span class="pre">Station</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/996e05b23db17e2905cb81f0ce3a99f9/Sorting.zip"><code class="xref download docutils literal notranslate"><span class="pre">Sorting</span> <span class="pre">Workstation</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/f956430b0411812fe9832fd6fa587a59/Spark%20Project.zip"><code class="xref download docutils literal notranslate"><span class="pre">Spark</span> <span class="pre">Project</span> <span class="pre">Education</span> <span class="pre">Work</span> <span class="pre">Platform</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/d9c9096e08b135b4ce727ac046b94b85/Intelligent%20welding.zip"><code class="xref download docutils literal notranslate"><span class="pre">Intelligent</span> <span class="pre">Welding</span> <span class="pre">Workstation</span> <span class="pre">STEP</span> <span class="pre">Models</span></code></a></p>
+<p><a class="reference download internal" download="" href="_downloads/e8705af7ad6d8a729f6dc543f20598c9/Envelope%20Diagram.zip"><code class="xref download docutils literal notranslate"><span class="pre">Envelope</span> <span class="pre">Diagram</span> <span class="pre">STEP</span> <span class="pre">Model</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="fairino-simmachine">
+<h1>FAIRINO SimMachine<a class="headerlink" href="#fairino-simmachine" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download external" download="" href="https://drive.google.com/file/d/1oB2bK8pBs0nNksefMo0MHqVrorM6eolk/view?usp=drive_link"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">SimMachine</span> <span class="pre">VMware</span></code></a></p>
+<p><a class="reference download external" download="" href="https://drive.google.com/file/d/1xDxoOIRB4ljUNUrML6z3w6k2l-UQKqkM/view?usp=drive_link"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">SimMachine</span> <span class="pre">Docker</span></code></a></p>
+<p><a class="reference download external" download="" href="https://drive.google.com/file/d/1_GNzIhe2O8FXQQspJH57UV1R3YHMJXk9/view?usp=drive_link"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO_SimMachine_Software</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="palletizer-frcap">
+<h1>Palletizer frcap<a class="headerlink" href="#palletizer-frcap" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/ab4ad068eaa1f919f251dc98deeacf91/Palletizer-v2.2.0.zip"><code class="xref download docutils literal notranslate"><span class="pre">Palletizer-v2.2.0</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="cpp-sdk">
+<h1>CPP SDK<a class="headerlink" href="#cpp-sdk" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p>Latest version: <a class="reference download external" download="" href="https://github.com/FAIR-INNOVATION/fairino-cpp-sdk/archive/refs/heads/main.zip"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">CPP</span> <span class="pre">SDK-v2</span></code></a></p>
+<p><a class="reference external" href="https://github.com/FAIR-INNOVATION/fairino-cpp-sdk/releases">Historical Version</a></p>
+</div></blockquote>
+</section>
+<section id="c-sdk">
+<h1>C# SDK<a class="headerlink" href="#c-sdk" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p>Latest version: <a class="reference download external" download="" href="https://github.com/FAIR-INNOVATION/fairino-csharp-sdk/archive/refs/heads/main.zip"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">C#</span> <span class="pre">SDK-v1</span></code></a></p>
+<p><a class="reference external" href="https://github.com/FAIR-INNOVATION/fairino-csharp-sdk/releases">Historical Version</a></p>
+</div></blockquote>
+</section>
+<section id="python-sdk">
+<h1>Python SDK<a class="headerlink" href="#python-sdk" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p>Latest version: <a class="reference download external" download="" href="https://github.com/FAIR-INNOVATION/fairino-python-sdk/archive/refs/heads/main.zip"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">Python</span> <span class="pre">SDK-v2</span></code></a></p>
+<p><a class="reference external" href="https://github.com/FAIR-INNOVATION/fairino-python-sdk/releases">Historical Version</a></p>
+</div></blockquote>
+</section>
+<section id="java-sdk">
+<h1>Java SDK<a class="headerlink" href="#java-sdk" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p>Latest version: <a class="reference download external" download="" href="https://github.com/FAIR-INNOVATION/fairino-java-sdk/archive/refs/heads/main.zip"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO</span> <span class="pre">Java</span> <span class="pre">SDK-v1</span></code></a></p>
+<p><a class="reference external" href="https://github.com/FAIR-INNOVATION/fairino-java-sdk/releases">Historical Version</a></p>
+</div></blockquote>
+</section>
+<section id="status-feedback-protocol">
+<h1>Status Feedback Protocol<a class="headerlink" href="#status-feedback-protocol" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/7ed2c1d8ecad7b4456849d74c8fd05be/Robot%208083%20Port%20Status%20Feedback%20User%20Manual.pdf"><code class="xref download docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">8083</span> <span class="pre">Port</span> <span class="pre">Status</span> <span class="pre">Feedback</span> <span class="pre">Protocol</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="communication-command-protocol">
+<h1>Communication Command Protocol<a class="headerlink" href="#communication-command-protocol" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download internal" download="" href="_downloads/8111110bc2f62d9fc04a4a9c346359b9/Collaborative%20Robot%20Controller%20Communication%20Command%20Protocol%20User%20Manual.pdf"><code class="xref download docutils literal notranslate"><span class="pre">Robot</span> <span class="pre">Controller</span> <span class="pre">Communication</span> <span class="pre">Command</span> <span class="pre">Protocol</span></code></a></p>
+</div></blockquote>
+</section>
+<section id="robot-software">
+<h1>Robot software<a class="headerlink" href="#robot-software" title="Permalink to this heading"></a></h1>
+<blockquote>
+<div><p><a class="reference download external" download="" href="https://drive.google.com/file/d/1xtTtUP2qfxrOs3x-PpUhLsxfJSwumsMQ/view?usp=drive_link"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO-CobotSoftware-QX-V3.9.5-20260424.zip</span></code></a></p>
+<p><a class="reference download external" download="" href="https://drive.google.com/file/d/1IzjZvtQiZGZRMniva63X0KnbUPgcAsNw/view?usp=drive_link"><code class="xref download docutils literal notranslate"><span class="pre">FAIRINO-CobotSoftware-LA-V3.9.5-20260424.zip</span></code></a></p>
+</div></blockquote>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ROSGuide/moveIt2.html" class="btn btn-neutral float-left" title="1. Plug-in Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2026, Fairino (Suzhou) Robot Technology Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

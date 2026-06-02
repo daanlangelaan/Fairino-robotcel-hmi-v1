@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12. Teaching Points &mdash; FAIRINO Collaborative Robot User Manual 3.9.5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="13. Status" href="status.html" />
+    <link rel="prev" title="11. Node graph programming" href="node_editor_software.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="fairino-doc-en" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/CobotsManual/points.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Collaborative robot</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html#product-matrix">Product matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#quick-start">Quick start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="intro.html#manual">Manual</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="foreword.html">1. Foreword</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot_brief_introduction.html">2. Robot brief introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html">3. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_start_robot.html">4. Quick start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="teaching_pendant_software.html">5. Teaching pendant software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">6. Base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html">7. Safety</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot_peripherals.html">8. Peripherals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coding.html">9. Coding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphical.html">10. Graphical programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="node_editor_software.html">11. Node graph programming</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">12. Teaching Points</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="status.html">13. Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="application.html">14. Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process.html">15. Process Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system.html">16. System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="teach_pendant.html">17. Teach pendant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="custom_protocol_slave.html">18. Custom protocol slave commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html">19. Appendix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="term.html">20. Term</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#changelog">Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SDKManual/index.html">SDK Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../VMMachine/vm_intro.html">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FRCap/frcap_intro.html">FRCap Plug-in system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LuaProgram/lua_intro.html">FR LUA Programming Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RobotCommunication/cnde_intro.html">Robot Communication</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Open platform</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html">frcobot_ros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#frcobot-ros2">frcobot_ros2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#moveit2">moveIt2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Download</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../download.html">Brochure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#qualification-certification">Qualification Certification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#secondary-development">Secondary Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#ontology-dimensional-drawings">Ontology &amp; Dimensional Drawings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-cad-files">2D CAD Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-models">3D Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#fairino-simmachine">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#palletizer-frcap">Palletizer frcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#cpp-sdk">CPP SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#c-sdk">C# SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#python-sdk">Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#java-sdk">Java SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#status-feedback-protocol">Status Feedback Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#communication-command-protocol">Communication Command Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#robot-software">Robot software</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FAIRINO Collaborative Robot User Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="intro.html">Collaborative robot</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">12. </span>Teaching Points</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/CobotsManual/points.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="teaching-points">
+<h1><span class="section-number">12. </span>Teaching Points<a class="headerlink" href="#teaching-points" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Teaching management is divided into two modes: “System Mode” and “Point Table Mode”. When calling the manipulator program, different inspection schemes can be achieved by calling different point tables, fulfilling recipe requirements. For each additional device or product subsequently, the point table data package can be downloaded to the robot via the host computer. Point table data packages newly created by the robot can also be uploaded to the host computer.</p>
+<p><strong>System Mode</strong>: Supports “importing, exporting, deleting, renaming, modifying, overwriting, modifying, viewing” teaching point content, as well as single-step movement to teaching points.</p>
+<a class="reference internal image-reference" href="../_images/0017.png"><img alt="../_images/0017.png" class="align-center" src="../_images/0017.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 12.1-1 Teaching Management Interface - System Mode</strong></p><p><strong>Point Table Mode</strong>: Supports “adding, applying, renaming, deleting, importing, exporting” point tables, and “deleting, modifying, viewing, and overwriting” point content within a point table, as well as single-step movement to teaching points.</p>
+<a class="reference internal image-reference" href="../_images/0028.png"><img alt="../_images/0028.png" class="align-center" src="../_images/0028.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 12.1-2 Teaching Management Interface - Point Table Mode</strong></p><p>The top right corner of the Teaching Management interface displays the robot body operation bar. Users can move the robot body on this interface and then perform data overwrite operations for teaching points.</p>
+<a class="reference internal image-reference" href="../_images/0039.png"><img alt="../_images/0039.png" class="align-center" src="../_images/0039.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 12.1-3 Teaching Management Interface - Robot Body Operation Bar</strong></p><p>You can enter a teaching point name in the top right corner of the teaching point table data to search; Click on the teaching point name in the teaching point table data to enter edit mode, input the modified name, and click anywhere outside the teaching point name to complete the modification.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0049.png"><img alt="../_images/0049.png" class="align-left" src="../_images/0049.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Import Button</strong></p>
+<p>Function: Import teaching point file</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0059.png"><img alt="../_images/0059.png" class="align-left" src="../_images/0059.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Export Button</strong></p>
+<p>Function: Export teaching point file</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0069.png"><img alt="../_images/0069.png" class="align-left" src="../_images/0069.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Delete Button</strong></p>
+<p>Function: After selecting one/multiple teaching points, click the “Delete” button above the table, the prompt “Please click the delete button again to confirm deletion” appears. Click again to delete the point information;</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0078.png"><img alt="../_images/0078.png" class="align-left" src="../_images/0078.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Overwrite Point Button</strong></p>
+<p>Function: Click to overwrite the teaching point with the robot’s current point data, and select “Whether to sync the teaching program” in the pop-up window</p>
+</div>
+<a class="reference internal image-reference" href="../_images/0087.png"><img alt="../_images/0087.png" class="align-center" src="../_images/0087.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 12.1-4 Overwrite Teaching Point</strong></p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0096.png"><img alt="../_images/0096.png" class="align-left" src="../_images/0096.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Edit Button</strong></p>
+<p>Function: Click to confirm modification of the teaching point’s x, y, z, rx, ry, rz, and v values</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The modified values for the teaching point’s x, y, z, rx, ry, rz should not exceed the robot’s working range.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0107.png"><img alt="../_images/0107.png" class="align-left" src="../_images/0107.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Details Button</strong></p>
+<p>Function: Click to view teaching point details</p>
+</div>
+<a class="reference internal image-reference" href="../_images/0116.png"><img alt="../_images/0116.png" class="align-center" src="../_images/0116.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 12.1-5 Teaching Point Details</strong></p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0126.png"><img alt="../_images/0126.png" class="align-left" src="../_images/0126.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Start Run Button</strong></p>
+<p>Function: Click to select the method for single-point operation to move the robot to the position of this point; Select PTP for Point-to-Point motion, select Lin for Linear motion.</p>
+</div>
+<a class="reference internal image-reference" href="../_images/0136.png"><img alt="../_images/0136.png" class="align-center" src="../_images/0136.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 12.1-6 Run Teaching Point</strong></p></section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="node_editor_software.html" class="btn btn-neutral float-left" title="11. Node graph programming" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="status.html" class="btn btn-neutral float-right" title="13. Status" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2026, Fairino (Suzhou) Robot Technology Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

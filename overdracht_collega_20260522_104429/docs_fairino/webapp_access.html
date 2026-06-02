@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. WebApp access login &mdash; FAIRINO Collaborative Robot User Manual 3.9.5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Robot parameter setting" href="parameter_setting.html" />
+    <link rel="prev" title="1. Install and power on the robot" href="install_power_robot.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="fairino-doc-en" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/CobotsManual/access.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Collaborative robot</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html#product-matrix">Product matrix</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="intro.html#quick-start">Quick start</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="install_power_robot.html">1. Install and power on the robot</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2. WebApp access login</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#access-and-log-in-to-the-webapp-interface">2.1. Access and log in to the WebApp interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simple-understanding-of-webapp-interface">2.2. Simple understanding of WebApp interface</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="parameter_setting.html">3. Robot parameter setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="manual_teaching.html">4. Robot manual teaching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_programming.html">5. Robot Quick Programming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#manual">Manual</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#changelog">Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SDKManual/index.html">SDK Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../VMMachine/vm_intro.html">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FRCap/frcap_intro.html">FRCap Plug-in system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LuaProgram/lua_intro.html">FR LUA Programming Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RobotCommunication/cnde_intro.html">Robot Communication</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Open platform</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html">frcobot_ros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#frcobot-ros2">frcobot_ros2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#moveit2">moveIt2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Download</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../download.html">Brochure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#qualification-certification">Qualification Certification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#secondary-development">Secondary Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#ontology-dimensional-drawings">Ontology &amp; Dimensional Drawings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-cad-files">2D CAD Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-models">3D Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#fairino-simmachine">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#palletizer-frcap">Palletizer frcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#cpp-sdk">CPP SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#c-sdk">C# SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#python-sdk">Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#java-sdk">Java SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#status-feedback-protocol">Status Feedback Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#communication-command-protocol">Communication Command Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#robot-software">Robot software</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FAIRINO Collaborative Robot User Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="intro.html">Collaborative robot</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>WebApp access login</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/CobotsManual/access.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="webapp-access-login">
+<h1><span class="section-number">2. </span>WebApp access login<a class="headerlink" href="#webapp-access-login" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="access-and-log-in-to-the-webapp-interface">
+<h2><span class="section-number">2.1. </span>Access and log in to the WebApp interface<a class="headerlink" href="#access-and-log-in-to-the-webapp-interface" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Turn on the control box and connect the network cable to the PC;</p></li>
+<li><p>Open the chrome browser on the PC and access the target URL 192.168.58.2;</p></li>
+<li><p>Enter the user name and password and click Login to log in to the WebApp.</p></li>
+</ol>
+<p>The initial user name is admin and the password is 123.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/001.png"><img alt="../_images/001.png" src="../_images/001.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 2.1-1 Login interface</strong></p></section>
+<section id="simple-understanding-of-webapp-interface">
+<h2><span class="section-number">2.2. </span>Simple understanding of WebApp interface<a class="headerlink" href="#simple-understanding-of-webapp-interface" title="Permalink to this heading"></a></h2>
+<p>After the login is successful, the system enters the “Initial”. Mainly include:</p>
+<ol class="arabic simple">
+<li><p>FAIRINO LOGO;</p></li>
+<li><p>Menu bar zoom button;</p></li>
+<li><p>Menu bar;</p></li>
+<li><p>Robot control area;</p></li>
+<li><p>Robot status area;</p></li>
+<li><p>3D simulation robot - 3D scene operation;</p></li>
+<li><p>3D simulation robot - robot body operation;</p></li>
+<li><p>Robot supporting functions;</p></li>
+<li><p>Robot and supporting function status.</p></li>
+</ol>
+<p>The initial interface of the system is shown in the figure below:</p>
+<a class="reference internal image-reference" href="../_images/002.png"><img alt="../_images/002.png" class="align-center" src="../_images/002.png" style="width: 6in;" /></a>
+<p class="centered">
+<strong>Figure 2.2-1 Schematic diagram of the initial interface of the system</strong></p><section id="control-area">
+<h3><span class="section-number">2.2.1. </span>Control area<a class="headerlink" href="#control-area" title="Permalink to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/064.png"><img alt="../_images/064.png" class="align-left" src="../_images/064.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>“Press the teach program button”</strong></p>
+<p>effect: Open the teaching programs for coding programming, graphical programming, and Node Graph programming.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/003.png"><img alt="../_images/003.png" class="align-left" src="../_images/003.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Enable button</strong></p>
+<p>effect: Enable the robot</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/004.png"><img alt="../_images/004.png" class="align-left" src="../_images/004.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Start button</strong></p>
+<p>effect: Upload and start running the teaching program</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/005.png"><img alt="../_images/005.png" class="align-left" src="../_images/005.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Stop button</strong></p>
+<p>effect: Stop the current teaching program running</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/006.png"><img alt="../_images/006.png" class="align-left" src="../_images/006.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Pause/Resume button</strong></p>
+<p>effect: Pause and resume the current teaching program</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The pause instruction is at the end of the program and cannot be judged.</p>
+</div>
+</section>
+<section id="status-bar">
+<h3><span class="section-number">2.2.2. </span>Status Bar<a class="headerlink" href="#status-bar" title="Permalink to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/011.png"><img alt="../_images/011.png" class="align-left" src="../_images/011.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Error state</strong></p>
+<p>effect: There is an error in the current robot operation, hide when no error.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/007.png"><img alt="../_images/007.png" class="align-left" src="../_images/007.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>robot status</strong></p>
+<p>effect: Stopped-stop，Running-run，Pause-pause，Drag-drag</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/010.png"><img alt="../_images/010.png" class="align-left" src="../_images/010.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Robot Tool Coordinate System, Workpiece Coordinate System, Extended Axis Coordinate System, and Load Number</strong></p>
+<p>effect: Top Left – Current Tool Coordinate System Number, Top Right – Current Workpiece Coordinate System Number, Bottom Left – Current Extended Axis Coordinate System Number, Bottom Right – Current Load Number</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/009.png"><img alt="../_images/009.png" class="align-left" src="../_images/009.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Running speed percentage</strong></p>
+<p>effect: The speed of the robot when it is running in the current mode</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/012.png"><img alt="../_images/012.png" class="align-left" src="../_images/012.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Automatic mode</strong></p>
+<p>effect: Robot automatic operation mode.When the global speed adjustment in manual mode and automatic mode is turned on and the speed is specified, the global speed will be automatically adjusted to the specified speed</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/013.png"><img alt="../_images/013.png" class="align-left" src="../_images/013.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Manual mode</strong></p>
+<p>effect: Robot manual mode for robot teaching operations.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/065.png"><img alt="../_images/065.png" class="align-left" src="../_images/065.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Robot State Fold/Unfold Button</strong></p>
+<p>effect: Fold/Unfold Tool Coordinate System, Workpiece Coordinate System, Extended Axis Coordinate System, Load, Robot Drag Status, Local/Remote Mode, Robot Connection Status, BOOT Mode, and Account Information Content</p>
+</div>
+<p>Click the collapse/expand button to view the following status information.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/008.png"><img alt="../_images/008.png" class="align-left" src="../_images/008.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Tool coordinate system number</strong></p>
+<p>effect: Display the tool coordinate system number of the current application</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/027.png"><img alt="../_images/027.png" class="align-left" src="../_images/027.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Workpiece coordinate system number</strong></p>
+<p>effect: Display the workpiece coordinate system number currently applied</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/028.png"><img alt="../_images/028.png" class="align-left" src="../_images/028.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Extended axis coordinate system number</strong></p>
+<p>effect: Displays the currently applied extended axis coordinate system number</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/066.png"><img alt="../_images/066.png" class="align-left" src="../_images/066.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Payload</strong></p>
+<p>effect: Display the load weight and center of gravity coordinates X, Y, Z of the current application.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/014.png"><img alt="../_images/014.png" class="align-left" src="../_images/014.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Drag state</strong></p>
+<p>effect: The current robot can drag</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/015.png"><img alt="../_images/015.png" class="align-left" src="../_images/015.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Drag state</strong></p>
+<p>effect: The current robot is not draggable</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/068.png"><img alt="../_images/068.png" class="align-left" src="../_images/068.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Robot Local Mode</strong></p>
+<p>effect: The current robot is controlled via the control box.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/067.png"><img alt="../_images/067.png" class="align-left" src="../_images/067.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Robot Remote Mode</strong></p>
+<p>effect: Currently, robots can only be controlled through PLC.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/017.png"><img alt="../_images/017.png" class="align-left" src="../_images/017.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Connection status</strong></p>
+<p>effect: Robot connected</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/016.png"><img alt="../_images/016.png" class="align-left" src="../_images/016.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Not connected status</strong></p>
+<p>effect: Robot not connected</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/018.png"><img alt="../_images/018.png" class="align-left" src="../_images/018.png" style="width: 0.75in; height: 0.75in;" /></a>
+<p>name: <strong>Account information</strong></p>
+<p>effect: Display username and permissions and logout user</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install_power_robot.html" class="btn btn-neutral float-left" title="1. Install and power on the robot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parameter_setting.html" class="btn btn-neutral float-right" title="3. Robot parameter setting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2026, Fairino (Suzhou) Robot Technology Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Virtual Machine - Docker &mdash; FAIRINO Collaborative Robot User Manual 3.9.5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Appendix" href="controller_machine_appendix.html" />
+    <link rel="prev" title="1. Virtual Machine" href="controller_virtual_machine.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="fairino-doc-en" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/VMMachine/controller_docker_machine.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../CobotsManual/intro.html">Collaborative robot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SDKManual/index.html">SDK Manual</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="vm_intro.html">FAIRINO SimMachine</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="controller_virtual_machine.html">1. Virtual Machine</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Virtual Machine - Docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-docker-image-deployment">2.1. Linux Docker Image Deployment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#operating-environment">2.1.1. Operating Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-docker">2.1.2. Install Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#image-configuration">2.1.3. Image Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#web-operation-of-virtual-robot">2.2. Web Operation of Virtual Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#container-normal-startup">2.2.1. Container Normal Startup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operating-the-virtual-robot">2.2.2. Operating the Virtual Robot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-ip-address-modification">2.2.3. User IP Address Modification</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#virtual-machine-version-upgrade-downgrade">2.3. Virtual Machine Version Upgrade/Downgrade</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">2.3.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upgrade-downgrade-preparation-and-considerations">2.3.2. Upgrade/Downgrade Preparation and Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller_machine_appendix.html">3. Appendix</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../FRCap/frcap_intro.html">FRCap Plug-in system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LuaProgram/lua_intro.html">FR LUA Programming Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RobotCommunication/cnde_intro.html">Robot Communication</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Open platform</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html">frcobot_ros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#frcobot-ros2">frcobot_ros2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#moveit2">moveIt2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Download</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../download.html">Brochure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#qualification-certification">Qualification Certification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#secondary-development">Secondary Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#ontology-dimensional-drawings">Ontology &amp; Dimensional Drawings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-cad-files">2D CAD Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-models">3D Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#fairino-simmachine">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#palletizer-frcap">Palletizer frcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#cpp-sdk">CPP SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#c-sdk">C# SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#python-sdk">Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#java-sdk">Java SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#status-feedback-protocol">Status Feedback Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#communication-command-protocol">Communication Command Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#robot-software">Robot software</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FAIRINO Collaborative Robot User Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="vm_intro.html">FAIRINO SimMachine</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Virtual Machine - Docker</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/VMMachine/controller_docker_machine.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="virtual-machine-docker">
+<h1><span class="section-number">2. </span>Virtual Machine - Docker<a class="headerlink" href="#virtual-machine-docker" title="Permalink to this heading"></a></h1>
+<section id="linux-docker-image-deployment">
+<h2><span class="section-number">2.1. </span>Linux Docker Image Deployment<a class="headerlink" href="#linux-docker-image-deployment" title="Permalink to this heading"></a></h2>
+<section id="operating-environment">
+<h3><span class="section-number">2.1.1. </span>Operating Environment<a class="headerlink" href="#operating-environment" title="Permalink to this heading"></a></h3>
+<p>Virtual machine operating system: Ubuntu 18.04.6;</p>
+<p>Virtual machine operating environment: RAM 4G, ROM 50G, 6-core CPU;</p>
+<p>Operation permissions: Use super administrator root privileges. Setting method see Appendix 3;</p>
+<p>Docker installation file: fr_docker.tar.gz;</p>
+<p>FAIRINO SimMachine image: FAIRINOSimMachine.tar;</p>
+</section>
+<section id="install-docker">
+<h3><span class="section-number">2.1.2. </span>Install Docker<a class="headerlink" href="#install-docker" title="Permalink to this heading"></a></h3>
+<p>If the user has already installed and deployed Docker, skip this section and proceed to section 1.3 Image Deployment.</p>
+<ol class="arabic simple">
+<li><p>Download fr_docker.tar.gz and place it in the Ubuntu file path /opt/.</p></li>
+<li><p>Extract fr_docker.tar.gz. Using /opt/ directory as an example:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">cd /opt/ &amp;&amp; tar -zxvf fr_docker.tar.gz</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/03614.png"><img alt="../_images/03614.png" class="align-center" src="../_images/03614.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="3">
+<li><p>Execute the Docker installation script:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">sh install.sh docker-27.0.3.tgz</span>
+</pre></div>
+</div>
+<p>After the script finishes executing, if the version number appears, it indicates successful installation.</p>
+<a class="reference internal image-reference" href="../_images/03714.png"><img alt="../_images/03714.png" class="align-center" src="../_images/03714.png" style="width: 6in;" /></a>
+</section>
+<section id="image-configuration">
+<h3><span class="section-number">2.1.3. </span>Image Configuration<a class="headerlink" href="#image-configuration" title="Permalink to this heading"></a></h3>
+<section id="import-docker-image">
+<h4><span class="section-number">2.1.3.1. </span>Import Docker Image<a class="headerlink" href="#import-docker-image" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Download the virtual machine image FAIRINOSimMachine.tar and extract it.</p></li>
+<li><p>Check the Docker version to confirm installation.</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker -v</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/03813.png"><img alt="../_images/03813.png" class="align-center" src="../_images/03813.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="3">
+<li><p>Import the image</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker load -i ./FAIRINOSimMachine.tar</span>
+</pre></div>
+</div>
+<p>The appearance of <cite>fairno_simmachine:latest</cite> indicates the import is complete.</p>
+<a class="reference internal image-reference" href="../_images/03913.png"><img alt="../_images/03913.png" class="align-center" src="../_images/03913.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="4">
+<li><p>Execute <cite>docker images</cite> to check if the import was successful.</p></li>
+</ol>
+</section>
+<section id="create-custom-bridge-network">
+<h4><span class="section-number">2.1.3.2. </span>Create Custom Bridge Network<a class="headerlink" href="#create-custom-bridge-network" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Execute the following command to create a bridge network named <cite>fairino-net</cite> with subnet <cite>192.168.58.0/24</cite>.</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker network create --driver bridge --subnet 192.168.58.0/24 --gateway 192.168.58.1 fairino-net</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>View the network</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker network ls</span>
+</pre></div>
+</div>
+<p>The presence of the <cite>fairino-net</cite> network indicates successful creation.</p>
+<a class="reference internal image-reference" href="../_images/04012.png"><img alt="../_images/04012.png" class="align-center" src="../_images/04012.png" style="width: 6in;" /></a>
+</section>
+<section id="first-time-docker-container-startup">
+<h4><span class="section-number">2.1.3.3. </span>First-time Docker Container Startup<a class="headerlink" href="#first-time-docker-container-startup" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Create and start the container</p></li>
+</ol>
+<p>Start the container using the <cite>fairino-net</cite> network and the <cite>fairino_simmachine</cite> image.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker run -d -P --name fairino-container --privileged -u root --net fairino-net fairino_simmachine</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/04111.png"><img alt="../_images/04111.png" class="align-center" src="../_images/04111.png" style="width: 6in;" /></a>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker ps</span>
+</pre></div>
+</div>
+<p>Check if the container started successfully. The appearance of <cite>fairino-container</cite> indicates successful startup.</p>
+<a class="reference internal image-reference" href="../_images/04212.png"><img alt="../_images/04212.png" class="align-center" src="../_images/04212.png" style="width: 6in;" /></a>
+</section>
+</section>
+</section>
+<section id="web-operation-of-virtual-robot">
+<h2><span class="section-number">2.2. </span>Web Operation of Virtual Robot<a class="headerlink" href="#web-operation-of-virtual-robot" title="Permalink to this heading"></a></h2>
+<section id="container-normal-startup">
+<h3><span class="section-number">2.2.1. </span>Container Normal Startup<a class="headerlink" href="#container-normal-startup" title="Permalink to this heading"></a></h3>
+<p>This section applies to non-first-time container startups, such as when the container is not running in the background due to computer restart or Docker shutdown.</p>
+<ol class="arabic simple">
+<li><p>Start Docker:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">systemctl start docker</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Check Docker status:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">systemctl status docker</span>
+</pre></div>
+</div>
+<p>Green <cite>active(running)</cite> indicates successful startup.</p>
+<a class="reference internal image-reference" href="../_images/04313.png"><img alt="../_images/04313.png" class="align-center" src="../_images/04313.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="3">
+<li><p>Execute <cite>docker ps -a</cite> to view the container ID.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/04412.png"><img alt="../_images/04412.png" class="align-center" src="../_images/04412.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="4">
+<li><p>Execute <cite>docker start [Container ID]</cite>.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/04513.png"><img alt="../_images/04513.png" class="align-center" src="../_images/04513.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="5">
+<li><p>After successful execution, execute <cite>docker ps</cite> again to confirm the container is running.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/04611.png"><img alt="../_images/04611.png" class="align-center" src="../_images/04611.png" style="width: 6in;" /></a>
+</section>
+<section id="operating-the-virtual-robot">
+<h3><span class="section-number">2.2.2. </span>Operating the Virtual Robot<a class="headerlink" href="#operating-the-virtual-robot" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Confirm the Docker container is running.</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker ps</span>
+</pre></div>
+</div>
+<p>The appearance of <cite>fairino-container</cite> indicates it is running.</p>
+<a class="reference internal image-reference" href="../_images/04710.png"><img alt="../_images/04710.png" class="align-center" src="../_images/04710.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="2">
+<li><p>Open a browser, enter the default IP: 192.168.58.2, to access the web interface and operate the virtual robot.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/04810.png"><img alt="../_images/04810.png" class="align-center" src="../_images/04810.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="3">
+<li><p>Log in with the admin account, password: 123.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/04910.png"><img alt="../_images/04910.png" class="align-center" src="../_images/04910.png" style="width: 6in;" /></a>
+</section>
+<section id="user-ip-address-modification">
+<h3><span class="section-number">2.2.3. </span>User IP Address Modification<a class="headerlink" href="#user-ip-address-modification" title="Permalink to this heading"></a></h3>
+<a class="reference internal image-reference" href="../_images/05010.png"><img alt="../_images/05010.png" class="align-center" src="../_images/05010.png" style="width: 6in;" /></a>
+<ol class="arabic simple">
+<li><p>Open a browser, enter the default IP: 192.168.58.2, to open the web page;</p></li>
+<li><p>Log in with the admin account, password: 123;</p></li>
+<li><p>Navigate to “System Settings” → “General Settings” → “Network Settings”, modify the IP to the target IP address, subnet mask, and gateway. Click “Set Network”;</p></li>
+<li><p>Open the terminal, stop the container;</p></li>
+</ol>
+<p>View the container ID:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker ps -a</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/0529.png"><img alt="../_images/0529.png" class="align-center" src="../_images/0529.png" style="width: 6in;" /></a>
+<p>Stop the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker stop [Container ID]</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/0539.png"><img alt="../_images/0539.png" class="align-center" src="../_images/0539.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="5">
+<li><p>Reconfigure the container network;</p></li>
+</ol>
+<p>Delete the original network:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker network rm fairino-net</span>
+</pre></div>
+</div>
+<p>Create a new network:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker network create --driver bridge --subnet [Target IP/Subnet Mask] --gateway [Gateway IP] fairino-net</span>
+</pre></div>
+</div>
+<p>Using 192.168.56.0/24 as an example: <cite>docker network create –driver bridge –subnet 192.168.56.0/24 –gateway 192.168.56.1 fairino-net</cite></p>
+<a class="reference internal image-reference" href="../_images/0549.png"><img alt="../_images/0549.png" class="align-center" src="../_images/0549.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="6">
+<li><p>Reconnect the container to the newly created network;</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker network connect fairino-net [Container ID]</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/0559.png"><img alt="../_images/0559.png" class="align-center" src="../_images/0559.png" style="width: 6in;" /></a>
+<ol class="arabic simple" start="7">
+<li><p>Restart the container;</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="go">docker start [Container ID]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><p>Now open the browser, enter the modified IP address, to access the web interface and operate the virtual robot.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/05610.png"><img alt="../_images/05610.png" class="align-center" src="../_images/05610.png" style="width: 6in;" /></a>
+</section>
+</section>
+<section id="virtual-machine-version-upgrade-downgrade">
+<h2><span class="section-number">2.3. </span>Virtual Machine Version Upgrade/Downgrade<a class="headerlink" href="#virtual-machine-version-upgrade-downgrade" title="Permalink to this heading"></a></h2>
+<section id="overview">
+<h3><span class="section-number">2.3.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h3>
+<p>This manual details the standard procedure for performing software upgrades and downgrades when using the FAIRINO SimMachine Docker virtual machine, and systematically outlines key considerations during the version change process.</p>
+</section>
+<section id="upgrade-downgrade-preparation-and-considerations">
+<h3><span class="section-number">2.3.2. </span>Upgrade/Downgrade Preparation and Considerations<a class="headerlink" href="#upgrade-downgrade-preparation-and-considerations" title="Permalink to this heading"></a></h3>
+<section id="operation-preparation">
+<h4><span class="section-number">2.3.2.1. </span>Operation Preparation<a class="headerlink" href="#operation-preparation" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>A deployed and normally functioning FAIRINO SimMachine Docker virtual machine. Deployment tutorial see “User Manual - Linux Docker Image Deployment”;</p></li>
+<li><p>Software upgrade package for the Docker virtual machine version. Download location see “Data Download - FAIRINO SimMachine Docker”. After extraction, contents include the latest version docker image FAIRINOSimMachine.tar and the software upgrade package software.tar.gz.</p></li>
+</ol>
+</section>
+<section id="considerations">
+<h4><span class="section-number">2.3.2.2. </span>Considerations<a class="headerlink" href="#considerations" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Data Backup: It is recommended to perform a backup before upgrading, method see “Data Backup” chapter, to avoid data loss due to upgrade anomalies.</p></li>
+<li><p>Version Restrictions:</p></li>
+</ol>
+<p class="centered">
+<strong>Table 2.3-1 Upgrade/Downgrade Version Restrictions</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Operation Type</strong></p></td>
+<td><p><strong>Condition/Restriction</strong></p></td>
+<td><p><strong>Step Description</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Version Upgrade</strong></p></td>
+<td><p>Current Version &gt;= 3.7.8</p></td>
+<td><p>Can upgrade directly</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Version Upgrade</strong></p></td>
+<td><p>Current Version &lt; 3.7.8</p></td>
+<td><p>Must first upgrade to version 3.7.5 or use the compatibility solution</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Version Downgrade</strong></p></td>
+<td><p>Current AND Target Version &gt;= 3.7.8</p></td>
+<td><p>Can downgrade directly</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Version Downgrade</strong></p></td>
+<td><p>Current OR Target Version &lt; 3.7.8</p></td>
+<td><p>Use the compatibility solution</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Compatibility Solution</strong></p></td>
+<td><p>Applicable for both upgrade/downgrade anomalies</p></td>
+<td><p>See “Compatibility Solution” chapter for detailed steps</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="controller_virtual_machine.html" class="btn btn-neutral float-left" title="1. Virtual Machine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="controller_machine_appendix.html" class="btn btn-neutral float-right" title="3. Appendix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2026, Fairino (Suzhou) Robot Technology Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

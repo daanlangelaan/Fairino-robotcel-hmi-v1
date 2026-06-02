@@ -1,0 +1,149 @@
+﻿[
+    {
+        "file":  "index.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/",
+        "description":  "Main FAIRINO documentation index",
+        "size_bytes":  697433,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "download.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/download.html",
+        "description":  "Official download page and source links",
+        "size_bytes":  35766,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "webapp_access.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/CobotsManual/access.html",
+        "description":  "WebApp access and login",
+        "size_bytes":  21563,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "manual_teaching.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/CobotsManual/manual_teaching.html",
+        "description":  "Manual teaching and recording points",
+        "size_bytes":  12094,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "quick_programming.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/CobotsManual/quick_programming.html",
+        "description":  "Robot quick programming",
+        "size_bytes":  17973,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "coding.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/CobotsManual/coding.html",
+        "description":  "Coding/program teach reference",
+        "size_bytes":  557056,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "graphical_programming.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/CobotsManual/graphical.html",
+        "description":  "Graphical programming commands including PTP, LIN, Wait, I/O",
+        "size_bytes":  141797,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "node_graph_programming.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/CobotsManual/node_editor_software.html",
+        "description":  "Node graph programming reference",
+        "size_bytes":  131932,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "points.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/CobotsManual/points.html",
+        "description":  "Points / teaching management",
+        "size_bytes":  16915,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "sdk_index.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/SDKManual/index.html",
+        "description":  "SDK manual index",
+        "size_bytes":  488556,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "lua_programming_intro.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/LuaProgram/lua_intro.html",
+        "description":  "FR Lua manual landing page",
+        "size_bytes":  8669,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "frlua_programming_script_manual.pdf",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/_downloads/42de695c8c372a764d5fb05343e043bf/FRLua%20programming%20script%20user%20manual.pdf",
+        "description":  "FRLua programming script user manual PDF",
+        "size_bytes":  1229621,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "robot_communication_intro.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/RobotCommunication/cnde_intro.html",
+        "description":  "Robot communication overview",
+        "size_bytes":  11286,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "robot_communication_protocol.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/RobotCommunication/cnde_protocol.html",
+        "description":  "CNDE protocol format",
+        "size_bytes":  11761,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "robot_communication_functions.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/RobotCommunication/cnde_func.html",
+        "description":  "CNDE function operations",
+        "size_bytes":  39518,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "robot_io_registers.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/RobotCommunication/cnde_register.html",
+        "description":  "Robot input/output register reference",
+        "size_bytes":  27667,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "status_feedback_protocol.pdf",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/_downloads/7ed2c1d8ecad7b4456849d74c8fd05be/Robot%208083%20Port%20Status%20Feedback%20User%20Manual.pdf",
+        "description":  "8083 port status feedback protocol PDF",
+        "size_bytes":  639625,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "communication_command_protocol.pdf",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/_downloads/8111110bc2f62d9fc04a4a9c346359b9/Collaborative%20Robot%20Controller%20Communication%20Command%20Protocol%20User%20Manual.pdf",
+        "description":  "Controller communication command protocol PDF",
+        "size_bytes":  2121637,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "simmachine_intro.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/VMMachine/vm_intro.html",
+        "description":  "FAIRINO SimMachine overview",
+        "size_bytes":  12940,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "simmachine_vmware.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/VMMachine/controller_virtual_machine.html",
+        "description":  "SimMachine VMware instructions",
+        "size_bytes":  13658,
+        "downloaded":  "2026-05-21"
+    },
+    {
+        "file":  "simmachine_docker.html",
+        "url":  "https://fairino-doc-en.readthedocs.io/latest/VMMachine/controller_docker_machine.html",
+        "description":  "SimMachine Docker instructions",
+        "size_bytes":  27411,
+        "downloaded":  "2026-05-21"
+    }
+]

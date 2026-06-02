@@ -1,0 +1,5 @@
+ModbusSlaveWriteAO(AO50, 1, 0)
+ModbusSlaveWriteAO(AO51, 1, 0)
+ModbusSlaveWriteAO(AO52, 1, 0)
+ModbusSlaveWriteAO(AO53, 1, 1)
+WaitMs(100)
