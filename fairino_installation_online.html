@@ -1,0 +1,3926 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. Installation &mdash; FAIRINO Collaborative Robot User Manual 3.9.6 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Quick start" href="quick_start_robot.html" />
+    <link rel="prev" title="2. Robot brief introduction" href="robot_brief_introduction.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="fairino-doc-en" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/CobotsManual/installation.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Collaborative robot</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html#product-matrix">Product matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#quick-start">Quick start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="intro.html#manual">Manual</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="foreword.html">1. Foreword</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot_brief_introduction.html">2. Robot brief introduction</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3. Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#instructions-for-security">3.1. Instructions for security</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#equipment-transportation">3.2. Equipment transportation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-inspection-and-scrapping">3.3. Maintenance, inspection, and scrapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installation-specifications">3.4. Installation specifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#control-connection">3.5. Control connection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demonstrate-and-end-led">3.6. Demonstrate and end LED</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_start_robot.html">4. Quick start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="teaching_pendant_software.html">5. Teaching pendant software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">6. Base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html">7. Safety</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robot_peripherals.html">8. Peripherals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coding.html">9. Coding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphical.html">10. Graphical programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="node_editor_software.html">11. Node graph programming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="points.html">12. Teaching Points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="status.html">13. Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="application.html">14. Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process.html">15. Process Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system.html">16. System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="teach_pendant.html">17. Teach pendant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="custom_protocol_slave.html">18. Custom protocol slave commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html">19. Appendix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="term.html">20. Term</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#changelog">Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../SDKManual/index.html">SDK Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../VMMachine/vm_intro.html">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FRCap/frcap_intro.html">FRCap Plug-in system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LuaProgram/lua_intro.html">FR LUA Programming Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RobotCommunication/cnde_intro.html">Robot Communication</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Open platform</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html">frcobot_ros</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#frcobot-ros2">frcobot_ros2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROSGuide/index.html#moveit2">moveIt2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Download</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../download.html">Brochure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#qualification-certification">Qualification Certification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#secondary-development">Secondary Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#ontology-dimensional-drawings">Ontology &amp; Dimensional Drawings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-cad-files">2D CAD Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#d-models">3D Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#fairino-simmachine">FAIRINO SimMachine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#palletizer-frcap">Palletizer frcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#cpp-sdk">CPP SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#c-sdk">C# SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#python-sdk">Python SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#java-sdk">Java SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#status-feedback-protocol">Status Feedback Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#communication-command-protocol">Communication Command Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../download.html#robot-software">Robot software</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FAIRINO Collaborative Robot User Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="intro.html">Collaborative robot</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/CobotsManual/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1><span class="section-number">3. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="instructions-for-security">
+<h2><span class="section-number">3.1. </span>Instructions for security<a class="headerlink" href="#instructions-for-security" title="Permalink to this heading"></a></h2>
+<section id="brief-introduction">
+<h3><span class="section-number">3.1.1. </span>Brief introduction<a class="headerlink" href="#brief-introduction" title="Permalink to this heading"></a></h3>
+<p>This manual will use the following warnings. The role of these warnings is to ensure the safety of personal and equipment. When you read this manual, you must comply with and execute all the assembly instructions and guidelines in other chapters in this manual. This is very important. Pay special attention to text related to warning signs.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p>If the robot (robot body, control box, teaching pendant, or button box) is damaged, changed or modified due to anthropogenic causes, FAIR INNOVATION refuses to bear all responsibilities;</p></li>
+<li><p>FAIR INNOVATION is not responsible for any damage caused by the robot or any other device due to errors written by customers or any other device.</p></li>
+</ul>
+</div>
+</section>
+<section id="personnel-safety">
+<h3><span class="section-number">3.1.2. </span>Personnel safety<a class="headerlink" href="#personnel-safety" title="Permalink to this heading"></a></h3>
+<p>When running the robot system, we must first ensure the safety of the operators. The general precautions are listed below. Please take corresponding measures to ensure the safety of the operator.</p>
+<ol class="arabic simple">
+<li><p>All operators who use the robot system should be trained through training courses sponsored by the FAIR INNOVATION (Suzhou) ROBOTIC SYSTEM COMPANY. Users need to ensure that they fully grasp the safe and standardized operating processes and have the qualifications for robotic operations. For training details, please check with our company, the mailbox is <a class="reference external" href="mailto:jiling&#37;&#52;&#48;frtech&#46;fr">jiling<span>&#64;</span>frtech<span>&#46;</span>fr</a>.</p></li>
+<li><p>All operators who use the robot system, please do not wear loose clothes or jewelry. Make sure the long hair beam is behind the head when operating the robot.</p></li>
+<li><p>During the operation of the device, even if the robot seems to have stopped, it may be because the robot is waiting to start the signal and is in a state of motion. Even in such a state, the robot should be regarded as in action.</p></li>
+<li><p>The lines should be drawn on the floor to mark the scope of the robot, so that the operator understands the action range of the robot includes holding tools (robotics, tools, etc.).</p></li>
+<li><p>Ensure safety measures (such as guardrails, ropes, or protective screens) near the robotic operation area to protect operators and surrounding people. Locks should be set up as needed, so that those who are responsible for operations cannot reach the power supply of the robot.</p></li>
+<li><p>When using the operating panel and teaching pendant, because you may have an operational error in wearing gloves, you must work after taking off the gloves.</p></li>
+<li><p>Under the emergency and abnormalities of people being pinched or wrapped inside by a robot, pushing or pulling the robot arm by force (at least 700 N) to force joint movements. With a power-free driver, the arm of the manual mobile robot is limited to emergency and may damage the joint.</p></li>
+</ol>
+</section>
+<section id="danger-recognition">
+<h3><span class="section-number">3.1.3. </span>Danger recognition<a class="headerlink" href="#danger-recognition" title="Permalink to this heading"></a></h3>
+<p>Risk assessment should consider all potential contact between operators and robots during normal use and foreseeable misunderstandings. The operator’s neck, face, and head should not be exposed to avoid touch. Using robots without using peripheral safety protection devices requires the first risk assessment to determine whether the relevant hazards will constitute an unacceptable risk, such as</p>
+<ul class="simple">
+<li><p>There may be danger of using a sharp end actuator or tool connector;</p></li>
+<li><p>There may be danger of treatment of toxicity or other harmful substances;</p></li>
+<li><p>The operator’s finger has the danger of being clamped by a robot base or joint;</p></li>
+<li><p>The danger of collision by robots;</p></li>
+<li><p>The danger of robots or tools connected to the end not being fixed in place;</p></li>
+<li><p>The risk of the impact between the effective load and the strong surface of the robot.</p></li>
+</ul>
+<p>Integrates must measure such dangers and related risk levels through risk assessment, and determine and implement corresponding measures to reduce the risk to acceptable levels. Please note that there may be other major dangers in specific robots.</p>
+<p>By combining the inherent security design measures used by FR robots with the safety specifications or risk assessment implemented by integrated and end users, the risks related to FR collaborative operations will be reduced to a reasonable and feasible level. Through this document, any remaining risk of the robot can be conveyed to the integrated and end users before installation. If the risk assessment of the integrator determines that the existence of a specific application that may have unacceptable risks that may constitute unacceptable risks, integrators must
+appropriate risk reduction measures must be taken to eliminate or minimize these dangers until the risk is reduced to acceptable levels. It is not safe to use before taking appropriate risk reduction measures (if necessary).</p>
+<p>If the robot is installed in non-synergistic installation (for example, when using a hazardous tool), risk assessment may infer the integrated provider to connect additional safety equipment (such as safety startup equipment) to ensure personnel and equipment safety when programming.</p>
+</section>
+<section id="nameplate-information">
+<h3><span class="section-number">3.1.4. </span>Nameplate information<a class="headerlink" href="#nameplate-information" title="Permalink to this heading"></a></h3>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0026.png"><img alt="../_images/0026.png" src="../_images/0026.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-1 FR3 model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1062.png"><img alt="../_images/1062.png" src="../_images/1062.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-2 FR3-WMS model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1072.png"><img alt="../_images/1072.png" src="../_images/1072.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-3 FR3-WML model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1082.png"><img alt="../_images/1082.png" src="../_images/1082.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-4 FR3-C model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0037.png"><img alt="../_images/0037.png" src="../_images/0037.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-5 FR5 model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1282.png"><img alt="../_images/1282.png" src="../_images/1282.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-6 FR5-C Model Collaborative Robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1262.png"><img alt="../_images/1262.png" src="../_images/1262.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-7 FR5-WML model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0047.png"><img alt="../_images/0047.png" src="../_images/0047.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-8 FR10 model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0057.png"><img alt="../_images/0057.png" src="../_images/0057.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-9 FR16 model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0067.png"><img alt="../_images/0067.png" src="../_images/0067.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-10 FR20 model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0076.png"><img alt="../_images/0076.png" src="../_images/0076.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-11 FR30 model collaborative robot</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1252.png"><img alt="../_images/1252.png" src="../_images/1252.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.1-12 FR30L model collaborative robot</strong></p></section>
+<section id="effectiveness-and-responsibility">
+<h3><span class="section-number">3.1.5. </span>Effectiveness and responsibility<a class="headerlink" href="#effectiveness-and-responsibility" title="Permalink to this heading"></a></h3>
+<p>The information in this manual does not include a complete robot application in design, installation and operation, nor does it contain all peripheral equipment that may affect the security of this complete system. The design and installation of this complete system must meet the safety requirements established in the standards and specifications of the country’s installation.</p>
+<p>The integrated integrator of FAIR INNOVATION is responsible for ensuring that it follows the laws and regulations of relevant countries, and there is no major danger in the complete robotic application. This includes but not limited to the following:</p>
+<ul class="simple">
+<li><p>Do a risk assessment of the complete robot system</p></li>
+<li><p>Connect other machinery and additional safety equipment defined by risk assessment and definition</p></li>
+<li><p>Establish appropriate security settings in software</p></li>
+<li><p>Make sure that users will not modify any security measures</p></li>
+<li><p>Confirm that the design and installation of the entire robot system is accurate</p></li>
+<li><p>Clear instructions for use</p></li>
+<li><p>Kark the relevant signs and contact information of integrators on the robot</p></li>
+<li><p>Collect all the documents in the technical file, including this manual</p></li>
+</ul>
+</section>
+<section id="limited-responsibility">
+<h3><span class="section-number">3.1.6. </span>Limited responsibility<a class="headerlink" href="#limited-responsibility" title="Permalink to this heading"></a></h3>
+<p>Any security information contained in this manual shall not be regarded as a general robot safety guarantee. Even if you comply with all security descriptions, it may still cause personnel damage or equipment damage.</p>
+</section>
+<section id="the-warning-signs-in-this-manual">
+<h3><span class="section-number">3.1.7. </span>The warning signs in this manual<a class="headerlink" href="#the-warning-signs-in-this-manual" title="Permalink to this heading"></a></h3>
+<p>The following flag defines the explanation of the danger level provisions contained in this manual. The product also uses the same warning signs.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<figure class="align-left">
+<a class="reference internal image-reference" href="../_images/0085.png"><img alt="../_images/0085.png" src="../_images/0085.png" style="width: 60px; height: 50px;" /></a>
+</figure>
+<p>Danger: This refers to the power consumption that is about to cause danger. If it is not avoided, it can lead to death or severe damage.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<figure class="align-left">
+<a class="reference internal image-reference" href="../_images/0094.png"><img alt="../_images/0094.png" src="../_images/0094.png" style="width: 60px; height: 50px;" /></a>
+</figure>
+<p>Electric shock danger: This refers to the upcoming electric shock situation that is about to cause danger.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<figure class="align-left">
+<a class="reference internal image-reference" href="../_images/0105.png"><img alt="../_images/0105.png" src="../_images/0105.png" style="width: 60px; height: 50px;" /></a>
+</figure>
+<p>Dangerous burns: This refers to the hot surface that may cause danger. If you do not avoid contact, it can cause personnel to hurt.</p>
+</div>
+</section>
+<section id="pre-use-evaluation">
+<h3><span class="section-number">3.1.8. </span>Pre-use evaluation<a class="headerlink" href="#pre-use-evaluation" title="Permalink to this heading"></a></h3>
+<p>After using a robot or any modification for the first time, the robot’s default speed is less than 250mm/s. Do not log in to the administrator to modify the speed to enter the high-speed mode. After that, the following test must be performed. It is confirmed that all security input and output are correct and the connection is correct. Test whether all connected security input and output (including multiple machines or robots shared equipments) are normal. So you must:</p>
+<ul class="simple">
+<li><p>Test whether the emergency stop button and input can stop the robot and start the brake.</p></li>
+<li><p>Test whether the protection input can stop the robot movement. If the protection reset is configured, check if you need activation before recovery.</p></li>
+<li><p>The test operation mode can switch the operation mode, see the icon in the upper right corner of the user interface.</p></li>
+<li><p>Test whether the 3rd gear actuation device must be pressed to activate in manual mode, and the robot is under deceleration control (the robot software version V3.0 does not support this function).</p></li>
+<li><p>Test whether the system emergency stop output can bring the entire system to a safe state.</p></li>
+</ul>
+</section>
+<section id="emergency-stop">
+<h3><span class="section-number">3.1.9. </span>Emergency stop<a class="headerlink" href="#emergency-stop" title="Permalink to this heading"></a></h3>
+<p>The emergency stop button is type 0 stop. Press the emergency stop button to stop all the movements of the robot immediately.</p>
+<p>The following table shows the stop distance and stop time of the type 0 stop. These measurement results correspond to the following configuration of the robot:</p>
+<ul class="simple">
+<li><p>Extension: 100%(the robotic arm is fully expanded)</p></li>
+<li><p>Speed: 100%(Robot general speed is set to 100%, moved at a joint speed of 180 °/s)</p></li>
+<li><p>Effective load: Maximum effective load</p></li>
+</ul>
+<p>Joint 1, joint 6 testing robot levels, the rotating shaft is perpendicular to the ground. Joint 2, joint 3, joint 4, joint 5 testing robots follow the vertical trajectory, the rotating shaft is parallel to the ground, and stops when the robot moves down.</p>
+<p class="centered">
+<strong>Table 3.1-1 Category 0 stop distance(rad)</strong></p><table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Joint 1</strong></p></td>
+<td><p><strong>Joint 2</strong></p></td>
+<td><p><strong>Joint 3</strong></p></td>
+<td><p><strong>Joint 4</strong></p></td>
+<td><p><strong>Joint 5</strong></p></td>
+<td><p><strong>Joint 6</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3</strong></p></td>
+<td><p>0.47</p></td>
+<td><p>0.60</p></td>
+<td><p>0.56</p></td>
+<td><p>0.29</p></td>
+<td><p>0.10</p></td>
+<td><p>0.06</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-WMS</strong></p></td>
+<td><p>0.47</p></td>
+<td><p>0.60</p></td>
+<td><p>0.56</p></td>
+<td><p>0.29</p></td>
+<td><p>0.10</p></td>
+<td><p>0.06</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3-WML</strong></p></td>
+<td><p>0.51</p></td>
+<td><p>0.63</p></td>
+<td><p>0.60</p></td>
+<td><p>0.33</p></td>
+<td><p>0.16</p></td>
+<td><p>0.10</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-C</strong></p></td>
+<td><p>0.47</p></td>
+<td><p>0.60</p></td>
+<td><p>0.56</p></td>
+<td><p>0.29</p></td>
+<td><p>0.10</p></td>
+<td><p>0.06</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR5</strong></p></td>
+<td><p>0.51</p></td>
+<td><p>0.63</p></td>
+<td><p>0.60</p></td>
+<td><p>0.33</p></td>
+<td><p>0.16</p></td>
+<td><p>0.10</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR5-C</strong></p></td>
+<td><p>0.51</p></td>
+<td><p>0.63</p></td>
+<td><p>0.60</p></td>
+<td><p>0.33</p></td>
+<td><p>0.16</p></td>
+<td><p>0.10</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR10</strong></p></td>
+<td><p>0.64</p></td>
+<td><p>0.70</p></td>
+<td><p>0.69</p></td>
+<td><p>0.42</p></td>
+<td><p>0.25</p></td>
+<td><p>0.13</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR16</strong></p></td>
+<td><p>0.60</p></td>
+<td><p>0.67</p></td>
+<td><p>0.65</p></td>
+<td><p>0.39</p></td>
+<td><p>0.22</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR20</strong></p></td>
+<td><p>0.69</p></td>
+<td><p>0.75</p></td>
+<td><p>0.80</p></td>
+<td><p>0.48</p></td>
+<td><p>0.31</p></td>
+<td><p>0.22</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR30L</strong></p></td>
+<td><p>0.69</p></td>
+<td><p>0.75</p></td>
+<td><p>0.80</p></td>
+<td><p>0.48</p></td>
+<td><p>0.31</p></td>
+<td><p>0.22</p></td>
+</tr>
+</tbody>
+</table>
+<p class="centered">
+<strong>Table 3.1-2 Category 0 stop time (ms)</strong></p><table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Joint 1</strong></p></td>
+<td><p><strong>Joint 2</strong></p></td>
+<td><p><strong>Joint 3</strong></p></td>
+<td><p><strong>Joint 4</strong></p></td>
+<td><p><strong>Joint 5</strong></p></td>
+<td><p><strong>Joint 6</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3</strong></p></td>
+<td><p>400</p></td>
+<td><p>470</p></td>
+<td><p>450</p></td>
+<td><p>280</p></td>
+<td><p>120</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-WMS</strong></p></td>
+<td><p>400</p></td>
+<td><p>470</p></td>
+<td><p>450</p></td>
+<td><p>280</p></td>
+<td><p>120</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3-WML</strong></p></td>
+<td><p>400</p></td>
+<td><p>470</p></td>
+<td><p>450</p></td>
+<td><p>280</p></td>
+<td><p>120</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-C</strong></p></td>
+<td><p>400</p></td>
+<td><p>470</p></td>
+<td><p>450</p></td>
+<td><p>280</p></td>
+<td><p>120</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR5</strong></p></td>
+<td><p>420</p></td>
+<td><p>500</p></td>
+<td><p>480</p></td>
+<td><p>310</p></td>
+<td><p>150</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR5-C</strong></p></td>
+<td><p>420</p></td>
+<td><p>500</p></td>
+<td><p>480</p></td>
+<td><p>310</p></td>
+<td><p>150</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR10</strong></p></td>
+<td><p>460</p></td>
+<td><p>540</p></td>
+<td><p>510</p></td>
+<td><p>330</p></td>
+<td><p>170</p></td>
+<td><p>140</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR16</strong></p></td>
+<td><p>440</p></td>
+<td><p>530</p></td>
+<td><p>490</p></td>
+<td><p>320</p></td>
+<td><p>160</p></td>
+<td><p>130</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR20</strong></p></td>
+<td><p>540</p></td>
+<td><p>600</p></td>
+<td><p>700</p></td>
+<td><p>400</p></td>
+<td><p>260</p></td>
+<td><p>170</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR30L</strong></p></td>
+<td><p>540</p></td>
+<td><p>600</p></td>
+<td><p>700</p></td>
+<td><p>400</p></td>
+<td><p>260</p></td>
+<td><p>170</p></td>
+</tr>
+</tbody>
+</table>
+<p>After the emergency stop, turn off the power, rotate the emergency stop button, and turn on the power to restart the robot.</p>
+<p>At the same time, the stop time and stop distance of the robot safety stop and soft limit stop are shown in the table below. These measurement results correspond to the following configuration of the robot:</p>
+<ul class="simple">
+<li><p>Extension: 100%(the robotic arm is fully expanded)</p></li>
+<li><p>Speed: 100%(Robot general speed is set to 100%, moved at a joint speed of 180 °/s)</p></li>
+<li><p>Effective load: Maximum effective load</p></li>
+</ul>
+<p>Joint 1, joint 6 testing robot levels, the rotating shaft is perpendicular to the ground. Joint 2, joint 3, joint 4, joint 5 testing robots follow the vertical trajectory, the rotating shaft is parallel to the ground, and stops when the robot moves down.</p>
+<p class="centered">
+<strong>Table 3.1-3 Safety stop distance(rad)</strong></p><table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Joint 1</strong></p></td>
+<td><p><strong>Joint 2</strong></p></td>
+<td><p><strong>Joint 3</strong></p></td>
+<td><p><strong>Joint 4</strong></p></td>
+<td><p><strong>Joint 5</strong></p></td>
+<td><p><strong>Joint 6</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3</strong></p></td>
+<td><p>0.49</p></td>
+<td><p>0.63</p></td>
+<td><p>0.58</p></td>
+<td><p>0.32</p></td>
+<td><p>0.12</p></td>
+<td><p>0.09</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-WMS</strong></p></td>
+<td><p>0.49</p></td>
+<td><p>0.63</p></td>
+<td><p>0.58</p></td>
+<td><p>0.32</p></td>
+<td><p>0.12</p></td>
+<td><p>0.09</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3-WML</strong></p></td>
+<td><p>0.54</p></td>
+<td><p>0.65</p></td>
+<td><p>0.63</p></td>
+<td><p>0.35</p></td>
+<td><p>0.19</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-C</strong></p></td>
+<td><p>0.49</p></td>
+<td><p>0.63</p></td>
+<td><p>0.58</p></td>
+<td><p>0.32</p></td>
+<td><p>0.12</p></td>
+<td><p>0.09</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR5</strong></p></td>
+<td><p>0.54</p></td>
+<td><p>0.65</p></td>
+<td><p>0.63</p></td>
+<td><p>0.35</p></td>
+<td><p>0.19</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR5-C</strong></p></td>
+<td><p>0.54</p></td>
+<td><p>0.65</p></td>
+<td><p>0.63</p></td>
+<td><p>0.35</p></td>
+<td><p>0.19</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR10</strong></p></td>
+<td><p>0.66</p></td>
+<td><p>0.73</p></td>
+<td><p>0.71</p></td>
+<td><p>0.45</p></td>
+<td><p>0.27</p></td>
+<td><p>0.14</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR16</strong></p></td>
+<td><p>0.63</p></td>
+<td><p>0.69</p></td>
+<td><p>0.68</p></td>
+<td><p>0.41</p></td>
+<td><p>0.25</p></td>
+<td><p>0.14</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR20</strong></p></td>
+<td><p>0.71</p></td>
+<td><p>0.78</p></td>
+<td><p>0.82</p></td>
+<td><p>0.51</p></td>
+<td><p>0.33</p></td>
+<td><p>0.25</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR30L</strong></p></td>
+<td><p>0.71</p></td>
+<td><p>0.78</p></td>
+<td><p>0.82</p></td>
+<td><p>0.51</p></td>
+<td><p>0.33</p></td>
+<td><p>0.25</p></td>
+</tr>
+</tbody>
+</table>
+<p class="centered">
+<strong>Table 3.1-4 Safety stop time(ms)</strong></p><table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Joint 1</strong></p></td>
+<td><p><strong>Joint 2</strong></p></td>
+<td><p><strong>Joint 3</strong></p></td>
+<td><p><strong>Joint 4</strong></p></td>
+<td><p><strong>Joint 5</strong></p></td>
+<td><p><strong>Joint 6</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3</strong></p></td>
+<td><p>410</p></td>
+<td><p>490</p></td>
+<td><p>410</p></td>
+<td><p>300</p></td>
+<td><p>130</p></td>
+<td><p>110</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-WMS</strong></p></td>
+<td><p>410</p></td>
+<td><p>490</p></td>
+<td><p>410</p></td>
+<td><p>300</p></td>
+<td><p>130</p></td>
+<td><p>110</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3-WML</strong></p></td>
+<td><p>410</p></td>
+<td><p>490</p></td>
+<td><p>410</p></td>
+<td><p>300</p></td>
+<td><p>130</p></td>
+<td><p>110</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-C</strong></p></td>
+<td><p>410</p></td>
+<td><p>490</p></td>
+<td><p>410</p></td>
+<td><p>300</p></td>
+<td><p>130</p></td>
+<td><p>110</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR5</strong></p></td>
+<td><p>450</p></td>
+<td><p>520</p></td>
+<td><p>510</p></td>
+<td><p>330</p></td>
+<td><p>180</p></td>
+<td><p>140</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR5-C</strong></p></td>
+<td><p>450</p></td>
+<td><p>520</p></td>
+<td><p>510</p></td>
+<td><p>330</p></td>
+<td><p>180</p></td>
+<td><p>140</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR10</strong></p></td>
+<td><p>480</p></td>
+<td><p>570</p></td>
+<td><p>530</p></td>
+<td><p>360</p></td>
+<td><p>190</p></td>
+<td><p>170</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR16</strong></p></td>
+<td><p>470</p></td>
+<td><p>550</p></td>
+<td><p>520</p></td>
+<td><p>340</p></td>
+<td><p>190</p></td>
+<td><p>150</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR20</strong></p></td>
+<td><p>560</p></td>
+<td><p>630</p></td>
+<td><p>720</p></td>
+<td><p>430</p></td>
+<td><p>280</p></td>
+<td><p>200</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR30L</strong></p></td>
+<td><p>560</p></td>
+<td><p>630</p></td>
+<td><p>720</p></td>
+<td><p>430</p></td>
+<td><p>280</p></td>
+<td><p>200</p></td>
+</tr>
+</tbody>
+</table>
+<p class="centered">
+<strong>Table 3.1-5 Soft limit stop distance(rad)</strong></p><table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Joint 1</strong></p></td>
+<td><p><strong>Joint 2</strong></p></td>
+<td><p><strong>Joint 3</strong></p></td>
+<td><p><strong>Joint 4</strong></p></td>
+<td><p><strong>Joint 5</strong></p></td>
+<td><p><strong>Joint 6</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3</strong></p></td>
+<td><p>0.52</p></td>
+<td><p>0.65</p></td>
+<td><p>0.61</p></td>
+<td><p>0.34</p></td>
+<td><p>0.15</p></td>
+<td><p>0.11</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-WMS</strong></p></td>
+<td><p>0.52</p></td>
+<td><p>0.65</p></td>
+<td><p>0.61</p></td>
+<td><p>0.34</p></td>
+<td><p>0.15</p></td>
+<td><p>0.11</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3-WML</strong></p></td>
+<td><p>0.56</p></td>
+<td><p>0.68</p></td>
+<td><p>0.65</p></td>
+<td><p>0.38</p></td>
+<td><p>0.21</p></td>
+<td><p>0.15</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-C</strong></p></td>
+<td><p>0.52</p></td>
+<td><p>0.65</p></td>
+<td><p>0.61</p></td>
+<td><p>0.34</p></td>
+<td><p>0.15</p></td>
+<td><p>0.11</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR5</strong></p></td>
+<td><p>0.56</p></td>
+<td><p>0.68</p></td>
+<td><p>0.65</p></td>
+<td><p>0.38</p></td>
+<td><p>0.21</p></td>
+<td><p>0.15</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR5-C</strong></p></td>
+<td><p>0.56</p></td>
+<td><p>0.68</p></td>
+<td><p>0.65</p></td>
+<td><p>0.38</p></td>
+<td><p>0.21</p></td>
+<td><p>0.15</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR10</strong></p></td>
+<td><p>0.69</p></td>
+<td><p>0.75</p></td>
+<td><p>0.74</p></td>
+<td><p>0.47</p></td>
+<td><p>0.30</p></td>
+<td><p>0.18</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR16</strong></p></td>
+<td><p>0.65</p></td>
+<td><p>0.72</p></td>
+<td><p>0.70</p></td>
+<td><p>0.44</p></td>
+<td><p>0.27</p></td>
+<td><p>0.17</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR20</strong></p></td>
+<td><p>0.74</p></td>
+<td><p>0.80</p></td>
+<td><p>0.85</p></td>
+<td><p>0.53</p></td>
+<td><p>0.36</p></td>
+<td><p>0.27</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR30L</strong></p></td>
+<td><p>0.74</p></td>
+<td><p>0.80</p></td>
+<td><p>0.85</p></td>
+<td><p>0.53</p></td>
+<td><p>0.36</p></td>
+<td><p>0.27</p></td>
+</tr>
+</tbody>
+</table>
+<p class="centered">
+<strong>Table 3.1-6 Soft limit stop time(ms)</strong></p><table class="sheet-center docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Joint 1</strong></p></td>
+<td><p><strong>Joint 2</strong></p></td>
+<td><p><strong>Joint 3</strong></p></td>
+<td><p><strong>Joint 4</strong></p></td>
+<td><p><strong>Joint 5</strong></p></td>
+<td><p><strong>Joint 6</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3</strong></p></td>
+<td><p>430</p></td>
+<td><p>500</p></td>
+<td><p>430</p></td>
+<td><p>310</p></td>
+<td><p>150</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-WMS</strong></p></td>
+<td><p>430</p></td>
+<td><p>500</p></td>
+<td><p>430</p></td>
+<td><p>310</p></td>
+<td><p>150</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR3-WML</strong></p></td>
+<td><p>430</p></td>
+<td><p>500</p></td>
+<td><p>430</p></td>
+<td><p>310</p></td>
+<td><p>150</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR3-C</strong></p></td>
+<td><p>430</p></td>
+<td><p>500</p></td>
+<td><p>430</p></td>
+<td><p>310</p></td>
+<td><p>150</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR5</strong></p></td>
+<td><p>460</p></td>
+<td><p>540</p></td>
+<td><p>520</p></td>
+<td><p>350</p></td>
+<td><p>190</p></td>
+<td><p>160</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR5-C</strong></p></td>
+<td><p>460</p></td>
+<td><p>540</p></td>
+<td><p>520</p></td>
+<td><p>350</p></td>
+<td><p>190</p></td>
+<td><p>160</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR10</strong></p></td>
+<td><p>500</p></td>
+<td><p>580</p></td>
+<td><p>550</p></td>
+<td><p>370</p></td>
+<td><p>210</p></td>
+<td><p>180</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR16</strong></p></td>
+<td><p>480</p></td>
+<td><p>570</p></td>
+<td><p>530</p></td>
+<td><p>360</p></td>
+<td><p>200</p></td>
+<td><p>170</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FR20</strong></p></td>
+<td><p>580</p></td>
+<td><p>640</p></td>
+<td><p>740</p></td>
+<td><p>440</p></td>
+<td><p>300</p></td>
+<td><p>210</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FR30L</strong></p></td>
+<td><p>580</p></td>
+<td><p>640</p></td>
+<td><p>740</p></td>
+<td><p>440</p></td>
+<td><p>300</p></td>
+<td><p>210</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>According to IEC 60204-1 and ISO 13850, emergency stop device is not a safe protection device. They are supplementary protection measures and do not need to prevent damage.</p>
+</div>
+</section>
+<section id="power-free-movement">
+<h3><span class="section-number">3.1.10. </span>Power-free movement<a class="headerlink" href="#power-free-movement" title="Permalink to this heading"></a></h3>
+<p>If you must move the robot joint but cannot power the robot or other emergencies, please contact the robot dealer. If necessary, you can use violent means to force mobile robots to rescue the trapped persons.</p>
+</section>
+</section>
+<section id="equipment-transportation">
+<h2><span class="section-number">3.2. </span>Equipment transportation<a class="headerlink" href="#equipment-transportation" title="Permalink to this heading"></a></h2>
+<section id="transportation">
+<h3><span class="section-number">3.2.1. </span>Transportation<a class="headerlink" href="#transportation" title="Permalink to this heading"></a></h3>
+<p>Robot and control boxes have been calibrated as complete equipment. Do not separate them, that would require recalibration.</p>
+<p>You can only transport the robot in the original packaging. If you want to move the robot in the future, save the packaging material in a dry place.</p>
+<p>When the robot moves from the packaging to the installation space, the two arms of the robot are held at the same time. Hold the robot until all the installation bolts of the robot seat are tight.</p>
+</section>
+<section id="carry">
+<h3><span class="section-number">3.2.2. </span>Carry<a class="headerlink" href="#carry" title="Permalink to this heading"></a></h3>
+<p>According to different models, the total quality (including packaging) is 15kg-80 kg depending on the model. When manpower transports or transfers the collaborative robot, multiple people need to help lift it, don’t recommend single-person handling, it must be stable during transportation. Avoid equipment tilt or slipping.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p>If you use professional equipment for handling, be sure to use a crane or forklift to transport or carry the collaborative robot by using a crane or forklift, otherwise it may cause personnel damage or other accidents;</p></li>
+<li><p>If you use manual handling, please pay attention to the personal safety on the way to handle;</p></li>
+<li><p>The collaborative robot contains precision components, which should avoid severe vibration or shaking during transportation or transportation, otherwise it may reduce the performance of the equipment.</p></li>
+</ul>
+</div>
+</section>
+<section id="storage">
+<h3><span class="section-number">3.2.3. </span>Storage<a class="headerlink" href="#storage" title="Permalink to this heading"></a></h3>
+<p>The collaborative robot should be stored in -25 ~ 60 ° C, and there is no frost-free environment.</p>
+</section>
+</section>
+<section id="maintenance-inspection-and-scrapping">
+<h2><span class="section-number">3.3. </span>Maintenance, inspection, and scrapping<a class="headerlink" href="#maintenance-inspection-and-scrapping" title="Permalink to this heading"></a></h2>
+<section id="maintenance-disposal">
+<h3><span class="section-number">3.3.1. </span>Maintenance disposal<a class="headerlink" href="#maintenance-disposal" title="Permalink to this heading"></a></h3>
+<p>Please check the emergency stop and protection stop for 1 month. Determine whether the security function is effective.</p>
+<p>Please refer to the wiring chapter for emergency stop and protective stop wiring.</p>
+</section>
+<section id="inspection-plan">
+<h3><span class="section-number">3.3.2. </span>Inspection Plan<a class="headerlink" href="#inspection-plan" title="Permalink to this heading"></a></h3>
+<section id="preface">
+<h4><span class="section-number">3.3.2.1. </span>Preface<a class="headerlink" href="#preface" title="Permalink to this heading"></a></h4>
+<section id="safety-notice">
+<h5><span class="section-number">3.3.2.1.1. </span>Safety Notice<a class="headerlink" href="#safety-notice" title="Permalink to this heading"></a></h5>
+<p>The following warnings are used in this manual. These warnings are intended to ensure personal and equipment safety. It is important that you observe and follow all assembly instructions and guidelines in other sections of this manual when reading this manual.</p>
+<p>Special attention should be paid to the text related to warning signs. Please read the user manual carefully before use. This manual is only used as a customer maintenance instruction manual. Maintenance operators need to have professional competence. Non-professional personnel operation. FAIRINO refuses to assume all responsibilities.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the robot (robot body, control box, teaching box) is damaged, changed or modified due tohumanreasons,FAIRINO rejects all responsibility; FAIRINO is not responsible for any damage to the robot or any other equipment caused by errors inthe programs written by thecustomer.</p>
+</div>
+</section>
+<section id="effectiveness-and-accountability">
+<h5><span class="section-number">3.3.2.1.2. </span>Effectiveness and accountability<a class="headerlink" href="#effectiveness-and-accountability" title="Permalink to this heading"></a></h5>
+<p>The information in this manual does not cover the design, installation and operation of a complete robot application, nor does it cover all peripheral equipment that may affect the safety of this complete system. The complete system is designed and installed to meet safety requirements established in the standards and codes of the country where the robot is installed.</p>
+<p>It is the responsibility of FAIRINO integrators to ensure compliance with relevant national laws and regulations and to ensure that there are no significant risks in the complete robot application. This includes but is not limited to the following:</p>
+<ul class="simple">
+<li><p>Do a risk assessment of the complete robotic system</p></li>
+<li><p>Connect other machinery and additional safety equipment defined by the risk assessment</p></li>
+<li><p>Establish appropriate security settings in software</p></li>
+<li><p>Ensure that users do not modify any security measures</p></li>
+<li><p>Confirm that the design and installation of the entire robot system is correct</p></li>
+<li><p>Clear instructions for use</p></li>
+<li><p>Mark the relevant logo and contact information of the integrator on the robot</p></li>
+<li><p>Collect all documents in technical files, including this manual</p></li>
+</ul>
+</section>
+<section id="limited-liability">
+<h5><span class="section-number">3.3.2.1.3. </span>Limited Liability<a class="headerlink" href="#limited-liability" title="Permalink to this heading"></a></h5>
+<p>Any safety information contained in this manual should not be considered a general robot safety guarantee, and even if all safety instructions are followed, it may still cause personal injury or equipment damage.</p>
+</section>
+<section id="warning-signs-in-this-manual">
+<h5><span class="section-number">3.3.2.1.4. </span>Warning signs in this manual<a class="headerlink" href="#warning-signs-in-this-manual" title="Permalink to this heading"></a></h5>
+<p>The following symbols define the hazard classification specifications contained in this manual. The same warning signs are used on the products.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0703.png"><img alt="../_images/0703.png" class="align-left" src="../_images/0703.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Danger</strong></p>
+<p>Function: This refers to an electrical situation that is about to cause danger and, if not avoided, could result in death or serious injury.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0712.png"><img alt="../_images/0712.png" class="align-left" src="../_images/0712.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Electric shockhazard</strong></p>
+<p>Function: This refers to an imminent hazardous electric shock situation which, if not avoided, could result in electrocution or serious injury.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<a class="reference internal image-reference" href="../_images/0722.png"><img alt="../_images/0722.png" class="align-left" src="../_images/0722.png" style="height: 0.75in;" /></a>
+<p>Name: <strong>Burnhazard</strong></p>
+<p>Function: This refers to hot surfaces that may cause hazards and, if touched, may cause injury to persons.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="digital-input-output-description-of-control-box">
+<h3><span class="section-number">3.3.3. </span>Digital Input/Output Description of Control Box<a class="headerlink" href="#digital-input-output-description-of-control-box" title="Permalink to this heading"></a></h3>
+<section id="precautions-when-switching-digital-related-functions-of-control-box">
+<h4><span class="section-number">3.3.3.1. </span>Precautions When Switching Digital Related Functions of Control Box<a class="headerlink" href="#precautions-when-switching-digital-related-functions-of-control-box" title="Permalink to this heading"></a></h4>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ol class="arabic simple">
+<li><p>When switching digital input/output functions, the safety operation procedures of the robot must be followed to ensure the safety of operators and equipment.</p></li>
+<li><p>Avoid switching digital input/output functions during robot operation to prevent affecting the normal operation of the robot.</p></li>
+<li><p>Before switching digital input/output functions, the power supply of the robot must be cut off to prevent electric shock and unexpected machine movement, which may cause personal injury and equipment damage.</p></li>
+<li><p>Before switching functions, the requirements of the robot control system for digital input/output must be clarified, including signal type, voltage level, load capacity, etc.</p></li>
+<li><p>Ensure that the connection between digital input/output ports and external devices is correct, including whether the wiring is secure and whether the ports match.</p></li>
+<li><p>Avoid repeated signal allocation to ensure that each signal is uniquely allocated.</p></li>
+<li><p>After allocation is completed, the robot control system must be restarted to make the settings take effect.</p></li>
+<li><p>After completing the configuration, enter the I/O status interface to check whether the status of digital input/output signals is correct.</p></li>
+<li><p>Verify whether the digital input/output functions are working properly through actual operation or writing test programs.</p></li>
+<li><p>If digital input/output signals are related to program logic, check whether the processing of these signals in the program is correct.</p></li>
+</ol>
+</div>
+</section>
+<section id="digital-input-description-of-control-box">
+<h4><span class="section-number">3.3.3.2. </span>Digital Input Description of Control Box<a class="headerlink" href="#digital-input-description-of-control-box" title="Permalink to this heading"></a></h4>
+<section id="summary-of-digital-input-of-control-box">
+<h5><span class="section-number">3.3.3.2.1. </span>Summary of Digital Input of Control Box<a class="headerlink" href="#summary-of-digital-input-of-control-box" title="Permalink to this heading"></a></h5>
+<p>The following lists the input types supported by the digital input of Faro robot integrated mini control box, as well as the corresponding wiring diagrams and configuration comparison tables.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0803.png"><img alt="../_images/0803.png" src="../_images/0803.png" style="width: 4in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.3-1 DI0-DI7 General Input Valid Status</strong></p><p class="centered">
+<strong>Table 3.3-1 Control Box Digital Input Configuration Comparison Table</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 33%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+<td><p><strong>Connection Diagram</strong></p></td>
+<td><p><strong>High Level Valid (Switch Closed)</strong></p></td>
+<td><p><strong>High Level Valid (Switch Open)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Closed)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Open)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0813.png"><img alt="../_images/0813.png" src="../_images/0813.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0823.png"><img alt="../_images/0823.png" src="../_images/0823.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0833.png"><img alt="../_images/0833.png" src="../_images/0833.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>PNP Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0843.png"><img alt="../_images/0843.png" src="../_images/0843.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="supported-types-of-digital-input-of-control-box">
+<h5><span class="section-number">3.3.3.2.2. </span>Supported Types of Digital Input of Control Box<a class="headerlink" href="#supported-types-of-digital-input-of-control-box" title="Permalink to this heading"></a></h5>
+<p>The digital input of DC control box and AC narrow voltage control box only supports NPN type input. The digital input of AC wide voltage control box supports optional NPN and PNP types, with NPN type as the default factory setting.</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Input</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Input</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Input/PNP Input</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wiring-diagram-of-digital-input-of-control-box">
+<h5><span class="section-number">3.3.3.2.3. </span>Wiring Diagram of Digital Input of Control Box<a class="headerlink" href="#wiring-diagram-of-digital-input-of-control-box" title="Permalink to this heading"></a></h5>
+<p>The digital input of DC control box and AC narrow voltage control box only supports NPN type input. The wiring diagram is as follows.</p>
+<blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0853.png"><img alt="../_images/0853.png" src="../_images/0853.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.3-2 Wiring Diagram of Digital Input for DC Control Box and AC Narrow Voltage Control Box</strong></p></div></blockquote>
+<p>The digital input of AC wide voltage control box supports optional NPN and PNP types, with NPN type as the default factory setting. The wiring diagrams are as follows:</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Input Type</strong></p></td>
+<td><p><strong>Connection Diagram</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>NPN Input</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0863.png"><img alt="../_images/0863.png" src="../_images/0863.png" style="width: 3in;" /></a>
+</figure>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PNP Input</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0873.png"><img alt="../_images/0873.png" src="../_images/0873.png" style="width: 3in;" /></a>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The input type of the wide voltage control box digital input is determined by the DIP switch inside the control box. If the user needs to change the input type, the DIP switch needs to be set to the corresponding position.</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p>DIP Switch Position</p></td>
+<td><p>DIP Switch Physical Position</p></td>
+</tr>
+<tr class="row-even"><td><p>NPN Input</p></td>
+<td><p>EX-24V</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0883.png"><img alt="../_images/0883.png" src="../_images/0883.png" style="width: 3in;" /></a>
+</figure>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PNP Input</p></td>
+<td><p>EX-0V</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0893.png"><img alt="../_images/0893.png" src="../_images/0893.png" style="width: 3in;" /></a>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="software-settings-related-to-digital-input-of-control-box">
+<h5><span class="section-number">3.3.3.2.4. </span>Software Settings Related to Digital Input of Control Box<a class="headerlink" href="#software-settings-related-to-digital-input-of-control-box" title="Permalink to this heading"></a></h5>
+<p>The only software setting item for digital input is “DI0-DI7 General Input Valid Status”, which represents the digital voltage level value corresponding to the detected valid input. This setting allows users to use digital input more flexibly.</p>
+<blockquote>
+<div><blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0903.png"><img alt="../_images/0903.png" src="../_images/0903.png" style="width: 6in;" /></a>
+</figure>
+</div></blockquote>
+<p class="centered">
+<strong>Figure 3.3-3 DI0-DI7 General Input Valid Status</strong></p></div></blockquote>
+<p>The comparison table of valid status detected by the software under different settings of “DI0-DI7 General Input Valid Status” when the external switch of digital input is in different states is as follows:</p>
+<p class="centered">
+<strong>Table 3.3-2 Valid Status Comparison Table</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+<td><p><strong>High Level Valid (Switch Closed)</strong></p></td>
+<td><p><strong>High Level Valid (Switch Open)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Closed)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Open)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Input</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Input</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Input</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>PNP Input</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="digital-output-description-of-control-box">
+<h4><span class="section-number">3.3.3.3. </span>Digital Output Description of Control Box<a class="headerlink" href="#digital-output-description-of-control-box" title="Permalink to this heading"></a></h4>
+<section id="summary-of-digital-output-of-control-box">
+<h5><span class="section-number">3.3.3.3.1. </span>Summary of Digital Output of Control Box<a class="headerlink" href="#summary-of-digital-output-of-control-box" title="Permalink to this heading"></a></h5>
+<p>The following lists the output types supported by the digital output of Faro robot integrated mini control box, as well as the corresponding wiring diagrams and configuration comparison tables.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0913.png"><img alt="../_images/0913.png" src="../_images/0913.png" style="width: 4in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.3-4 Control Box DO Output During Power-On</strong></p><p class="centered">
+<strong>Table 3.3-3 Control Box Digital Output Configuration Comparison Table</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 33%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+<td><p><strong>Connection Diagram</strong></p></td>
+<td><p><strong>High Level (Switch Set to ON)</strong></p></td>
+<td><p><strong>High Level (Switch Set to OFF)</strong></p></td>
+<td><p><strong>Low Level (Switch Set to ON)</strong></p></td>
+<td><p><strong>Low Level (Switch Set to OFF)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0933.png"><img alt="../_images/0933.png" src="../_images/0933.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0943.png"><img alt="../_images/0943.png" src="../_images/0943.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0953.png"><img alt="../_images/0953.png" src="../_images/0953.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>PNP Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0963.png"><img alt="../_images/0963.png" src="../_images/0963.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+</tbody>
+</table>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0923.png"><img alt="../_images/0923.png" src="../_images/0923.png" style="width: 4in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.3-5 General Output Valid Status</strong></p><p class="centered">
+<strong>Table 3.3-4 Control Box Digital Output Configuration Comparison Table</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 33%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+<td><p><strong>Connection Diagram</strong></p></td>
+<td><p><strong>High Level Valid (Switch Set to ON)</strong></p></td>
+<td><p><strong>High Level Valid (Switch Set to OFF)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Set to ON)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Set to OFF)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0933.png"><img alt="../_images/0933.png" src="../_images/0933.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0943.png"><img alt="../_images/0943.png" src="../_images/0943.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0953.png"><img alt="../_images/0953.png" src="../_images/0953.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>PNP Output</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0963.png"><img alt="../_images/0963.png" src="../_images/0963.png" style="width: 3in;" /></a>
+</figure>
+</td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="supported-types-of-digital-output-of-control-box">
+<h5><span class="section-number">3.3.3.3.2. </span>Supported Types of Digital Output of Control Box<a class="headerlink" href="#supported-types-of-digital-output-of-control-box" title="Permalink to this heading"></a></h5>
+<p>The digital output of DC control box and AC narrow voltage control box only supports NPN type output. The digital output of AC wide voltage control box supports optional NPN and PNP types, with push-pull structure. It only needs to be wired according to the corresponding wiring diagram without special settings.</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Output</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Output/PNP Output</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wiring-diagram-of-digital-output-of-control-box">
+<h5><span class="section-number">3.3.3.3.3. </span>Wiring Diagram of Digital Output of Control Box<a class="headerlink" href="#wiring-diagram-of-digital-output-of-control-box" title="Permalink to this heading"></a></h5>
+<p>The digital output of DC control box and AC narrow voltage control box only supports NPN type output. The wiring diagram is as follows.</p>
+<blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0973.png"><img alt="../_images/0973.png" src="../_images/0973.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.3-6 Wiring Diagram of Digital Output for DC Control Box and AC Narrow Voltage Control Box</strong></p></div></blockquote>
+<p>The digital output of AC wide voltage control box supports NPN and PNP types. The wiring diagrams are as follows:</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Input Type</strong></p></td>
+<td><p><strong>Connection Diagram</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>NPN Input</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0982.png"><img alt="../_images/0982.png" src="../_images/0982.png" style="width: 3in;" /></a>
+</figure>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PNP Input</p></td>
+<td><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0992.png"><img alt="../_images/0992.png" src="../_images/0992.png" style="width: 3in;" /></a>
+</figure>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="software-settings-related-to-digital-output-of-control-box">
+<h5><span class="section-number">3.3.3.3.4. </span>Software Settings Related to Digital Output of Control Box<a class="headerlink" href="#software-settings-related-to-digital-output-of-control-box" title="Permalink to this heading"></a></h5>
+<p>There are two software setting items for digital output: “Control Box DO Output During Power-On” and “DO0-D07 General Output Valid Status”. “Control Box DO Output During Power-On” represents the output level during the power-on period of the control box when the control system has not completed initialization. It can correspond to different output valid states, which can flexibly meet the requirements for output status during power-on. “General Output Valid Status” represents the digital output voltage level value that needs to be controlled when the output is valid. This setting allows users to use digital output more flexibly.</p>
+<ol class="arabic">
+<li><p>The comparison table of valid status under different settings of “Control Box DO Output During Power-On” is as follows:</p>
+<blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1002.png"><img alt="../_images/1002.png" src="../_images/1002.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.3-7 Control Box DO Output During Power-On</strong></p></div></blockquote>
+</li>
+</ol>
+<p class="centered">
+<strong>Table 3.3-5 Valid Status Comparison Table</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+<td><p><strong>High Level Valid (Switch Set to ON)</strong></p></td>
+<td><p><strong>High Level Valid (Switch Set to OFF)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Set to ON)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Set to OFF)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>PNP Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic" start="2">
+<li><p>The comparison table of valid status under different settings of “DO0-D07 General Output Valid Status” is as follows:</p>
+<blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1012.png"><img alt="../_images/1012.png" src="../_images/1012.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.3-8 DO0-D07 General Output Valid Status</strong></p></div></blockquote>
+</li>
+</ol>
+<p class="centered">
+<strong>Table 3.3-6 Valid Status Comparison Table</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>Input Type</strong></p></td>
+<td><p><strong>High Level Valid (Switch Set to ON)</strong></p></td>
+<td><p><strong>High Level Valid (Switch Set to OFF)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Set to ON)</strong></p></td>
+<td><p><strong>Low Level Valid (Switch Set to OFF)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Narrow Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+<tr class="row-even"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+<tr class="row-odd"><td><p>AC Wide Voltage Control Box</p></td>
+<td><p>PNP Output</p></td>
+<td><p>Valid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Invalid</p></td>
+<td><p>Valid</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="inspection-maintenance-plan">
+<h4><span class="section-number">3.3.3.4. </span>Inspection maintenance plan<a class="headerlink" href="#inspection-maintenance-plan" title="Permalink to this heading"></a></h4>
+<section id="robotic-arm">
+<h5><span class="section-number">3.3.3.4.1. </span>Robotic arm<a class="headerlink" href="#robotic-arm" title="Permalink to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p>Inspection plan</p></li>
+</ol>
+<p>Below is a checklist of checklists that FAIRINO Robots recommends performing based on the marked time intervals. If the inspection reveals that the condition of the relevant parts is unqualified, please correct it immediately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>F=Functional check,V=visual inspection,*=Must be checked after severe collision.</p>
+</div>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 31%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Check item</strong></p></td>
+<td></td>
+<td><p><strong>Monthly</strong></p></td>
+<td><p><strong>Semi-annually</strong></p></td>
+<td><p><strong>Annually</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Check joint rear cover *</p></td>
+<td><p>V</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Check joint rear cover screws</p></td>
+<td><p>F</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Check joint rubber ring</p></td>
+<td><p>V</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Check robot cables</p></td>
+<td><p>V</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Check robot cable links</p></td>
+<td><p>V</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Check robot base mounting bolts *</p></td>
+<td><p>F</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Check End Tool Mounting Bolts *</p></td>
+<td><p>F</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0732.png"><img alt="../_images/0732.png" src="../_images/0732.png" style="width: 3in;" /></a>
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>Visual inspection</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not use compressed air to clean robot arms as it may damage components. Do not store the robot for more than 6 months without visual inspection.</p>
+</div>
+<ul class="simple">
+<li><p>If possible, move the robot arm to the zero position.</p></li>
+<li><p>Turn off and disconnect the power cord of the control box.</p></li>
+<li><p>Check the cable between the control box and the robot arm for any damage.</p></li>
+<li><p>Check whether the base mounting bolts are properly tightened.</p></li>
+<li><p>Check whether the tool flange bolts are properly tightened.</p></li>
+<li><p>Check whether the flat ring is worn and damaged.</p></li>
+<li><p>Check all joint backs for any cracks or damage.</p></li>
+<li><p>Check that the screws for the articulated rear cover are seated and tightened correctly.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the robot shows any damage during the warranty period, please contact the dealer who purchased the robot.</p>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Function check</p></li>
+</ol>
+<p>The purpose of the functional inspection is to ensure that screws, bolts, tools and robot arms are not loose. The screws/bolts mentioned in the inspection planshall be checked with torque wrenches and the torque shall comply with the standard specifications, which can be found in chapter of the Installation Specifications of the User Manual for the specifications of the mounting bolts of the robot arm.</p>
+<ol class="arabic simple" start="4">
+<li><p>Cleaning</p></li>
+</ol>
+<p>You can wipe off any dust/dirt/grease observed on the robot arm using a cloth and one of the following cleaners: water, isopropyl alcohol, 10% ethanol or 10% naphtha. If the robot is operating in harsh environments, such as cutting fluids, coolants, etc., it is recommended to clean or replacethe rubber ringregularly.</p>
+<p>Do not use bleach. Do not use bleach in any diluted cleaning solution.</p>
+<p>In rare cases, a very small amount of grease can be seen from the joint. This does not affect the function, use or longevity of the joint.</p>
+</section>
+<section id="control-box-teaching-device-button-box">
+<h5><span class="section-number">3.3.3.4.2. </span>Control box, teaching device, button box<a class="headerlink" href="#control-box-teaching-device-button-box" title="Permalink to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p>Inspection plan</p></li>
+</ol>
+<p>Below is a checklist of checklists that FAIRINO Robots recommends performing based on the marked time intervals. If the inspection reveals that the condition of the relevant parts is unqualified, please correct it immediately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>F=Functional check,V=Visual inspection.</p>
+</div>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 31%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Check item</strong></p></td>
+<td></td>
+<td><p><strong>Monthly</strong></p></td>
+<td><p><strong>Semi-annually</strong></p></td>
+<td><p><strong>Annually</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Emergency stop button on test button box (teach pendant)</p></td>
+<td><p>F</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Safety input and output functions on the test terminal strip</p></td>
+<td><p>F</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Detection button box start/stop, mode switching function</p></td>
+<td><p>F</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Test button box (teach pendant) cable</p></td>
+<td><p>V</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Check and clean the air filter on the control box</p></td>
+<td><p>V</p></td>
+<td><p>✔</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Check whether the terminals of the control box are firm</p></td>
+<td><p>F</p></td>
+<td></td>
+<td><p>✔</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Ground resistance of detection control box ≤1Ω</p></td>
+<td><p>F</p></td>
+<td></td>
+<td></td>
+<td><p>✔</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>Check the main power supply of the control box</p></td>
+<td><p>F</p></td>
+<td></td>
+<td></td>
+<td><p>✔</p></td>
+</tr>
+</tbody>
+</table>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0742.png"><img alt="../_images/0742.png" src="../_images/0742.png" style="width: 3in;" /></a>
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>Visual inspection</p></li>
+</ol>
+<ul class="simple">
+<li><p>Unplug the power cord from the control box.</p></li>
+<li><p>Check that the terminals of the control board are inserted correctly and there are no loose wires.</p></li>
+<li><p>Check whether there is dirt/dust in the control box. Use an ESD vacuum cleaner for cleaning if necessary.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not use compressed air to clean the inside of the control box as this may damage components.</p>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Function check</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Robot safety features are important and it is recommended to test once a month to ensure proper functionality.</p>
+</div>
+<ul>
+<li><p>Emergency stop button onteach pendant/button box:</p>
+<ol class="upperalpha">
+<li><p>Press the emergency stop button on the teach pendant/button box.</p></li>
+<li><p>Observe that the robot stops and turns off the joint power.</p></li>
+<li><p>Turn on the robot power again.</p>
+<blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0752.png"><img alt="../_images/0752.png" src="../_images/0752.png" style="width: 4in;" /></a>
+</figure>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0763.png"><img alt="../_images/0763.png" src="../_images/0763.png" style="width: 4in;" /></a>
+</figure>
+</div></blockquote>
+</li>
+</ol>
+</li>
+<li><p>Other safety inputs and outputs remain operational</p>
+<p>Check which safety inputs and outputs are active and whether they can be triggered by PolyScope or external devices.</p>
+</li>
+<li><p>Date and clock</p>
+<p>Check that the date and clock in the Log tab are correct. Incorrect dates and clocks indicate low CMOS battery charge. CMOS batteries have a shelf life of up to5 years.</p>
+</li>
+<li><p>Check whether the terminal snaps are in place</p>
+<blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0773.png"><img alt="../_images/0773.png" src="../_images/0773.png" style="width: 4in;" /></a>
+</figure>
+</div></blockquote>
+</li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><p>Cleaning</p></li>
+</ol>
+<ul>
+<li><p>Teaching device</p>
+<p>You may need to clean the teach pendant screen. It is recommended to use a standard mild industrial cleaner that does not contain diluents or any corrosive additives. Do not wipe the screen with abrasive materials. FAIRINO don’t market specific cleaning agents.</p>
+</li>
+<li><p>The button box</p>
+<p>Do not need to be cleaned regularly when it is not normal. If the key identification is blurred and affects the recognition operation, please clean it with detergent at any time.</p>
+</li>
+<li><p>Control box</p>
+<p>The control box contains two filters, one on each side of the control box.</p>
+<ol class="upperalpha simple">
+<li><p>The filter can be observed from the left and right side vents of the control box. Under normal circumstances, you can see the honeycomb structure of the filter.</p></li>
+<li><p>Remove the filter for cleaning. Clean with low pressure air or change filters as needed. Remember to clean each side. If it is dirty or damaged, replace it (worse, remove the upper cover of the controller and replace the filter from inside the upper cover).</p></li>
+<li><p>Listen to the sound of the fan when running. If the sound is abnormal, please contact the service provider or replace it.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="check-program-registration-card">
+<h5><span class="section-number">3.3.3.4.3. </span>Check program registration card<a class="headerlink" href="#check-program-registration-card" title="Permalink to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p>Robotic arm</p></li>
+</ol>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>InspectionItem</strong></p></td>
+<td><p><strong>Inspected</strong></p></td>
+<td><p><strong>Inspector</strong></p></td>
+<td><p><strong>Data</strong></p></td>
+<td><p><strong>Remark</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Check joint rear cover</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Check joint rear cover screws</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>Check joint rubber ring</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Check robot cables</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>Check robot cable links</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Check robot base mounting bolts</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>Check End Tool Mounting Bolts</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p>Control box, teaching device, button box</p></li>
+</ol>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 29%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>InspectionItem</strong></p></td>
+<td><p><strong>Inspected</strong></p></td>
+<td><p><strong>Inspector</strong></p></td>
+<td><p><strong>Data</strong></p></td>
+<td><p><strong>Remark</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Emergency stop button on test button box (teach pendant)</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Safety input and output functions on the test terminal strip</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>Detection button box start/stop, mode switching function</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Test button box (teach pendant) cable</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>Check and clean the air filter on the control box</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Check whether the terminals of the control box are firm</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>Ground resistance of detection control box ≤1Ω</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Check the main power supply of the control box</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="robot-waste-disposal">
+<h3><span class="section-number">3.3.4. </span>Robot waste disposal<a class="headerlink" href="#robot-waste-disposal" title="Permalink to this heading"></a></h3>
+<p>FR robots need to be disposed of according to the applicable national laws and regulations and national standards. For details, you can contact manufacturers.</p>
+</section>
+</section>
+<section id="installation-specifications">
+<h2><span class="section-number">3.4. </span>Installation specifications<a class="headerlink" href="#installation-specifications" title="Permalink to this heading"></a></h2>
+<section id="robot-arm-installation">
+<h3><span class="section-number">3.4.1. </span>Robot arm installation<a class="headerlink" href="#robot-arm-installation" title="Permalink to this heading"></a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The recommended robot installation base meets the following requirements to ensure a secure and stable installation of the robot:</p>
+<p>(1)The robot mounting base needs to be strong enough and have sufficient load-bearing capacity, which should be able to bear at least 5 times the weight of the robot and at least 10 times the 1-axis torque.</p>
+<p>(2)The surface of the robot mounting base should be flat to ensure close contact with the robot contact surface.</p>
+<p>(3)The robot mounting base should have sufficient stiffness, be firmly fixed, and not resonate with the robot.</p>
+<p>(4)When the robot and other components are moving simultaneously, the mounting base should be separated from other moving components and not fixed together to avoid vibration interference during the movement process.</p>
+<p>(5)If the robot is installed on a mobile platform or external axis, the acceleration of the mobile platform or external axis should be as low as possible.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The following installation methods should be avoided:</p>
+<p>(I)Avoid fixing the robot to other moving devices.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0645.png"><img alt="../_images/0645.png" src="../_images/0645.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-1 Avoid installing on other sports equipment</strong></p><p>Make sure the robot arm is installed correctly and safely. Unstable installation will cause accidents.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can purchase accurate bases as attachments. Figure 3.4-2、3.4-5、3.4-8、3.4-11 show the position of the sales hole and the location of the screw.</p>
+</div>
+<section id="installation-requirements-for-fr3-fr3-wms-fr3-wml-fr3-c-fr5-c-robot">
+<h4><span class="section-number">3.4.1.1. </span>Installation requirements for FR3/FR3-WMS/FR3-WML/FR3-C/FR5-C robot<a class="headerlink" href="#installation-requirements-for-fr3-fr3-wms-fr3-wml-fr3-c-fr5-c-robot" title="Permalink to this heading"></a></h4>
+<p>When installing the robot on the mounting base, use four M6 bolts with a strength of not less than 8.8 to fix the robot on the mounting base. The bolts must be tightened with a torque of not less than 10Nm.Suggest using two on the mounting base φ 5mm pin hole matched with pins for robot positioning to improve robot installation accuracy and prevent robot movement due to collisions and other factors.When the robot has high operating accuracy requirements, please be sure to add pins to position the robot.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0255.png"><img alt="../_images/0255.png" src="../_images/0255.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-2 FR3/FR3-WMS/FR3-WML/FR3-C/FR5-C model collaborative robot installation size</strong></p><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>According to different application scenarios, we recommend several robot installation bases as follows</p>
+<p>(I)For situations where the motion speed is not too fast, the running speed is not too large, the accuracy requirements are average, and it is not convenient to fix the robot on the ground, the recommended installation base for the robot is as follows.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0624.png"><img alt="../_images/0624.png" src="../_images/0624.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-3 FR3/FR3-WMS/FR3-WML/FR3-C/FR5-C model collaborative robot low requirement mounting base</strong></p><p>(II)For situations where the motion speed is fast, the running speed is high, and the accuracy requirements are high, it is recommended to install the robot on the following base and fix it on a solid ground.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0674.png"><img alt="../_images/0674.png" src="../_images/0674.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-4 FR3/FR3-WMS/FR3-WML/FR3-C/FR5-C Model Collaborative Robot High Demand Mounting Base</strong></p></div>
+</section>
+<section id="installation-requirements-for-fr5-robot">
+<h4><span class="section-number">3.4.1.2. </span>Installation requirements for FR5 robot<a class="headerlink" href="#installation-requirements-for-fr5-robot" title="Permalink to this heading"></a></h4>
+<p>When installing the robot on the mounting base, use four M8 bolts with a strength of not less than 8.8 to fix the robot on the mounting base. The bolts must be tightened with a torque of not less than 20Nm.Suggest using two on the mounting base φ 8mm pin hole matched with pins for robot positioning to improve robot installation accuracy and prevent robot movement due to collisions and other factors.When the robot has high operating accuracy requirements, please be sure to add pins to position the robot.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0266.png"><img alt="../_images/0266.png" src="../_images/0266.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-5 FR5 model collaborative robot installation size</strong></p><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>According to different application scenarios, we recommend several robot installation bases as follows</p>
+<p>(I)For situations where the motion speed is not too fast, the running speed is not too large, the accuracy requirements are average, and it is not convenient to fix the robot on the ground, the recommended installation base for the robot is as follows.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0624.png"><img alt="../_images/0624.png" src="../_images/0624.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-6 FR5 Model Collaborative Robot High Demand Mounting Base</strong></p><p>(II)For situations where the motion speed is fast, the running speed is high, and the accuracy requirements are high, it is recommended to install the robot on the following base and fix it on a solid ground.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0674.png"><img alt="../_images/0674.png" src="../_images/0674.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-7 FR5 model collaborative robot low requirement mounting base</strong></p></div>
+</section>
+<section id="installation-requirements-for-fr10-fr16-robot">
+<h4><span class="section-number">3.4.1.3. </span>Installation requirements for FR10&amp;FR16 robot<a class="headerlink" href="#installation-requirements-for-fr10-fr16-robot" title="Permalink to this heading"></a></h4>
+<p>When installing the robot on the mounting base, use four M8 bolts with a strength of not less than 8.8 to fix the robot on the mounting base. The bolts must be tightened with a torque of not less than 25Nm.Suggest using two on the mounting base φ 8mm pin hole matched with pins for robot positioning to improve robot installation accuracy and prevent robot movement due to collisions and other factors.When the robot has high operating accuracy requirements, please be sure to add pins to position the robot.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0276.png"><img alt="../_images/0276.png" src="../_images/0276.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-8 FR10&amp;FR16 model collaborative robot installation size</strong></p><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>According to different application scenarios, we recommend several robot installation bases as follows</p>
+<p>(I)For situations where the motion speed is not too fast, the running speed is not too large, the accuracy requirements are average, and it is not convenient to fix the robot on the ground, the recommended installation base for the robot is as follows.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0654.png"><img alt="../_images/0654.png" src="../_images/0654.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-9 FR10&amp;FR16 model collaborative robot low requirement mounting base</strong></p><p>(II)For situations where the motion speed is fast, the running speed is high, and the accuracy requirements are high, it is recommended to install the robot on the following base and fix it on a solid ground.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0674.png"><img alt="../_images/0674.png" src="../_images/0674.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-10 FR10&amp;FR16 Model Collaborative Robot High Demand Mounting Base</strong></p></div>
+</section>
+<section id="installation-requirements-for-fr20-fr30-fr30l-robot">
+<h4><span class="section-number">3.4.1.4. </span>Installation requirements for FR20&amp;FR30&amp;FR30L robot<a class="headerlink" href="#installation-requirements-for-fr20-fr30-fr30l-robot" title="Permalink to this heading"></a></h4>
+<p>When installing the robot on the mounting base, use six M10 bolts with a strength of not less than 8.8 to fix the robot on the mounting base. The bolts must be tightened with a torque of not less than 45Nm.Suggest using two on the mounting base φ 8mm pin hole matched with pins for robot positioning to improve robot installation accuracy and prevent robot movement due to collisions and other factors.When the robot has high operating accuracy requirements, please be sure to add pins to position the robot.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0295.png"><img alt="../_images/0295.png" src="../_images/0295.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-11 FR20&amp;FR30&amp;FR30L model collaborative robot installation size</strong></p><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Because the FR20 and FR30 robots have a large weight and running inertia, it is recommended to be directly fixed on the ground. The recommended base is as follows.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0664.png"><img alt="../_images/0664.png" src="../_images/0664.png" style="width: 4in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-12 FR20&amp;FR30 model collaborative robot low requirement mounting base</strong></p></div>
+</section>
+</section>
+<section id="tool-end-installation">
+<h3><span class="section-number">3.4.2. </span>Tool end installation<a class="headerlink" href="#tool-end-installation" title="Permalink to this heading"></a></h3>
+<p>There are four M6 thread holes in the robot tool, which can be used to connect the tool to the robot. The M6 bolt must be tightened with 8nm torque, and its strength level is not less than 8.8. In order to accurately regain the tools, please use the nails in the reserved ø6 sales holes.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0305.png"><img alt="../_images/0305.png" src="../_images/0305.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-13 FR3/FR3-WMS/FR3-WML/FR3-C/FR5/FR5-C/FR10/FR16 model robot end flange drawing</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0314.png"><img alt="../_images/0314.png" src="../_images/0314.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-14 FR20/FR30/FR30L model robot end flange drawing</strong></p><div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p>Make sure the tools are installed correctly and safely.</p></li>
+<li><p>Ensure the safety architecture of the tools, and no parts of parts fall into danger.</p></li>
+<li><p>Installing M6 bolts with a length of more than 8mm on the robot flange may destroy tool flanges and cause damage that cannot be repaired, causing a tool to change tools.</p></li>
+</ul>
+</div>
+</section>
+<section id="installation-environment">
+<h3><span class="section-number">3.4.3. </span>Installation environment<a class="headerlink" href="#installation-environment" title="Permalink to this heading"></a></h3>
+<p>When installing and using a collaborative robot, make sure to meet the following requirements:</p>
+<ul class="simple">
+<li><p>Environmental temperature 0-45 ℃</p></li>
+<li><p>Humidity 0% to 90% RH (no condensation)</p></li>
+<li><p>No mechanical impact and shock</p></li>
+<li><p>Altitude requires less than 2000M</p></li>
+<li><p>No corrosive gases, no liquid, no explosive gases, no oil pollution, no salt fog, no dust or metal powder, no radioactive material, no electromagnetic noise, non-flammable items</p></li>
+<li><p>Avoid the device from working under the unstable conditions of the current</p></li>
+<li><p>Users need to add an air switch before the robot power supply, and it is recommended to add an EMC filter</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to hang or install the collaborative robot, please contact us.</p>
+</div>
+</section>
+<section id="floor-carrier-capacity">
+<h3><span class="section-number">3.4.4. </span>Floor carrier capacity<a class="headerlink" href="#floor-carrier-capacity" title="Permalink to this heading"></a></h3>
+<p>Installing the robot on a strong surface, the surface should be sufficient to withstand the weight of the robotic arm at least 5 times, and the surface cannot be vibrated.</p>
+</section>
+<section id="load-curves-for-all-fr-series-models">
+<h3><span class="section-number">3.4.5. </span>Load curves for all FR series models<a class="headerlink" href="#load-curves-for-all-fr-series-models" title="Permalink to this heading"></a></h3>
+<section id="overview">
+<h4><span class="section-number">3.4.5.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h4>
+<p>The load curves in this section are based on the tests of each model under specific trajectories. The load curves of each model have two parts: “full performance” and “extended load capacity”, as follows:</p>
+<ol class="arabic simple">
+<li><p>The operating environment of “full performance” is: the friction compensation coefficient of each joint is 1; the collision level of each joint is 10; the web interface is set to 100% operating speed and 360deg/s2 acceleration; dynamics 2.0. In this environment, the “full performance” part of the load curve is suitable for most operating trajectories.</p></li>
+<li><p>If the end load is in the “extended load capacity”, the “time optimal mode” must be turned on and the acceleration limit must be met, or the robot’s working range must be reduced.</p></li>
+</ol>
+</section>
+<section id="parameter-description">
+<h4><span class="section-number">3.4.5.2. </span>Parameter Description<a class="headerlink" href="#parameter-description" title="Permalink to this heading"></a></h4>
+<p>The rated payload of the robot depends on the center of gravity offset of the payload, where the center of gravity offset is defined as the distance between the center of the end flange and the center of gravity of the attached payload.</p>
+<section id="fr3-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.1. </span>FR3 Model Collaborative Robot Load Curve<a class="headerlink" href="#fr3-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR3 collaborative robot can carry is 5kg, and the rated load is 3kg. The load curve is shown in Figure 1. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR3 can carry a load of 3kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 3kg to 5kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<blockquote>
+<div><p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 360deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0325.png"><img alt="../_images/0325.png" src="../_images/0325.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-15 FR3 Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr3-wms-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.2. </span>FR3-WMS Model Collaborative Robot Load Curve<a class="headerlink" href="#fr3-wms-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR3-WMS collaborative robot can carry is 5kg, and the rated load is 3kg. The load curve is shown in Figure 1. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR3-WMS can carry a load of 3kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 3kg to 5kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<blockquote>
+<div><p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 360deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0325.png"><img alt="../_images/0325.png" src="../_images/0325.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-16 FR3-WMS Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr3-wml-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.3. </span>FR3-WML Model Collaborative Robot Load Curve<a class="headerlink" href="#fr3-wml-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR3-WML collaborative robot can carry is 4kg, and the rated load is 3kg. The load curve is shown in Figure 1. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR3-WML can carry a load of 3kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 3kg to 4kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<blockquote>
+<div><p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 360deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1102.png"><img alt="../_images/1102.png" src="../_images/1102.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-17 FR3-WML Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr3-c-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.4. </span>FR3-C Model Collaborative Robot Load Curve<a class="headerlink" href="#fr3-c-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR3-C collaborative robot can carry is 5kg, and the rated load is 3kg. The load curve is shown in Figure 1. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR3-C can carry a load of 3kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 3kg to 5kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<blockquote>
+<div><p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 360deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1112.png"><img alt="../_images/1112.png" src="../_images/1112.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-18 FR3-C Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr5-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.5. </span>FR5 Model Collaborative Robot Load Curve<a class="headerlink" href="#fr5-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR5 collaborative robot can carry is 7kg, and the rated load is 5kg. The load curve is shown in the figure. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR5 can carry a load of 5kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 5kg to 7kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 360deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the running speed.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0335.png"><img alt="../_images/0335.png" src="../_images/0335.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-19 FR5 Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr5-wml-model-collaborative-robot-payload-curve">
+<h5><span class="section-number">3.4.5.2.6. </span>FR5-WML Model Collaborative Robot Payload Curve<a class="headerlink" href="#fr5-wml-model-collaborative-robot-payload-curve" title="Permalink to this heading"></a></h5>
+<p>The FR5-WML model collaborative robot has a maximum payload capacity of 7kg and a rated payload of 5kg. The payload curve is shown in the figure. The specific interpretation of the payload curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>Within the “blue envelope”: Full performance - can run most trajectories with friction compensation coefficients all at 1, dynamics 2.0, 100% speed, 360 deg/s² acceleration (maintenance mode).</p></li>
+<li><p>Within the “red envelope”: Extended payload capacity - can operate under the following conditions:</p></li>
+</ol>
+<blockquote>
+<div><p>① Enable “Time-optimal Mode”;</p>
+<p>② Reduce robot working range or lower operating speed.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1271.png"><img alt="../_images/1271.png" src="../_images/1271.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-20 FR5-WML Model Collaborative Robot Payload Curve</strong></p></section>
+<section id="fr5-c-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.7. </span>FR5-C Model Collaborative Robot Load Curve<a class="headerlink" href="#fr5-c-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The FR5-C model collaborative robot has a maximum payload of 5kg and a rated payload of 4kg. The load curve is shown in the figure as “Full Performance”.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1302.png"><img alt="../_images/1302.png" src="../_images/1302.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-21 FR5-C Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr10-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.8. </span>FR10 Model Collaborative Robot Load Curve<a class="headerlink" href="#fr10-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR10 collaborative robot can carry is 14kg, and the rated load is 10kg. The load curve is shown in Figure 3. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR10 can carry a load of 10kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 10kg to 14kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<blockquote>
+<div><p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 180deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0345.png"><img alt="../_images/0345.png" src="../_images/0345.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-22 FR10 Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr16-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.9. </span>FR16 Model Collaborative Robot Load Curve<a class="headerlink" href="#fr16-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR16 collaborative robot can carry is 20kg, and the rated load is 16kg. The load curve is shown in the figure. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR16 can carry a load of 16kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 16kg to 20kg, it is the extended load capacity, see the “red envelope”, and the robot can operate in the following states:</p></li>
+</ol>
+<p>① Turn on the “time optimal mode”, and it is recommended to set the acceleration to less than 180deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0355.png"><img alt="../_images/0355.png" src="../_images/0355.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-23 FR16 Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr20-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.10. </span>FR20 Model Collaborative Robot Load Curve<a class="headerlink" href="#fr20-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR20 collaborative robot can carry is 25kg, and the rated load is 20kg. The load curve is shown in the figure. The specific interpretation of the load curve is as follows:</p>
+<ol class="arabic simple">
+<li><p>FR20 can carry a load of 20kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 20kg to 25kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<blockquote>
+<div><p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 150deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0365.png"><img alt="../_images/0365.png" src="../_images/0365.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-24 FR20 Model Collaborative Robot Load Curve</strong></p></section>
+<section id="fr30-model-collaborative-robot-load-curve">
+<h5><span class="section-number">3.4.5.2.11. </span>FR30 Model Collaborative Robot Load Curve<a class="headerlink" href="#fr30-model-collaborative-robot-load-curve" title="Permalink to this heading"></a></h5>
+<p>The maximum load that the FR30 collaborative robot can carry is 35kg, and the rated load is 30kg. The load curve is shown in the figure.</p>
+<ol class="arabic simple">
+<li><p>FR30 can carry a load of 30kg or less at full performance, see the “blue envelope”;</p></li>
+<li><p>When the load is 30kg to 35kg, it is the extended load capacity, see the “red envelope”, at this time the robot can operate in the following states:</p></li>
+</ol>
+<p>① Turn on the “time optimal mode”, it is recommended to set the acceleration to less than 150deg/s<sup>2</sup>;</p>
+<p>② Reduce the robot’s working range or reduce the operating speed.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0693.png"><img alt="../_images/0693.png" src="../_images/0693.png" style="width: 5in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.4-25 FR30 Model Collaborative Robot Load Curve</strong></p></section>
+</section>
+</section>
+</section>
+<section id="control-connection">
+<h2><span class="section-number">3.5. </span>Control connection<a class="headerlink" href="#control-connection" title="Permalink to this heading"></a></h2>
+<section id="controller-interface">
+<h3><span class="section-number">3.5.1. </span>Controller interface<a class="headerlink" href="#controller-interface" title="Permalink to this heading"></a></h3>
+<p>This series of robots can be equipped with three control boxes with different power inputs. For details on the control box power input, refer to the control box nameplate information. The robot needs to be electrically grounded.</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 40%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Maximum Input (for customers to configure the front-stage power supply)</strong></p></td>
+<td><p><strong>Maximum output Output (maximum output peak)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>DC 2kW</strong></p></td>
+<td><p>30-60VDC/30A</p></td>
+<td><p>2000W/48VDC/41A</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>DC 5kW</strong></p></td>
+<td><p>30-60VDC/40A</p></td>
+<td><p>5000W/48VDC/104A</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>AC narrow voltage 2kW</strong></p></td>
+<td><p>176-264VDC/10A/Single Machine/50Hz</p></td>
+<td><p>2000W/48VDC/41A</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>AC wide voltage 2kW</strong></p></td>
+<td><p>100-240VDC/10A/Single Machine/50-60Hz</p></td>
+<td><p>2000W/48VDC/41A</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>AC wide voltage 5kW</strong></p></td>
+<td><p>100-240VDC/16A/Single Machine/50-60Hz</p></td>
+<td><p>5000W/48VDC/104A</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before wiring, please ensure that the power supply is turned off and hang a safety warning sign next to it.</p>
+</div>
+<p>The external wiring of this series of robotic arm control systems is connected using pluggable and quickly installable plugs. The wiring panel of the collaborative robot is shown in Figure 3.5-1.</p>
+<ul class="simple">
+<li><p>Make sure the power button on the control box is off (the button is turned to 0) and connect the power cord to the power socket.</p></li>
+<li><p>Connect the robot body overload cable to the control box overload interface.</p></li>
+<li><p>Insert the button box aviation plug into the control box teaching device interface.</p></li>
+<li><p>The heat dissipation ports on both sides of the control box should be spaced at least 15CM apart.</p></li>
+<li><p>At the front of the control box (user Table metal, switch power button, heavy load and teaching pendant wiring harness), the spacing distance should not be less than 25CM.</p></li>
+<li><p>The control box is 0.6-1.5m above the ground.</p></li>
+<li><p>Do not allow users to replace power cables on their own.</p></li>
+</ul>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0375.png"><img alt="../_images/0375.png" src="../_images/0375.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-1 Robot wiring schematic diagram</strong></p></section>
+<section id="controller-i-o-panel">
+<h3><span class="section-number">3.5.2. </span>Controller I/O panel<a class="headerlink" href="#controller-i-o-panel" title="Permalink to this heading"></a></h3>
+<p>You can use the I/O inside the control box to control various devices, including pneumatic relays, PLCs, and limit switches and stop buttons. Figure 3.5-2 shows the electrical interface group of the control box, and Figure 3.5-3 shows the electrical interface group of the integrated mini control box (mini BOX).</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0384.png"><img alt="../_images/0384.png" src="../_images/0384.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-2 Schematic Diagram of Control Box Electrical Interface</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0394.png"><img alt="../_images/0394.png" src="../_images/0394.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-3 Schematic Diagram of Integrated Mini Control Box (mini BOX) Electrical Interface</strong></p></section>
+<section id="rj45-network-interface-group">
+<h3><span class="section-number">3.5.3. </span>RJ45 network interface group<a class="headerlink" href="#rj45-network-interface-group" title="Permalink to this heading"></a></h3>
+<p>The network interface group address in the control box is shown in figure below. Note that the graph corresponds to the sequence of the address order of the internal network port of the control box, and the default port of the robot is prohibited from insertion. The user’s network port can be used to communicate with the camera and other devices. The IP address is 192.168.57.2. The button box interface is default to the faculty control port, and the IP address is 192.168.58.2. Use the network cable connection button box interface and computer. The computer IP address is set to 192.168.58.10 or the same network segment as it. You can access the teaching pendant page. Easy to manufacture control boxes to access the pages of the oscillator through the network port of the connection button box.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0404.png"><img alt="../_images/0404.png" src="../_images/0404.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-4 Significant diagram of network interface group</strong></p></section>
+<section id="end-plate">
+<h3><span class="section-number">3.5.4. </span>End plate<a class="headerlink" href="#end-plate" title="Permalink to this heading"></a></h3>
+<p>You can use the end -panel’s I/O and 485 communication interfaces to control various devices, including pneumatic relay, PLC and emergency stop buttons. The PIN foot distribution and its PIN foot explanation is shown in figure below. The I/O connector model is M12 connector 8 cores.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>End board I/O and 485 interfaces are prohibited from hot plugging.</p>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0413.png"><img alt="../_images/0413.png" src="../_images/0413.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-5 The schematic diagram of the end version of the electrical interface</strong></p></section>
+<section id="ground">
+<h3><span class="section-number">3.5.5. </span>Ground<a class="headerlink" href="#ground" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>The control box is located at the M4 combination screw in the upper left of the power switch, as shown in figure below.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0424.png"><img alt="../_images/0424.png" src="../_images/0424.png" style="width: 8in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-6 Demonstration diagram of the control box</strong></p><ol class="arabic simple">
+<li><p>The body is located on the right side of the base of the base, as shown in figure below.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0435.png"><img alt="../_images/0435.png" src="../_images/0435.png" style="width: 4in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-7 Dragon schematic diagram of the body</strong></p><p>The protective wire used alone, the cross -sectional area should not be less than:</p>
+<ul class="simple">
+<li><p>2.5mm<sup>2</sup> copper or 16mm<sup>2</sup> aluminum，if mechanical injury protection is provided (wire pipe, pipeline, etc.)</p></li>
+<li><p>4mm<sup>2</sup> copper or 16mm<sup>2</sup> aluminum，if no mechanical damage protection is provided</p></li>
+</ul>
+</section>
+<section id="the-common-specifications-of-all-digital-i-o">
+<h3><span class="section-number">3.5.6. </span>The common specifications of all digital I/O<a class="headerlink" href="#the-common-specifications-of-all-digital-i-o" title="Permalink to this heading"></a></h3>
+<p>This section stipulates the electrical specifications of the following control box 24 volt digital input/output:</p>
+<ul class="simple">
+<li><p>Safety I/O</p></li>
+<li><p>Universal digital amount I/O</p></li>
+</ul>
+<p>Robots must be installed in accordance with electrical specifications.</p>
+<p>By configuring the “Power Communication” interface, you can use an internal or external 24V power supply to power the digital I/O. In this interface, the upper two terminals (ex24V and exon) are the 24V and ground of the external power supply, and the lower two terminals (24V and GND) are the 24V and ground of the internal power supply. The default configuration uses the internal power supply, as shown in the following figures for the control box and integrated mini control box (mini BOX).</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0445.png"><img alt="../_images/0445.png" src="../_images/0445.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1342.png"><img alt="../_images/1342.png" src="../_images/1342.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-8 Power Communication Schematic 01</strong></p><p>If the load power is high, connect an external power supply as shown in the figure below. For the AC wide voltage integrated mini control box (mini BOX), the external power supply and internal power supply share a common 0V connection.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0455.png"><img alt="../_images/0455.png" src="../_images/0455.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1352.png"><img alt="../_images/1352.png" src="../_images/1352.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-9 Power Communication Schematic 02</strong></p><p>The electrical specifications of internal and external power are shown in table below Internal and external electrical specifications:</p>
+<p class="centered">
+<strong>Table 2.5‑1 Internal and external power supply electrical specifications</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 22%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Terminal</strong></p></td>
+<td><p><strong>Parameter</strong></p></td>
+<td><p><strong>Mininum</strong></p></td>
+<td><p><strong>Typical</strong></p></td>
+<td><p><strong>Maximum</strong></p></td>
+<td><p><strong>Unit</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">Internal 24V power supply</div>
+<div class="line">[ex24V -exGND]</div>
+<div class="line">[ex24V -exGND]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Voltage</div>
+<div class="line">Current</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">23</div>
+<div class="line">0</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">24</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">25</div>
+<div class="line">2</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">V</div>
+<div class="line">A</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">Internal 24V power supply</div>
+<div class="line">[24V- GND]</div>
+<div class="line">[24V- GND]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Voltage</div>
+<div class="line">Current</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">23</div>
+<div class="line">0</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">24</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">25</div>
+<div class="line">1.5</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">V</div>
+<div class="line">A</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The electrical specifications of digital I/O are shown in table below Digital I/O Electric Specifications:</p>
+<p class="centered">
+<strong>Table 2.5‑2 Digital I/O Electric Specification</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 44%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Terminal</strong></p></td>
+<td><p><strong>Parameter</strong></p></td>
+<td><p><strong>Mininum</strong></p></td>
+<td><p><strong>Typical</strong></p></td>
+<td><p><strong>Maximum</strong></p></td>
+<td><p><strong>Unit</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">Digital output</div>
+<div class="line">[COx/DOx]</div>
+<div class="line">[COx/DOx]</div>
+<div class="line">[COx/DOx]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Current</div>
+<div class="line">Pressure drop</div>
+<div class="line">Leakage current</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">0</div>
+<div class="line">0</div>
+<div class="line">0</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">-</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">1</div>
+<div class="line">0.5</div>
+<div class="line">0.1</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">A</div>
+<div class="line">V</div>
+<div class="line">mA</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>[COx/DOx]</p></td>
+<td><p>function</p></td>
+<td><div class="line-block">
+<div class="line">-</div>
+</div>
+</td>
+<td><p>NPN</p></td>
+<td><div class="line-block">
+<div class="line">-</div>
+</div>
+</td>
+<td><p>Type</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">Digital output</div>
+<div class="line">[EIx/SIx/CIx/DIx]</div>
+<div class="line">[EIx/SIx/CIx/DIx]</div>
+<div class="line">[EIx/SIx/CIx/DIx]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">OFF</div>
+<div class="line">ON</div>
+<div class="line">Current(11~30)</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">-3</div>
+<div class="line">11</div>
+<div class="line">2</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">-</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">5</div>
+<div class="line">30</div>
+<div class="line">15</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">V</div>
+<div class="line">V</div>
+<div class="line">mA</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>[EIx/SIx/CIx/DIx]</p></td>
+<td><p>function</p></td>
+<td><div class="line-block">
+<div class="line">-</div>
+</div>
+</td>
+<td><p>NPN</p></td>
+<td><div class="line-block">
+<div class="line">-</div>
+</div>
+</td>
+<td><p>Type</p></td>
+</tr>
+</tbody>
+</table>
+<p>The electrical specifications for digital DO loads are shown in the table below.</p>
+<p class="centered">
+<strong>Table 3.5-3 Electrical Specifications for Single-Channel Digital DO Load</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Control Box Type</strong></p></td>
+<td><p><strong>DO Output Type</strong></p></td>
+<td><p><strong>Power Supply Type</strong></p></td>
+<td><p><strong>Maximum Single-Channel DO Load</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DC/AC Narrow-Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>External 24V Power Supply</p></td>
+<td><div class="line-block">
+<div class="line">Channels 1-4: 400mA</div>
+<div class="line">Channels 5-8: 250mA</div>
+<div class="line">Channels 9-16: 125mA</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>DC/AC Narrow-Voltage Control Box</p></td>
+<td><p>NPN Output</p></td>
+<td><p>Internal 24V Power Supply</p></td>
+<td><div class="line-block">
+<div class="line">Channels 1-4: 300mA</div>
+<div class="line">Channels 5-8: 190mA</div>
+<div class="line">Channels 9-16: 90mA</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>AC Wide-Voltage Control Box</p></td>
+<td><p>NPN/PNP Output</p></td>
+<td><p>External 24V Power Supply</p></td>
+<td><div class="line-block">
+<div class="line">Channels 1-2: 200mA</div>
+<div class="line">Channels 3-8: 100mA</div>
+<div class="line">Channels 9-16: 60mA</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>AC Wide-Voltage Control Box</p></td>
+<td><p>NPN/PNP Output</p></td>
+<td><p>Internal 24V Power Supply</p></td>
+<td><div class="line-block">
+<div class="line">Channels 1-2: 200mA</div>
+<div class="line">Channels 3-8: 100mA</div>
+<div class="line">Channels 9-16: 60mA</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="safety-i-o">
+<h3><span class="section-number">3.5.7. </span>Safety I/O<a class="headerlink" href="#safety-i-o" title="Permalink to this heading"></a></h3>
+<p>This section describes the electrical specifications of security I/O, and must abide by the general electrical specifications in Section 3.5.6.</p>
+<p>Safety devices and equipment must be installed in accordance with the safety description and risk assessment, see section 3.1. All security I/O is paired (redundant) and must be stored as two independent branches. Single failures should not cause loss of security function.</p>
+<p>Safety I/O includes emergency stop and security stop. Urgent stop input is only used for emergency stop equipment, and safely stops input for various security -related protection equipment. Functional differences are shown in table below:</p>
+<p class="centered">
+<strong>Table 2.5-3 Functional difference</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td></td>
+<td><p><strong>Emergency stop</strong></p></td>
+<td><p><strong>Safe stop</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Robot stops moving</strong></p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Stop Category</strong></p></td>
+<td><p>Category 0</p></td>
+<td><p>Category 1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Program execution</strong></p></td>
+<td><p>Stop</p></td>
+<td><p>Pause</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Robot power supply</strong></p></td>
+<td><p>Close</p></td>
+<td><p>Open</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Restart</strong></p></td>
+<td><p>Manual</p></td>
+<td><p>Automatic or manual</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Frequency of use</strong></p></td>
+<td><p>Infrequent</p></td>
+<td><p>Often</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Reinitialization required</strong></p></td>
+<td><p>Need</p></td>
+<td><p>Needless</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p>Do not connect the security signal to a PLC that does not have the correct and safe level. If this warning does not follow, it may cause serious damage or death because one of the security stop function may be covered. Security interface signals must be separated from normal I/O interface signals.</p></li>
+<li><p>All I/O is a redundant -related I/O built (two independent channels). Two channels must be kept separately so that a single failure will not cause security function.</p></li>
+<li><p>Before the robot is put into operation, it is necessary to verify the emergency stop safety function (the robot is powered on, press the emergency stop button, the robot is disconnected, the power is turned off, the rotating emergency stop button, the power is turned on, and the robot is re -power to enable it). Safety functions must be tested regularly.</p></li>
+<li><p>Robot installation should comply with these specifications. Otherwise, it may lead to severe damage or death, because the safety stop function may be over.</p></li>
+</ul>
+</div>
+<p>The following sections are given some examples of how to use security I/O.</p>
+<p><strong>Default safety configuration</strong>
+When the robot leaves the factory, it has the default configuration. It can be operated without any additional safety devices. Please refer to figure below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0494.png"><img alt="../_images/0494.png" src="../_images/0494.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1362.png"><img alt="../_images/1362.png" src="../_images/1362.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-10 Safety protection schematic diagram 01</strong></p><p><strong>Connect the emergency stop button</strong>
+In most applications, one or more additional emergency stop buttons need to be used. Please refer to figure below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0504.png"><img alt="../_images/0504.png" src="../_images/0504.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1372.png"><img alt="../_images/1372.png" src="../_images/1372.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-11 Safety protection schematic diagram 02</strong></p><p><strong>Connect the security stop button</strong>
+An example of a safe stop device is the door switch that the robot stops when the door is turned on. Please refer to figure below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0514.png"><img alt="../_images/0514.png" src="../_images/0514.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1382.png"><img alt="../_images/1382.png" src="../_images/1382.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-12 Safety protection schematic diagram 03</strong></p></section>
+<section id="universal-digital-amount-i-o">
+<h3><span class="section-number">3.5.8. </span>Universal digital amount I/O<a class="headerlink" href="#universal-digital-amount-i-o" title="Permalink to this heading"></a></h3>
+<p>This section describes the electrical specifications of the general digital I/O, and must abide by the general electrical specifications in Section 3.5.6.</p>
+<p>The general digital amount I/O can be used to drive relays, solenoid valves and other devices or interact with other PLCs.</p>
+<p><strong>Digital quantity output control load</strong></p>
+<p>This example demonstrates how to connect the digital quantity output to control the load, Please refer to figure below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0523.png"><img alt="../_images/0523.png" src="../_images/0523.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1392.png"><img alt="../_images/1392.png" src="../_images/1392.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-13 Great digital quantity output schematic diagram 01</strong></p></section>
+<section id="digital-input-from-the-button">
+<h3><span class="section-number">3.5.9. </span>Digital input from the button<a class="headerlink" href="#digital-input-from-the-button" title="Permalink to this heading"></a></h3>
+<p>The following example demonstrates how to connect the simple button to the digital quantity input.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0533.png"><img alt="../_images/0533.png" src="../_images/0533.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1402.png"><img alt="../_images/1402.png" src="../_images/1402.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-14 Great digital quantity output schematic diagram 02</strong></p></section>
+<section id="interact-with-other-devices-or-plc">
+<h3><span class="section-number">3.5.10. </span>Interact with other devices or PLC<a class="headerlink" href="#interact-with-other-devices-or-plc" title="Permalink to this heading"></a></h3>
+<p>The following example demonstrates how to interact with other devices or PLC digital input output.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0543.png"><img alt="../_images/0543.png" src="../_images/0543.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1412.png"><img alt="../_images/1412.png" src="../_images/1412.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-15 Interactive diagram with other devices or PLC</strong></p></section>
+<section id="simulation-i-o">
+<h3><span class="section-number">3.5.11. </span>Simulation I/O<a class="headerlink" href="#simulation-i-o" title="Permalink to this heading"></a></h3>
+<p class="centered">
+<strong>Table 2.5-4 Simulation current voltage</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 22%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Terminal</strong></p></td>
+<td><p><strong>Parameter</strong></p></td>
+<td><p><strong>Mininum</strong></p></td>
+<td><p><strong>Typical</strong></p></td>
+<td><p><strong>Maximum</strong></p></td>
+<td><p><strong>Unit</strong></p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">Analog current input</div>
+<div class="line">[AIx-END]</div>
+<div class="line">[AIx-END]</div>
+<div class="line">[AIx-END]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Current</div>
+<div class="line">Impedance</div>
+<div class="line">Resolution</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">0</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">-</div>
+<div class="line">500</div>
+<div class="line">12</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">20</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">mA</div>
+<div class="line">ohm</div>
+<div class="line">bit</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">Analog voltage input</div>
+<div class="line">[AIx-END]</div>
+<div class="line">[AIx-END]</div>
+<div class="line">[AIx-END]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Voltage</div>
+<div class="line">Impedance</div>
+<div class="line">Resolution</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">0</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">-</div>
+<div class="line">510</div>
+<div class="line">12</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">10</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">V</div>
+<div class="line">Kohm</div>
+<div class="line">bit</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">Analog current input</div>
+<div class="line">[AOx-END]</div>
+<div class="line">[AOx-END]</div>
+<div class="line">[AOx-END]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Current</div>
+<div class="line">Voltage</div>
+<div class="line">Resolution</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">0</div>
+<div class="line">0</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">-</div>
+<div class="line">-</div>
+<div class="line">12</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">20</div>
+<div class="line">10</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">mA</div>
+<div class="line">V</div>
+<div class="line">bit</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">Analog voltage input</div>
+<div class="line">[AOx-END]</div>
+<div class="line">[AOx-END]</div>
+<div class="line">[AOx-END]</div>
+<div class="line">[AOx-END]</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Voltage</div>
+<div class="line">Current</div>
+<div class="line">Impedance</div>
+<div class="line">Resolution</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">0</div>
+<div class="line">0</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">-</div>
+<div class="line">-</div>
+<div class="line">100</div>
+<div class="line">12</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">10</div>
+<div class="line">20</div>
+<div class="line">-</div>
+<div class="line">-</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><br /></div>
+<div class="line">V</div>
+<div class="line">mA</div>
+<div class="line">ohm</div>
+<div class="line">bit</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The simulation I/O is used to set or measure the voltage (0-10V) or current (0-20mA) of other devices.</p>
+<p>In order to achieve high precision, the following methods are recommended.</p>
+<ul class="simple">
+<li><p>The equipment and control box use the same ground (GND).</p></li>
+<li><p>Use shielding cables or twisted wires.</p></li>
+</ul>
+<p>The following example demonstrates how to use analog I/O.</p>
+<p><strong>Use analog output</strong></p>
+<p>The following example is to demonstrate the use of analog output control conveyor belt.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0564.png"><img alt="../_images/0564.png" src="../_images/0564.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1422.png"><img alt="../_images/1422.png" src="../_images/1422.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-16 Simulation output schematic diagram</strong></p><p><strong>Use analog input</strong></p>
+<p>The following example is to demonstrate the simulation input connection simulation sensor.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0574.png"><img alt="../_images/0574.png" src="../_images/0574.png" style="width: 3in;" /></a>
+</figure>
+<p class="centered">
+<strong>Control Box</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1432.png"><img alt="../_images/1432.png" src="../_images/1432.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Integrated Mini Control Box (mini BOX)</strong></p><p class="centered">
+<strong>Figure 3.5-17 Simulation input schematic diagram</strong></p></section>
+<section id="fr3mt-3c-optional-modules">
+<h3><span class="section-number">3.5.12. </span>FR3MT&amp;3C Optional Modules<a class="headerlink" href="#fr3mt-3c-optional-modules" title="Permalink to this heading"></a></h3>
+<section id="id1">
+<h4><span class="section-number">3.5.12.1. </span>Preface<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<p>The definition of collaborative robots complies with international ISO standards and national regulations to ensure operator safety. We do not recommend directly applying the robot body in scenarios where the operation target is the human body. However, if the robot user or developer has a specific need to involve human targets, they must conduct thorough evaluations and ensure personnel safety by configuring a reliable, fully tested, and certified safety protection system for the robot body.</p>
+<section id="id2">
+<h5><span class="section-number">3.5.12.1.1. </span>Safety Notice<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h5>
+<p>This manual serves only as a safety certification guide for customers. Maintenance operators must possess professional expertise. FaRo (法奥) assumes no responsibility for any incidents caused by non-professionals.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If the robot (robot body, power module, or extension module) is damaged, altered, or modified due to human factors, FaRo refuses to bear any responsibility. FaRo is not liable for any damage caused to the robot or other equipment due to programming errors made by the customer.</p>
+</div>
+</section>
+<section id="validity-and-responsibility">
+<h5><span class="section-number">3.5.12.1.2. </span>Validity and Responsibility<a class="headerlink" href="#validity-and-responsibility" title="Permalink to this heading"></a></h5>
+<p>The information in this manual does not cover the design, installation, or operation of a complete robot application, nor does it account for all peripheral devices that may affect the safety of the system. The design and installation of the complete system must comply with the safety requirements established by the standards and regulations of the country where the robot is installed.</p>
+<p>FAIRINO integrators are responsible for ensuring compliance with relevant national laws and regulations, guaranteeing that the complete robot application poses no significant hazards. This includes but is not limited to:</p>
+<ul class="simple">
+<li><p>Conducting a risk assessment for the complete robot system</p></li>
+<li><p>Connecting additional mechanical and safety devices as defined in the risk assessment</p></li>
+<li><p>Establishing appropriate safety settings in the software</p></li>
+<li><p>Ensuring users do not modify any safety measures</p></li>
+<li><p>Verifying the correct design and installation of the entire robot system</p></li>
+<li><p>Providing clear usage instructions</p></li>
+<li><p>Marking the integrator’s logo and contact information on the robot</p></li>
+<li><p>Collecting all documentation, including this manual, in the technical file</p></li>
+</ul>
+</section>
+<section id="id3">
+<h5><span class="section-number">3.5.12.1.3. </span>Limited Liability<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h5>
+<p>The safety information in this manual does not constitute a general safety guarantee for robots. Even if all safety instructions are followed, personnel injury or equipment damage may still occur.</p>
+</section>
+<section id="safety-warning-signs">
+<h5><span class="section-number">3.5.12.1.4. </span>Safety Warning Signs<a class="headerlink" href="#safety-warning-signs" title="Permalink to this heading"></a></h5>
+<p>The following safety warning signs are used on the product.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<figure class="align-left">
+<a class="reference internal image-reference" href="../_images/0085.png"><img alt="../_images/0085.png" src="../_images/0085.png" style="width: 60px; height: 50px;" /></a>
+</figure>
+<p>Name: <strong>DANGER</strong></p>
+<p>Purpose: Indicates an imminent electrical hazard that could result in death or serious injury if not avoided.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<figure class="align-left">
+<a class="reference internal image-reference" href="../_images/0094.png"><img alt="../_images/0094.png" src="../_images/0094.png" style="width: 60px; height: 50px;" /></a>
+</figure>
+<p>Name: <strong>ELECTRIC SHOCK HAZARD</strong></p>
+<p>Purpose: Indicates an imminent electric shock hazard that could result in death or serious injury if not avoided.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<figure class="align-left">
+<a class="reference internal image-reference" href="../_images/0105.png"><img alt="../_images/0105.png" src="../_images/0105.png" style="width: 60px; height: 50px;" /></a>
+</figure>
+<p>Name: <strong>BURN HAZARD</strong></p>
+<p>Purpose: Indicates a hot surface that could cause injury if touched.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<figure class="align-left">
+<a class="reference internal image-reference" href="../_images/1122.png"><img alt="../_images/1122.png" src="../_images/1122.png" style="width: 60px; height: 50px;" /></a>
+</figure>
+<p>Name: <strong>GROUNDING</strong></p>
+<p>Purpose: Indicates that the device must be properly grounded.</p>
+</div>
+</section>
+</section>
+<section id="fr3mt-3c-base-and-module-interface-definitions">
+<h4><span class="section-number">3.5.12.2. </span>FR3MT&amp;3C Base and Module Interface Definitions<a class="headerlink" href="#fr3mt-3c-base-and-module-interface-definitions" title="Permalink to this heading"></a></h4>
+<section id="base-interface-definitions">
+<h5><span class="section-number">3.5.12.2.1. </span>Base Interface Definitions<a class="headerlink" href="#base-interface-definitions" title="Permalink to this heading"></a></h5>
+<p>The base of the robot has seven external buttons and interfaces, defined as follows:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1132.png"><img alt="../_images/1132.png" src="../_images/1132.png" style="width: 4in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-18 Base Buttons and Interfaces</strong></p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pin definitions for base interfaces are viewed from the installation reference plane.</p>
+</div>
+<p><strong>1. Controller Power Button</strong>: Powers on automatically by default.</p>
+<p><strong>2. M8-A Type-4P-Female Socket Pin Definitions</strong>:
+User Ethernet port (IP: 192.168.57.2). Connector: M8-A Type-4P-Female (with M8-A Type-4P-Male plug). Complies with IEC 61076-2-101.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1142.png"><img alt="../_images/1142.png" src="../_images/1142.png" style="width: 2in;" /></a>
+</figure>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 30%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Pin</strong></p></td>
+<td><p><strong>Definition</strong></p></td>
+<td><p><strong>Description</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>TX+</p></td>
+<td><p>Data Transmit Positive</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>RX+</p></td>
+<td><p>Data Receive Positive</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>RX-</p></td>
+<td><p>Data Receive Negative</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>TX-</p></td>
+<td><p>Data Transmit Negative</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>3. M12-L Type-5P-Male Socket Pin Definitions</strong>:
+Connector: M12-L Type-5P-Male (with M12-L Type-5P-Female plug). Complies with IEC 61076-2-101.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1152.png"><img alt="../_images/1152.png" src="../_images/1152.png" style="width: 2in;" /></a>
+</figure>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Pin</strong></p></td>
+<td><p><strong>Color</strong></p></td>
+<td><p><strong>Definition</strong></p></td>
+<td><p><strong>Description</strong></p></td>
+<td><p><strong>Remarks</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Black</p></td>
+<td><p>0V</p></td>
+<td><p>Control Power Negative</p></td>
+<td><p>Robot control power negative (backup power, no connection needed)</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Brown</p></td>
+<td><p>24V</p></td>
+<td><p>Control Power Positive</p></td>
+<td><p>Robot control power positive (backup power, no connection needed)</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>White</p></td>
+<td><p>48V</p></td>
+<td><p>Power Supply Positive</p></td>
+<td><p>Robot power supply positive</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Blue</p></td>
+<td><p>0V</p></td>
+<td><p>Power Supply Negative</p></td>
+<td><p>Robot power supply negative</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Gray</p></td>
+<td><p>PE</p></td>
+<td><p>Ground</p></td>
+<td><p>Safety ground</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>① The base includes a 48V-to-24V power converter.
+② The 48V-to-24V converter serves as a backup for the 24V input.</p>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1162.png"><img alt="../_images/1162.png" src="../_images/1162.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-19 48V-to-24V Power Conversion Diagram</strong></p><p><strong>4. M12-A Type-12P-Female Socket Pin Definitions</strong>:
+Connector: M12-A Type-12P-Female (with M12-A Type-12P-Male plug). Complies with IEC 61076-2-101.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1172.png"><img alt="../_images/1172.png" src="../_images/1172.png" style="width: 2in;" /></a>
+</figure>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 18%" />
+<col style="width: 24%" />
+<col style="width: 47%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Pin</strong></p></td>
+<td><p><strong>Definition</strong></p></td>
+<td><p><strong>Description</strong></p></td>
+<td><p><strong>Remarks</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>AGND</p></td>
+<td><p>Analog Ground</p></td>
+<td><p>Analog reference ground</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>0V</p></td>
+<td><p>24V Power Negative</p></td>
+<td><p>Control power negative</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>485-A</p></td>
+<td><p>RS485 Communication A</p></td>
+<td><p>Reserved for expansion</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>485-B</p></td>
+<td><p>RS485 Communication B</p></td>
+<td><p>Reserved for expansion</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>DI0/DO0</p></td>
+<td><p>Digital Input/Output 0</p></td>
+<td><p>Configurable as input or output (mutually exclusive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>DI1/DO1</p></td>
+<td><p>Digital Input/Output 1</p></td>
+<td><p>Configurable as input or output (mutually exclusive)</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>DI2/DO2</p></td>
+<td><p>Digital Input/Output 2</p></td>
+<td><p>Configurable as input or output (mutually exclusive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>AI0/AO0</p></td>
+<td><p>Analog Input/Output 0</p></td>
+<td><p>Configurable as input or output (mutually exclusive)</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>AI1/AO1</p></td>
+<td><p>Analog Input/Output 1</p></td>
+<td><p>Configurable as input or output (mutually exclusive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>24V</p></td>
+<td><p>24V Power Positive</p></td>
+<td><p>Control power positive</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>DI3/DO3</p></td>
+<td><p>Digital Input/Output 3</p></td>
+<td><p>Configurable as input or output (mutually exclusive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>DI4/DO4</p></td>
+<td><p>Digital Input/Output 4</p></td>
+<td><p>Configurable as input or output (mutually exclusive)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>5. M8-A Type-4P-Female Socket Pin Definitions</strong>:
+Debug Ethernet port (IP: 192.168.58.2). Connector: M8-A Type-4P-Female (with M8-A Type-4P-Male plug). Complies with IEC 61076-2-101.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1142.png"><img alt="../_images/1142.png" src="../_images/1142.png" style="width: 2in;" /></a>
+</figure>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 30%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Pin</strong></p></td>
+<td><p><strong>Definition</strong></p></td>
+<td><p><strong>Description</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>TX+</p></td>
+<td><p>Data Transmit Positive</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>RX+</p></td>
+<td><p>Data Receive Positive</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>RX-</p></td>
+<td><p>Data Receive Negative</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>TX-</p></td>
+<td><p>Data Transmit Negative</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>6. USB-A Port</strong>: USB 2.0 for internal debugging.
+<strong>7. HDMI-A Port</strong>: HDMI display for internal debugging.</p>
+</section>
+<section id="power-module-interface-definitions">
+<h5><span class="section-number">3.5.12.2.2. </span>Power Module Interface Definitions<a class="headerlink" href="#power-module-interface-definitions" title="Permalink to this heading"></a></h5>
+<p>The power module uses a Meanwell NDR-480-48. Pin definitions:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1182.png"><img alt="../_images/1182.png" src="../_images/1182.png" style="width: 3in;" /></a>
+</figure>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Pin</strong></p></td>
+<td><p><strong>Definition</strong></p></td>
+<td><p><strong>Description</strong></p></td>
+<td><p><strong>Remarks</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>L</p></td>
+<td><p>Live Wire</p></td>
+<td><p>Input 100-240V AC</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>N</p></td>
+<td><p>Neutral Wire</p></td>
+<td><p>Input 100-240V AC</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>PE</p></td>
+<td><p>Ground</p></td>
+<td><p>Earth connection</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>+V</p></td>
+<td><p>48V</p></td>
+<td><p>Output 48V/10A</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>+V</p></td>
+<td><p>48V</p></td>
+<td><p>Output 48V/10A</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>-V</p></td>
+<td><p>0V</p></td>
+<td><p>Output 48V return</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>-V</p></td>
+<td><p>0V</p></td>
+<td><p>Output 48V return</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="extension-module-interface-definitions">
+<h5><span class="section-number">3.5.12.2.3. </span>Extension Module Interface Definitions<a class="headerlink" href="#extension-module-interface-definitions" title="Permalink to this heading"></a></h5>
+<p>The extension module includes emergency stop and energy discharge functions. External terminals and internal topology:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1192.png"><img alt="../_images/1192.png" src="../_images/1192.png" style="width: 6in;" /></a>
+</figure>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 30%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Pin</strong></p></td>
+<td><p><strong>Definition</strong></p></td>
+<td><p><strong>Description</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>48-IN</p></td>
+<td><p>48V Input Positive</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>0V</p></td>
+<td><p>48V Input Negative</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>PE</p></td>
+<td><p>Ground</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>PE</p></td>
+<td><p>Ground</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>24V</p></td>
+<td><p>Control Power Positive</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>0V</p></td>
+<td><p>Control Power Negative</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>0V</p></td>
+<td><p>Power Supply Negative</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>48-OUT</p></td>
+<td><p>Power Supply Positive</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>ESW1</p></td>
+<td><p>Emergency Stop Button 1 Positive</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>0V</p></td>
+<td><p>Emergency Stop Button 1 Negative</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>ESW2</p></td>
+<td><p>Emergency Stop Button 2 Positive</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>0V</p></td>
+<td><p>Emergency Stop Button 2 Negative</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>E-O-2</p></td>
+<td><p>Passive Normally Open 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>E-O-1</p></td>
+<td><p>Passive Normally Open 1</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>E-C-2</p></td>
+<td><p>Passive Normally Closed 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>E-C-1</p></td>
+<td><p>Passive Normally Closed 1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="fr3mt-3c-application-scenarios">
+<h4><span class="section-number">3.5.12.3. </span>FR3MT&amp;3C Application Scenarios<a class="headerlink" href="#fr3mt-3c-application-scenarios" title="Permalink to this heading"></a></h4>
+<p>Most scenarios only require the user cable kit. Specific use cases:</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>No.</strong></p></td>
+<td><p><strong>Scenario</strong></p></td>
+<td><p><strong>Power Supply</strong></p></td>
+<td><p><strong>Functional Requirements</strong></p></td>
+<td><p><strong>Recommended Configuration</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Basic Application</p></td>
+<td><p>48V/10A DC available</p></td>
+<td><p>No E-stop/energy discharge</p></td>
+<td><p>User cable kit</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Safety Extended</p></td>
+<td><p>48V/10A DC available</p></td>
+<td><p>E-stop + energy discharge</p></td>
+<td><p>User cable kit + extension module</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Independent Power</p></td>
+<td><p>No 48V/10A DC</p></td>
+<td><p>No E-stop/energy discharge</p></td>
+<td><p>User cable kit + power module + power cord</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Full Function</p></td>
+<td><p>No 48V/10A DC</p></td>
+<td><p>E-stop + energy discharge</p></td>
+<td><p>User cable kit + power module + power cord + extension module</p></td>
+</tr>
+</tbody>
+</table>
+<section id="basic-application">
+<h5><span class="section-number">3.5.12.3.1. </span>Basic Application<a class="headerlink" href="#basic-application" title="Permalink to this heading"></a></h5>
+<p>Only user cable kit required. Connection steps:</p>
+<ol class="arabic simple">
+<li><p>Connect the M12-L-5P-Female power cable to the base (48V/0V/PE to user power supply; insulate 24V/0V).</p></li>
+<li><p>Connect M12-A-12P-Male and M8-A-4P-Male to base.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1202.png"><img alt="../_images/1202.png" src="../_images/1202.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-20 Only user cable kit required connection steps</strong></p></section>
+<section id="safety-extended">
+<h5><span class="section-number">3.5.12.3.2. </span>Safety Extended<a class="headerlink" href="#safety-extended" title="Permalink to this heading"></a></h5>
+<p>User cable kit + extension module. Connection steps:</p>
+<ol class="arabic simple">
+<li><p>Connect the 0.5M extension cable (48V/0V/PE) to user power and module.</p></li>
+<li><p>Connect M12-L-5P-Female to base (all 5 wires to module).</p></li>
+<li><p>Connect M12-A-12P-Male and M8-A-4P-Male to base.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1212.png"><img alt="../_images/1212.png" src="../_images/1212.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-21 User cable kit + extension module connection steps</strong></p></section>
+<section id="independent-power">
+<h5><span class="section-number">3.5.12.3.3. </span>Independent Power<a class="headerlink" href="#independent-power" title="Permalink to this heading"></a></h5>
+<p>User cable kit + power module + power cord. Connection steps:</p>
+<ol class="arabic simple">
+<li><p>Connect 1.5M power cord (L/N/PE) to NDR-480-48 input.</p></li>
+<li><p>Connect M12-L-5P-Female to base (48V/0V/PE to power module; insulate 24V/0V).</p></li>
+<li><p>Connect M12-A-12P-Male and M8-A-4P-Male to base.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1222.png"><img alt="../_images/1222.png" src="../_images/1222.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-22 User cable kit + power module + power cord connection steps</strong></p></section>
+<section id="full-function">
+<h5><span class="section-number">3.5.12.3.4. </span>Full Function<a class="headerlink" href="#full-function" title="Permalink to this heading"></a></h5>
+<p>User cable kit + power module + power cord + extension module. Connection steps:</p>
+<ol class="arabic simple">
+<li><p>Connect 1.5M power cord (L/N/PE) to NDR-480-48.</p></li>
+<li><p>Connect 0.5M extension cable (48V/0V/PE) between power module and extension.</p></li>
+<li><p>Connect M12-L-5P-Female to base (all 5 wires to module).</p></li>
+<li><p>Connect M12-A-12P-Male and M8-A-4P-Male to base.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/1232.png"><img alt="../_images/1232.png" src="../_images/1232.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.5-23 User cable kit + power module + power cord + extension module connection steps</strong></p></section>
+</section>
+<section id="optional-parts-list">
+<h4><span class="section-number">3.5.12.4. </span>Optional Parts List<a class="headerlink" href="#optional-parts-list" title="Permalink to this heading"></a></h4>
+<p>User Cable Kit (5M):</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>No.</strong></p></td>
+<td><p><strong>Name</strong></p></td>
+<td><p><strong>Qty</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>FR3MT&amp;3C-DC Power Cable-5M</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>FR3MT&amp;3C-I/O Cable-5M</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>FR3MT&amp;3C-Ethernet Cable-5M</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>M8 Straight Plug, M8-P4A-PLA05, 4-pin</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>User Cable Kit (1M):</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>No.</strong></p></td>
+<td><p><strong>Name</strong></p></td>
+<td><p><strong>Qty</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>FR3MT&amp;3C-DC Power Cable-1M</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>FR3MT&amp;3C-I/O Cable-1M</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>FR3MT&amp;3C-Ethernet Cable-1M</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>M8 Straight Plug, M8-P4A-PLA05, 4-pin</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Power Module:</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>No.</strong></p></td>
+<td><p><strong>Name</strong></p></td>
+<td><p><strong>Qty</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Meanwell Power Supply, NDR-480-48</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Power Cord:</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>No.</strong></p></td>
+<td><p><strong>Name</strong></p></td>
+<td><p><strong>Qty</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>FR3MT&amp;3C-Power Cord-1.5M</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Extension Module:</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>No.</strong></p></td>
+<td><p><strong>Name</strong></p></td>
+<td><p><strong>Qty</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>FR3MT&amp;3C Base-Extension Module</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>FR3MT&amp;3C Power-Extension Cable-0.5M</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="demonstrate-and-end-led">
+<h2><span class="section-number">3.6. </span>Demonstrate and end LED<a class="headerlink" href="#demonstrate-and-end-led" title="Permalink to this heading"></a></h2>
+<p>The robotic teaching pendant can use a computer or tablet to access and control the robot. The connection method can refer to Section 3.5.3 to explain. In addition, users can also use our FR-HMI osteter.</p>
+<section id="introduction-to-the-button-box">
+<h3><span class="section-number">3.6.1. </span>Introduction to the button box<a class="headerlink" href="#introduction-to-the-button-box" title="Permalink to this heading"></a></h3>
+<section id="button-box-poe-bx01">
+<h4><span class="section-number">3.6.1.1. </span>60 Button Box (POE) (BX01)<a class="headerlink" href="#button-box-poe-bx01" title="Permalink to this heading"></a></h4>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0584.png"><img alt="../_images/0584.png" src="../_images/0584.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 2.6-1 60 Button Box (POE) (BX01)</strong></p><p><strong>Emergency stop switch:</strong> When pressing the emergency stop switch, the robot enters the state of emergency stop.</p>
+<p><strong>Type-c:</strong>Connect the port of the web teaching pendant.</p>
+<p><strong>Button 1:</strong>Short press automatic/manual mode switch, long press and enter/exit the drag mode.</p>
+<p><strong>Button 2:</strong>Short press the record to show the teaching point, long press and enter/exit the state of no demonstrator.</p>
+<p><strong>Button 3:</strong>Start/stop running program.</p>
+</section>
+<section id="button-box-poe-bx02-v1-0">
+<h4><span class="section-number">3.6.1.2. </span>60 Button Box (POE) (BX02)-V1.0<a class="headerlink" href="#button-box-poe-bx02-v1-0" title="Permalink to this heading"></a></h4>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0594.png"><img alt="../_images/0594.png" src="../_images/0594.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 2.6-2 60 Button Box (POE) (BX02)-V1.0</strong></p><p><strong>Emergency stop switch:</strong>When pressing the emergency stop switch, the robot enters the state of emergency stop.</p>
+<p><strong>Start/Stop:</strong>Start/stop running program.</p>
+<p><strong>Ethernet:</strong>Connect to the web teaching pendant.</p>
+<p><strong>Turn off:</strong>No enabled.</p>
+<p><strong>Record point:</strong>Record the teaching point.</p>
+<p><strong>Teaching mode:</strong>Enter/exit with the teaching pendant state.</p>
+<p><strong>Working mode:</strong>Automatic/manual mode switch.</p>
+<p><strong>Drag mode:</strong>Enter/exit drag mode.</p>
+</section>
+<section id="button-box-poe-bx02-v2-0">
+<h4><span class="section-number">3.6.1.3. </span>60 Button Box (POE) (BX02) - V2.0<a class="headerlink" href="#button-box-poe-bx02-v2-0" title="Permalink to this heading"></a></h4>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0793.png"><img alt="../_images/0793.png" src="../_images/0793.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 3.6-3 60 Button Box (POE) (BX02) - V2.0</strong></p><p><strong>Emergency stop switch:</strong> When the emergency stop switch is pressed, the robot enters an emergency stop state.</p>
+<p><strong>Start/Stop:</strong> Start/Stop running the program.</p>
+<p><strong>Network port:</strong> Connect to a web teaching pendant.</p>
+<p><strong>IP reset:</strong> Reset the network port IP.</p>
+<p><strong>Record point:</strong> Record teaching points.</p>
+<p><strong>One click clear:</strong> Clear all recoverable errors.</p>
+<p><strong>Operation mode:</strong> Automatic/Manual mode switching.</p>
+<p><strong>Drag mode:</strong> Enter/exit drag mode.</p>
+</section>
+</section>
+<section id="fr-hmi-teach-pendant-introduction">
+<h3><span class="section-number">3.6.2. </span>FR-HMI Teach pendant introduction<a class="headerlink" href="#fr-hmi-teach-pendant-introduction" title="Permalink to this heading"></a></h3>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0604.png"><img alt="../_images/0604.png" src="../_images/0604.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 2.6-3 FR-HMI teaching pendant front</strong></p><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/0614.png"><img alt="../_images/0614.png" src="../_images/0614.png" style="width: 6in;" /></a>
+</figure>
+<p class="centered">
+<strong>Figure 2.6-4 FR-HMI teaching pendant back</strong></p><p><strong>Display:</strong>Touch operation and display interface of the teaching pendant.</p>
+<p><strong>Start key:</strong>Start the program.</p>
+<p><strong>Stop key:</strong>Stop the currently running program.</p>
+<p><strong>Joint button:</strong>The joint node of the robot.</p>
+<p><strong>Three -bit enable:</strong>Manual mode enable robots</p>
+<p><strong>Emergency stop switch:</strong>When pressing the emergency stop switch, the robot enters the state of emergency stop.</p>
+<p><strong>Mode key:</strong>Rotate the button to switch the automatic mode.</p>
+</section>
+<section id="end-led-definition">
+<h3><span class="section-number">3.6.3. </span>End LED definition<a class="headerlink" href="#end-led-definition" title="Permalink to this heading"></a></h3>
+<p class="centered">
+<strong>Table 3.6‑1 The end LED definition table</strong></p><table class="docutils align-center">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Function</strong></p></td>
+<td><p><strong>LED color</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>When communication is not established</p></td>
+<td><p>“Off”, “Red”, “Green” and “Blue” alternately</p></td>
+</tr>
+<tr class="row-odd"><td><p>Automatic mode</p></td>
+<td><p>Blue long bright</p></td>
+</tr>
+<tr class="row-even"><td><p>Manual mode</p></td>
+<td><p>Green long bright</p></td>
+</tr>
+<tr class="row-odd"><td><p>Drag Mode</p></td>
+<td><p>White cyan long bright</p></td>
+</tr>
+<tr class="row-even"><td><p>Button box record point (only when using button box)</p></td>
+<td><p>Purple blinks twice</p></td>
+</tr>
+<tr class="row-odd"><td><p>Start running (only when using the button box)</p></td>
+<td><p>Cyan blue flashes twice</p></td>
+</tr>
+<tr class="row-even"><td><p>Enter the state of unmatched button box (only when using the button box)</p></td>
+<td><p>Blue flashes twice</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stop operation (only when using the button box)</p></td>
+<td><p>Red flashes twice</p></td>
+</tr>
+<tr class="row-even"><td><p>Error reporting (only when using the button box)</p></td>
+<td><p>Red long bright</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zero calibration completed</p></td>
+<td><p>White cyan flashes three times</p></td>
+</tr>
+<tr class="row-even"><td><p>Enable</p></td>
+<td><p>Yellow flashes twice</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="robot_brief_introduction.html" class="btn btn-neutral float-left" title="2. Robot brief introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quick_start_robot.html" class="btn btn-neutral float-right" title="4. Quick start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2026, Fairino (Suzhou) Robot Technology Co.,Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
