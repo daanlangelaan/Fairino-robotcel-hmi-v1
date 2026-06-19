@@ -5,6 +5,7 @@ import net from "node:net";
 
 const root = new URL(".", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const port = Number(process.env.PORT || 8787);
+const bindHost = process.env.HMI_BIND_HOST || "127.0.0.1";
 const bridgeMode = process.env.HMI_BRIDGE_MODE || "mock";
 const fairinoHost = process.env.FAIRINO_HOST || "192.168.92.128";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
@@ -614,7 +615,7 @@ async function handleApi(req, res, url) {
 }
 
 createServer(async (req, res) => {
-  const url = new URL(req.url || "/", `http://127.0.0.1:${port}`);
+  const url = new URL(req.url || "/", `http://${bindHost}:${port}`);
 
   try {
     if (url.pathname.startsWith("/api/") && await handleApi(req, res, url)) {
@@ -642,6 +643,6 @@ createServer(async (req, res) => {
     res.writeHead(404);
     res.end("Not found");
   }
-}).listen(port, "127.0.0.1", () => {
-  console.log(`HMI simulator bridge: http://127.0.0.1:${port}/`);
+}).listen(port, bindHost, () => {
+  console.log(`HMI simulator bridge: http://${bindHost}:${port}/`);
 });

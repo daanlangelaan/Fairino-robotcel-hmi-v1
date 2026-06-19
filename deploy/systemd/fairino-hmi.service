@@ -1,0 +1,17 @@
+[Unit]
+Description=Fairino Robotcel HMI
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/fairino-robotcel-hmi
+EnvironmentFile=-/etc/fairino-hmi.env
+ExecStart=/usr/bin/node tools/start-hmi.mjs --mode modbus
+Restart=on-failure
+RestartSec=3
+User=fairino
+Group=fairino
+
+[Install]
+WantedBy=multi-user.target
