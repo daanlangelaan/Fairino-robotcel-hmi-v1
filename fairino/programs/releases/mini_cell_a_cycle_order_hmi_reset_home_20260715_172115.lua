@@ -1,6 +1,6 @@
 -- Generated from fairino/source modules.
 -- Variant: a_cycle_order_hmi_reset_home
--- Generated: 20260715_171826
+-- Generated: 20260715_172115
 -- Upload this uniquely named file to avoid Fairino WebApp cache/name confusion.
 
 -- BEGIN config.lua
@@ -110,9 +110,9 @@ SIM_FILTER_PRESENT = 1
 SIM_GRIPPER_FILTER_PRESENT = 1
 SIM_CLAMP_CLOSED = 1
 
--- Fairino controlbox IO is wired through optocoupler NC contacts: the controller
--- output is high by default and an IO trigger pulls the output low. Remote IO may
--- need a different polarity layer later.
+-- Fairino controlbox DOs drive external standalone optocouplers. The actuator
+-- side uses NC contacts, so the controlbox output is high by default and an IO
+-- trigger pulls the output low. Remote IO may need a different polarity layer.
 OUTPUT_ACTIVE_LEVEL = 0
 OUTPUT_INACTIVE_LEVEL = 1
 
