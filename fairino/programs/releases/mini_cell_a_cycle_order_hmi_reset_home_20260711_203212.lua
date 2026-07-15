@@ -1,6 +1,6 @@
 -- Generated from fairino/source modules.
 -- Variant: a_cycle_order_hmi_reset_home
--- Generated: 20260711_214206
+-- Generated: 20260711_203212
 -- Upload this uniquely named file to avoid Fairino WebApp cache/name confusion.
 
 -- BEGIN config.lua
@@ -80,7 +80,7 @@ SPEED_APPROACH = 40
 SPEED_PICK_PLACE = 25
 SPEED_RETRACT = 40
 SPEED_DRYING_INDEX = 35
-GLUE_ROTATION_SPEED = 80
+GLUE_ROTATION_SPEED = 20
 
 -- HMI/Modbus integration.
 -- Keep disabled until the Fairino Modbus TCP slave aliases are configured.
@@ -354,23 +354,6 @@ end
 
 function pick_valve_motion()
     pick_check_valve_motion()
-end
-
-function align_check_valve_on_table_motion()
-    if motion_guard() == false then return false end
-    PTP(A102_CHECK_VALVE_ALIGN_APPROACH, SPEED_TRANSPORT, -1, 0)
-    if motion_guard() == false then return false end
-    Lin(A104_CHECK_VALVE_ALIGN_PLACE, SPEED_PICK_PLACE, -1, 0, 0)
-    if motion_guard() == false then return false end
-    set_output(DO_GRIPPER_CLOSE, false)
-    if guarded_wait(GRIPPER_CLOSE_TIME_MS) == false then return false end
-    Lin(A106_CHECK_VALVE_ALIGN_REGRIP, SPEED_PICK_PLACE, -1, 0, 0)
-    if motion_guard() == false then return false end
-    set_output(DO_GRIPPER_CLOSE, true)
-    if guarded_wait(GRIPPER_CLOSE_TIME_MS) == false then return false end
-    PTP(A108_CHECK_VALVE_ALIGN_RETRACT, SPEED_RETRACT, -1, 0)
-    if motion_guard() == false then return false end
-    return true
 end
 
 function insert_check_valve_motion()
@@ -741,7 +724,6 @@ function state_pick_check_valve()
         return
     end
     set_output(DO_CHECK_VALVE_FEED, false)
-    if align_check_valve_on_table_motion() == false then return end
     current_state = S110_APPLY_GLUE
 end
 

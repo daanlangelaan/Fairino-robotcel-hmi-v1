@@ -117,12 +117,12 @@ function state_pick_filter()
         return
     end
 
-    SetDO(DO_DEBUG_PICK_OK, 1, 0, 0)
+    set_output(DO_DEBUG_PICK_OK, true)
     current_state = S70_PLACE_FILTER_IN_CLAMP
 end
 
 function state_place_filter_in_clamp()
-    SetDO(DO_DEBUG_PLACE_ENTERED, 1, 0, 0)
+    set_output(DO_DEBUG_PLACE_ENTERED, true)
     if place_filter_in_clamp_motion() == false then return end
     current_state = S80_CLAMP_FILTER
 end
@@ -143,7 +143,12 @@ end
 
 function state_pick_check_valve()
     set_running_lamps()
-    if pick_check_valve_motion() == false then return end
+    if pick_check_valve_motion() == false then
+        set_output(DO_CHECK_VALVE_FEED, false)
+        return
+    end
+    set_output(DO_CHECK_VALVE_FEED, false)
+    if align_check_valve_on_table_motion() == false then return end
     current_state = S110_APPLY_GLUE
 end
 

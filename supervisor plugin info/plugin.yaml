@@ -1,0 +1,137 @@
+plugin:
+  plugin_id: "modbus-hmi-builder"
+  name: "Modbus HMI Builder Plugin"
+  version: "0.1.0"
+  kind: "hmi-tool-adapter"
+  contract_version: "supervisor-plugin.v1"
+  owner: "RD Automation"
+  status: "discovery"
+
+purpose:
+  summary: "Generate or configure a reusable Modbus-based HMI from Supervisor machine project data."
+  notes:
+    - "This plugin should capture what was learned while building the HMI in the first Fairino project."
+    - "The HMI builder must become a reusable plugin, separate from the Fairino robot controller plugin."
+    - "Robot-specific screens may use Fairino data, but generic HMI modules should remain reusable."
+
+capabilities:
+  reads_project_model: true
+  writes_project_model: false
+  generates_artifacts: true
+  connects_runtime: false
+  requires_hardware: false
+  supports_simulation: true
+
+data_requirements:
+  required:
+    - path: "machine-definition.modules[]"
+      reason: "HMI pages and navigation should follow machine modules."
+    - path: "machine-definition.process-steps[]"
+      reason: "HMI must show process state and active step information."
+    - path: "io.signals[]"
+      reason: "HMI needs normalized signals for display, commands and diagnostics."
+    - path: "io.mappings[]"
+      reason: "Map HMI controls and indicators to Modbus registers/coils or controller endpoints."
+    - path: "alarms[]"
+      reason: "Generate alarm and diagnostic views."
+  optional:
+    - path: "recipes[]"
+      reason: "HMI may include recipe selection and parameter editing."
+    - path: "safety.safety-functions[]"
+      reason: "HMI may display safety state, but may not replace safety control."
+    - path: "controllers[]"
+      reason: "HMI may need controller connection status and protocol details."
+  proposed_extensions:
+    - namespace: "modbus_hmi"
+      fields:
+        - "register_address"
+        - "coil_address"
+        - "data_type"
+        - "scale"
+        - "unit"
+        - "read_write"
+        - "screen_group"
+        - "widget_type"
+        - "poll_interval_ms"
+        - "permission_level"
+
+projections:
+  consumes:
+    - "hmi"
+    - "runtime"
+    - "controller"
+  produces:
+    - "hmi-artifact-manifest"
+
+commands:
+  provided:
+    - id: "hmi.validate_input"
+      safety: "engineering"
+      description: "Validate whether the project contains enough HMI data."
+    - id: "hmi.generate_project"
+      safety: "engineering"
+      description: "Generate HMI configuration, pages, mappings and assets."
+    - id: "hmi.generate_modbus_map"
+      safety: "engineering"
+      description: "Generate or validate Modbus register/coil mapping."
+  consumed: []
+
+events:
+  emits:
+    - "tool.generation_started"
+    - "tool.generation_completed"
+    - "tool.generation_failed"
+    - "tool.output_outdated"
+  consumes:
+    - "project.projection_changed"
+
+artifacts:
+  outputs:
+    - path: "hmi/generated/"
+      kind: "generated-hmi-project"
+    - path: "hmi/exports/"
+      kind: "hmi-export-package"
+    - path: "artifacts/manifests/hmi-artifacts.json"
+      kind: "artifact-manifest"
+
+write_policy:
+  allowed_project_paths:
+    - "hmi/generated/"
+    - "hmi/exports/"
+    - "artifacts/manifests/"
+    - "artifacts/checksums/"
+  forbidden_project_paths:
+    - "requirements/"
+    - "machine-definition/"
+    - "hardware/"
+    - "io/"
+    - "safety/"
+    - "releases/"
+    - "deployment/"
+
+validation:
+  readiness_checks:
+    - "HMI controls reference known commands or signals."
+    - "HMI indicators reference known signals or status values."
+    - "Modbus mapping has unique addresses."
+    - "Writeable HMI controls define permission level and safety boundary."
+    - "Reusable HMI modules are separated from project-specific screens."
+  blocking_conditions:
+    - "A writeable control has no target signal or command."
+    - "Duplicate Modbus address assignment."
+    - "Safety-critical command is exposed without explicit approval."
+
+security:
+  secrets_required: []
+  network_access:
+    required: false
+    notes:
+      - "Generated HMI may communicate over Modbus at runtime, but generation should be possible offline."
+
+open_questions:
+  - "Which HMI platform/runtime is targeted first?"
+  - "Which screens from the first project are generic reusable modules?"
+  - "Which controls are read-only, writeable, operator-only or service-only?"
+  - "How should Modbus address allocation be generated and locked?"
+  - "Which Fairino robot states should become generic HMI widgets?"
+

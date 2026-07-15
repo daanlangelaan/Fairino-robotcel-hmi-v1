@@ -42,7 +42,10 @@ function filter_dispenser_prepare_pick()
 end
 
 function check_valve_dispenser_prepare_pick()
-    -- Demo assumption: the check-valve dispenser has a part ready.
-    -- Later this becomes a real dispenser output plus a dedicated sensor.
+    set_output(DO_CHECK_VALVE_FEED, true)
+    if guarded_wait(CHECK_VALVE_FEED_SETTLE_TIME_MS) == false then
+        set_output(DO_CHECK_VALVE_FEED, false)
+        return false
+    end
     return true
 end

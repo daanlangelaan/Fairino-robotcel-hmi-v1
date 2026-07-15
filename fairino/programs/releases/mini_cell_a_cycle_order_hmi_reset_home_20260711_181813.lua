@@ -1,6 +1,6 @@
 -- Generated from fairino/source modules.
 -- Variant: a_cycle_order_hmi_reset_home
--- Generated: 20260711_214206
+-- Generated: 20260711_181813
 -- Upload this uniquely named file to avoid Fairino WebApp cache/name confusion.
 
 -- BEGIN config.lua
@@ -71,6 +71,7 @@ CHECK_VALVE_FEED_SETTLE_TIME_MS = 1000
 DRYING_ROW_INDEX_TIME_MS = 300
 GLUE_START_DELAY_MS = 300
 GLUE_TAIL_DELAY_MS = 300
+GLUE_ROTATION_ANGLE_DEG = 340
 
 -- Motion speed percentages. Fairino applies these under the global speed
 -- override shown in the WebApp header.
@@ -80,7 +81,9 @@ SPEED_APPROACH = 40
 SPEED_PICK_PLACE = 25
 SPEED_RETRACT = 40
 SPEED_DRYING_INDEX = 35
-GLUE_ROTATION_SPEED = 80
+GLUE_ROTATION_SPEED = 20
+GLUE_SERVOJ_TEST_ANGLE_DEG = 120
+GLUE_SERVOJ_CYCLE_MS = 80
 
 -- HMI/Modbus integration.
 -- Keep disabled until the Fairino Modbus TCP slave aliases are configured.
@@ -356,23 +359,6 @@ function pick_valve_motion()
     pick_check_valve_motion()
 end
 
-function align_check_valve_on_table_motion()
-    if motion_guard() == false then return false end
-    PTP(A102_CHECK_VALVE_ALIGN_APPROACH, SPEED_TRANSPORT, -1, 0)
-    if motion_guard() == false then return false end
-    Lin(A104_CHECK_VALVE_ALIGN_PLACE, SPEED_PICK_PLACE, -1, 0, 0)
-    if motion_guard() == false then return false end
-    set_output(DO_GRIPPER_CLOSE, false)
-    if guarded_wait(GRIPPER_CLOSE_TIME_MS) == false then return false end
-    Lin(A106_CHECK_VALVE_ALIGN_REGRIP, SPEED_PICK_PLACE, -1, 0, 0)
-    if motion_guard() == false then return false end
-    set_output(DO_GRIPPER_CLOSE, true)
-    if guarded_wait(GRIPPER_CLOSE_TIME_MS) == false then return false end
-    PTP(A108_CHECK_VALVE_ALIGN_RETRACT, SPEED_RETRACT, -1, 0)
-    if motion_guard() == false then return false end
-    return true
-end
-
 function insert_check_valve_motion()
     if motion_guard() == false then return false end
     PTP(A140_VALVE_INSERT_APPROACH, SPEED_APPROACH, -1, 0)
@@ -407,15 +393,15 @@ end
 
 function place_in_drying_row_motion()
     if motion_guard() == false then return false end
-    PTP(A195_ROW_PLACE_PULLBACK, SPEED_RETRACT, -1, 0)
+    Lin(A195_ROW_PLACE_PULLBACK, SPEED_RETRACT, -1, 0, 0)
     if motion_guard() == false then return false end
     PTP(A200_DRYING_ROW_APPROACH, SPEED_TRANSPORT, -1, 0)
     if motion_guard() == false then return false end
-    PTP(A210_DRYING_ROW_PLACE, SPEED_PICK_PLACE, -1, 0)
+    Lin(A210_DRYING_ROW_PLACE, SPEED_PICK_PLACE, -1, 0, 0)
     if motion_guard() == false then return false end
     set_output(DO_GRIPPER_CLOSE, false)
     if guarded_wait(GRIPPER_CLOSE_TIME_MS) == false then return false end
-    PTP(A220_DRYING_ROW_RETRACT, SPEED_RETRACT, -1, 0)
+    Lin(A220_DRYING_ROW_RETRACT, SPEED_RETRACT, -1, 0, 0)
     if motion_guard() == false then return false end
     return true
 end
@@ -424,10 +410,10 @@ function index_drying_row_motion()
     if motion_guard() == false then return false end
     PTP(A230_DRYING_ROW_INDEX_START, SPEED_DRYING_INDEX, -1, 0)
     if motion_guard() == false then return false end
-    PTP(A240_DRYING_ROW_INDEX_END, SPEED_DRYING_INDEX, -1, 0)
+    Lin(A240_DRYING_ROW_INDEX_END, SPEED_DRYING_INDEX, -1, 0, 0)
     if motion_guard() == false then return false end
     if guarded_wait(DRYING_ROW_INDEX_TIME_MS) == false then return false end
-    PTP(A220_DRYING_ROW_RETRACT, SPEED_RETRACT, -1, 0)
+    Lin(A220_DRYING_ROW_RETRACT, SPEED_RETRACT, -1, 0, 0)
     if motion_guard() == false then return false end
     PTP(A250_CYCLE_ENDPOINT, SPEED_TRANSPORT, -1, 0)
     if motion_guard() == false then return false end
@@ -551,7 +537,7 @@ end
 
 function glue_move_rotation_end()
     if motion_guard() == false then return false end
-    PTP(A125_GLUE_END, GLUE_ROTATION_SPEED, -1, 0)
+    Lin(A125_GLUE_END, GLUE_ROTATION_SPEED, -1, 0, 0)
     return motion_guard()
 end
 
@@ -741,7 +727,6 @@ function state_pick_check_valve()
         return
     end
     set_output(DO_CHECK_VALVE_FEED, false)
-    if align_check_valve_on_table_motion() == false then return end
     current_state = S110_APPLY_GLUE
 end
 

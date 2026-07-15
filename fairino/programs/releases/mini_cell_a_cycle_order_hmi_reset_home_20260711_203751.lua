@@ -1,6 +1,6 @@
 -- Generated from fairino/source modules.
 -- Variant: a_cycle_order_hmi_reset_home
--- Generated: 20260711_214206
+-- Generated: 20260711_203751
 -- Upload this uniquely named file to avoid Fairino WebApp cache/name confusion.
 
 -- BEGIN config.lua
@@ -80,7 +80,7 @@ SPEED_APPROACH = 40
 SPEED_PICK_PLACE = 25
 SPEED_RETRACT = 40
 SPEED_DRYING_INDEX = 35
-GLUE_ROTATION_SPEED = 80
+GLUE_ROTATION_SPEED = 20
 
 -- HMI/Modbus integration.
 -- Keep disabled until the Fairino Modbus TCP slave aliases are configured.

@@ -8,34 +8,47 @@ SIM_FILTER_PRESENT = 1
 SIM_GRIPPER_FILTER_PRESENT = 1
 SIM_CLAMP_CLOSED = 1
 
+OUTPUT_ACTIVE_LEVEL = 0
+OUTPUT_INACTIVE_LEVEL = 1
+
+function set_output(port, active)
+    if active then
+        SetDO(port, OUTPUT_ACTIVE_LEVEL, 0, 0)
+    else
+        SetDO(port, OUTPUT_INACTIVE_LEVEL, 0, 0)
+    end
+end
+
 function all_outputs_off()
-    SetDO(DO_GRIPPER_CLOSE, 0, 0, 0)
-    SetDO(DO_CLAMP_CLOSE, 0, 0, 0)
-    SetDO(DO_LAMP_GREEN, 0, 0, 0)
-    SetDO(DO_LAMP_ORANGE, 0, 0, 0)
-    SetDO(DO_LAMP_RED, 0, 0, 0)
-    SetDO(DO_DEBUG_PICK_OK, 0, 0, 0)
-    SetDO(DO_DEBUG_PLACE_ENTERED, 0, 0, 0)
-    SetDO(DO_DEBUG_CLAMP_OK, 0, 0, 0)
-    SetDO(DO_GLUE_TRIGGER, 0, 0, 0)
+    set_output(DO_GRIPPER_CLOSE, false)
+    set_output(DO_CLAMP_CLOSE, false)
+    set_output(DO_CHECK_VALVE_PRESS, false)
+    set_output(DO_CHECK_VALVE_FEED, false)
+    set_output(DO_LAMP_GREEN, false)
+    set_output(DO_LAMP_ORANGE, false)
+    set_output(DO_LAMP_RED, false)
+    set_output(DO_DEBUG_PICK_OK, false)
+    set_output(DO_DEBUG_PLACE_ENTERED, false)
+    set_output(DO_DEBUG_CLAMP_OK, false)
+    set_output(DO_GLUE_TRIGGER, false)
 end
 
 function set_ready_lamps()
-    SetDO(DO_LAMP_GREEN, 0, 0, 0)
-    SetDO(DO_LAMP_ORANGE, 1, 0, 0)
-    SetDO(DO_LAMP_RED, 0, 0, 0)
+    set_output(DO_LAMP_GREEN, false)
+    set_output(DO_LAMP_ORANGE, true)
+    set_output(DO_LAMP_RED, false)
 end
 
 function set_running_lamps()
-    SetDO(DO_LAMP_GREEN, 1, 0, 0)
-    SetDO(DO_LAMP_ORANGE, 0, 0, 0)
-    SetDO(DO_LAMP_RED, 0, 0, 0)
+    set_output(DO_LAMP_GREEN, true)
+    set_output(DO_LAMP_ORANGE, false)
+    set_output(DO_LAMP_RED, false)
 end
 
 function set_fault_lamps()
-    SetDO(DO_LAMP_GREEN, 0, 0, 0)
-    SetDO(DO_LAMP_ORANGE, 0, 0, 0)
-    SetDO(DO_LAMP_RED, 1, 0, 0)
+    set_output(DO_LAMP_GREEN, false)
+    set_output(DO_LAMP_ORANGE, false)
+    set_output(DO_LAMP_RED, true)
 end
 
 function sim_input(name)

@@ -1,0 +1,138 @@
+plugin:
+  plugin_id: "fairino-robot-controller"
+  name: "Fairino Robot Controller Adapter"
+  version: "0.1.0"
+  kind: "controller-adapter"
+  contract_version: "supervisor-plugin.v1"
+  owner: "RD Automation"
+  status: "discovery"
+
+purpose:
+  summary: "Connect Supervisor to a Fairino robot controller through a controlled controller-adapter contract."
+  notes:
+    - "This plugin should discover what Supervisor must know about robot state, programs, recipes, commands and diagnostics."
+    - "Vendor-specific API details must stay inside the adapter and must not leak into unrelated Supervisor Core modules."
+    - "Exact protocol, command set and safety boundaries must be confirmed against the Fairino controller documentation before implementation."
+
+capabilities:
+  reads_project_model: true
+  writes_project_model: false
+  generates_artifacts: false
+  connects_runtime: true
+  requires_hardware: true
+  supports_simulation: true
+
+data_requirements:
+  required:
+    - path: "controllers[].id"
+      reason: "Stable controller identity."
+    - path: "controllers[].adapter.adapter_id"
+      reason: "Bind this adapter to a controller instance."
+    - path: "controllers[].network.endpoint"
+      reason: "Robot controller network endpoint or connection profile."
+    - path: "machine-definition.process-steps[]"
+      reason: "Map Supervisor process steps to robot program states or commands."
+    - path: "io.signals[]"
+      reason: "Expose normalized robot-ready, busy, fault and handshake signals."
+  optional:
+    - path: "recipes[]"
+      reason: "Robot program selection may depend on product recipe."
+    - path: "tests.commissioning[]"
+      reason: "Commissioning tests can verify robot communication and handshake behavior."
+  proposed_extensions:
+    - namespace: "fairino"
+      fields:
+        - "robot_ip"
+        - "controller_port"
+        - "program_name"
+        - "tool_frame"
+        - "user_frame"
+        - "speed_override_limit"
+        - "heartbeat_interval_ms"
+
+projections:
+  consumes:
+    - "controller"
+    - "runtime"
+  produces:
+    - "controller-status"
+
+commands:
+  provided:
+    - id: "fairino.connect"
+      safety: "non-motion"
+      description: "Connect to the controller."
+    - id: "fairino.read_status"
+      safety: "non-motion"
+      description: "Read controller connection, mode, alarm and program state."
+    - id: "fairino.select_program"
+      safety: "controlled"
+      description: "Select a reviewed robot program where allowed by machine state."
+    - id: "fairino.start_cycle"
+      safety: "controlled"
+      description: "Request a cycle start through approved controller handshake."
+    - id: "fairino.stop_cycle"
+      safety: "controlled"
+      description: "Request a controlled stop through approved controller handshake."
+  consumed: []
+
+events:
+  emits:
+    - "controller.connected"
+    - "controller.disconnected"
+    - "controller.heartbeat"
+    - "robot.mode_changed"
+    - "robot.program_changed"
+    - "robot.alarm_active"
+    - "robot.cycle_started"
+    - "robot.cycle_completed"
+  consumes:
+    - "supervisor.runtime_started"
+    - "supervisor.runtime_stopping"
+
+artifacts:
+  outputs:
+    - path: "artifacts/manifests/fairino-controller-status.json"
+      kind: "status-snapshot"
+
+write_policy:
+  allowed_project_paths:
+    - "artifacts/manifests/"
+    - "artifacts/checksums/"
+  forbidden_project_paths:
+    - "machine-definition/"
+    - "hardware/"
+    - "io/"
+    - "safety/"
+    - "releases/"
+    - "deployment/"
+
+validation:
+  readiness_checks:
+    - "Controller instance has adapter_id fairino-robot-controller."
+    - "Connection profile is present but secrets are stored outside Git."
+    - "Required normalized handshake signals are mapped."
+    - "Safety-critical motion commands are not exposed without approved interlocks."
+  blocking_conditions:
+    - "No controller endpoint configured."
+    - "Robot command requested while project lifecycle is not commissioning, released or service."
+    - "Safety boundary or command permission is unresolved."
+
+security:
+  secrets_required:
+    - id: "fairino-controller-credential"
+      storage: "secure-os-storage"
+      required: false
+  network_access:
+    required: true
+    notes:
+      - "Robot controller network endpoint must be configured per machine instance."
+      - "Runtime must remain safe when the controller connection is unavailable."
+
+open_questions:
+  - "Which Fairino protocol/API will be used first?"
+  - "Which commands are read-only, controlled, or forbidden?"
+  - "Which robot states must be normalized for HMI and diagnostics?"
+  - "Which robot program/version metadata should be captured in releases?"
+  - "How should simulation behave without real hardware?"
+
