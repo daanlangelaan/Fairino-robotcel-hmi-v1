@@ -8,10 +8,11 @@ SIM_FILTER_PRESENT = 1
 SIM_GRIPPER_FILTER_PRESENT = 1
 SIM_CLAMP_CLOSED = 1
 
--- Outputs are wired fail-low through NO contacts: after robot restart or program
--- stop, a low output must keep pneumatics de-energized.
-OUTPUT_ACTIVE_LEVEL = 1
-OUTPUT_INACTIVE_LEVEL = 0
+-- Fairino controlbox IO is wired through optocoupler NC contacts: the controller
+-- output is high by default and an IO trigger pulls the output low. Remote IO may
+-- need a different polarity layer later.
+OUTPUT_ACTIVE_LEVEL = 0
+OUTPUT_INACTIVE_LEVEL = 1
 
 function set_output(port, active)
     if active then
