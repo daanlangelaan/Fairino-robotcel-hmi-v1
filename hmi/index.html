@@ -25,6 +25,7 @@
   <nav class="tabs" aria-label="HMI tabs">
     <button class="tab active" data-tab="user">User</button>
     <button class="tab" data-tab="troubleshoot">Troubleshoot</button>
+    <button class="tab" data-tab="advanced">Advanced</button>
   </nav>
 
   <main class="layout">
@@ -176,6 +177,63 @@
         <div class="panel wide-panel">
           <h2>Eventlog</h2>
           <div id="log" class="log" aria-live="polite"></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="advancedTab" class="tab-page">
+      <section class="grid">
+        <div class="panel wide-panel">
+          <h2>Fairino control-box DO test</h2>
+          <div class="test-enable-row">
+            <label>
+              <input id="ioTestEnable" type="checkbox">
+              IO-test vrijgeven
+            </label>
+            <span>Alleen gebruiken als de robotcyclus stil staat.</span>
+          </div>
+          <div id="ioOutputTests" class="output-test-list">
+            <div class="output-test-row" data-address="300">
+              <span class="reg-address">DO0</span>
+              <strong>Gripper sluiten</strong>
+              <span>Coil 300</span>
+              <button data-output-action="on">Aan</button>
+              <button data-output-action="off">Uit</button>
+              <button data-output-action="pulse">Puls</button>
+            </div>
+            <div class="output-test-row" data-address="301">
+              <span class="reg-address">DO1</span>
+              <strong>Clamp sluiten</strong>
+              <span>Coil 301</span>
+              <button data-output-action="on">Aan</button>
+              <button data-output-action="off">Uit</button>
+              <button data-output-action="pulse">Puls</button>
+            </div>
+            <div class="output-test-row" data-address="305">
+              <span class="reg-address">DO5</span>
+              <strong>Debug clamp OK</strong>
+              <span>Coil 305</span>
+              <button data-output-action="on">Aan</button>
+              <button data-output-action="off">Uit</button>
+              <button data-output-action="pulse">Puls</button>
+            </div>
+            <div class="output-test-row" data-address="306">
+              <span class="reg-address">DO6</span>
+              <strong>Debug pick OK</strong>
+              <span>Coil 306</span>
+              <button data-output-action="on">Aan</button>
+              <button data-output-action="off">Uit</button>
+              <button data-output-action="pulse">Puls</button>
+            </div>
+            <div class="output-test-row" data-address="307">
+              <span class="reg-address">DO7</span>
+              <strong>Debug place entered</strong>
+              <span>Coil 307</span>
+              <button data-output-action="on">Aan</button>
+              <button data-output-action="off">Uit</button>
+              <button data-output-action="pulse">Puls</button>
+            </div>
+          </div>
         </div>
       </section>
     </section>

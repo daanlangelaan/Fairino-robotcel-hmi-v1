@@ -82,6 +82,8 @@ const inputRegisters = [
   { address: 105, name: "CELL_ROBOT_HEARTBEAT", label: "Robot heartbeat" },
 ];
 
+const outputTestCoils = new Set([300, 301, 305, 306, 307]);
+
 const simInputs = {
   safety_ok: true,
   filter_present: true,
@@ -241,6 +243,12 @@ async function readModbusSnapshot() {
   holdingRegisters.forEach((item, index) => values.holdingRegisters[item.name] = holding[index]);
   discreteInputs.forEach((item, index) => values.discreteInputs[item.name] = discreteBits[index]);
   inputRegisters.forEach((item, index) => values.inputRegisters[item.name] = input[index]);
+}
+
+async function refreshModbusSnapshotIfNeeded() {
+  if (bridgeMode === "modbus") {
+    await readModbusSnapshot();
+  }
 }
 
 function currentState() {
@@ -590,6 +598,37 @@ async function handleApi(req, res, url) {
     if (Object.hasOwn(values.coils, body.name)) {
       values.coils[body.name] = Boolean(body.value);
     }
+    sendJson(res, 200, await snapshot());
+    return true;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/modbus/coil") {
+    const body = await readJson(req);
+    const address = Number(body.address);
+    if (!Number.isInteger(address) || !outputTestCoils.has(address)) {
+      sendJson(res, 400, { error: "Ongeldig Modbus coil adres" });
+      return true;
+    }
+
+    if (bridgeMode === "modbus") {
+      await refreshModbusSnapshotIfNeeded();
+      if (values.discreteInputs.CELL_RUNNING) {
+        sendJson(res, 409, { error: "IO-test geblokkeerd: robotcyclus draait" });
+        return true;
+      }
+      await writeCoil(address, Boolean(body.value));
+      const pulseMs = Number(body.pulseMs || 0);
+      if (pulseMs > 0) {
+        const resetValue = Object.hasOwn(body, "resetValue") ? Boolean(body.resetValue) : false;
+        setTimeout(() => {
+          writeCoil(address, resetValue).catch((error) => pushLog(`DO pulse reset fout: ${error.message}`));
+        }, Math.max(50, Math.min(5000, pulseMs)));
+      }
+      sendJson(res, 200, await snapshot());
+      return true;
+    }
+
+    pushLog(`Mock DO coil ${address} = ${body.value ? 1 : 0}`);
     sendJson(res, 200, await snapshot());
     return true;
   }

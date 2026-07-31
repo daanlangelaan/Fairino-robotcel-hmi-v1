@@ -30,6 +30,8 @@ const els = {
   log: document.querySelector("#log"),
   heartbeatView: document.querySelector("#heartbeatView"),
   stateValueView: document.querySelector("#stateValueView"),
+  ioOutputTests: document.querySelector("#ioOutputTests"),
+  ioTestEnable: document.querySelector("#ioTestEnable"),
 };
 
 async function api(path, options = {}) {
@@ -200,6 +202,14 @@ function renderRegisters() {
   snapshot.inputRegisters.forEach((item) => els.statusRegisters.append(registerRow(item, "input")));
 }
 
+function renderAdvanced() {
+  const testEnabled = Boolean(els.ioTestEnable?.checked);
+  const cycleRunning = getDiscrete("CELL_RUNNING");
+  els.ioOutputTests?.querySelectorAll("button").forEach((button) => {
+    button.disabled = !testEnabled || cycleRunning;
+  });
+}
+
 function renderLog() {
   els.log.innerHTML = "";
   snapshot.machine.log.forEach((line) => {
@@ -217,6 +227,7 @@ function render() {
   renderStates();
   renderSimInputs();
   renderRegisters();
+  renderAdvanced();
   renderLog();
 }
 
@@ -291,6 +302,27 @@ els.commandRegisters.addEventListener("click", (event) => {
   if (!row || row.dataset.kind !== "coil") return;
   post("/api/coil", { name: row.dataset.name, value: true });
 });
+
+els.ioOutputTests?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-output-action]");
+  const row = event.target.closest(".output-test-row");
+  if (!button || !row) return;
+  if (!els.ioTestEnable.checked || getDiscrete("CELL_RUNNING")) return;
+
+  const action = button.dataset.outputAction;
+  const body = {
+    address: Number(row.dataset.address),
+    value: action === "off",
+  };
+  if (action === "pulse") {
+    body.value = false;
+    body.pulseMs = 500;
+    body.resetValue = true;
+  }
+  post("/api/modbus/coil", body);
+});
+
+els.ioTestEnable?.addEventListener("change", renderAdvanced);
 
 setInterval(refresh, 700);
 refresh();

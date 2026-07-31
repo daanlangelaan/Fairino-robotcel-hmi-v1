@@ -497,13 +497,15 @@ button.action {
 }
 
 .register-list,
-.state-list {
+.state-list,
+.output-test-list {
   display: grid;
   gap: 6px;
 }
 
 .register-row,
-.state-item {
+.state-item,
+.output-test-row {
   min-height: 36px;
   display: grid;
   align-items: center;
@@ -517,6 +519,52 @@ button.action {
 
 .register-row {
   grid-template-columns: 48px 1fr 1fr 42px;
+}
+
+.test-enable-row {
+  min-height: 44px;
+  margin: 12px 0;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #15161a;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.test-enable-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 760;
+}
+
+.test-enable-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--amber);
+}
+
+.test-enable-row span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.output-test-row {
+  grid-template-columns: 52px minmax(150px, 1fr) 82px repeat(3, 76px);
+  min-height: 46px;
+}
+
+.output-test-row button {
+  min-height: 32px;
+  padding: 0 10px;
 }
 
 .state-item {
@@ -850,6 +898,16 @@ button.action {
 
   .register-row {
     grid-template-columns: 36px 1fr 34px;
+  }
+
+  .output-test-row {
+    grid-template-columns: 42px 1fr;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .output-test-row button {
+    width: 100%;
   }
 
   .reg-label {

@@ -1,6 +1,7 @@
 param(
-    [string]$FairinoHost = "192.168.92.130",
+    [string]$FairinoHost = "192.168.58.2",
     [int]$HmiPort = 8787,
+    [switch]$RestoreAliases,
     [switch]$SkipAliasRestore
 )
 
@@ -46,7 +47,7 @@ foreach ($server in $oldServers) {
     Stop-Process -Id $server.ProcessId -Force
 }
 
-if (-not $SkipAliasRestore -and (Test-Path $aliasRestore)) {
+if ($RestoreAliases -and -not $SkipAliasRestore -and (Test-Path $aliasRestore)) {
     Write-Step "Modbus aliases herstellen/controleren"
     try {
         & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $aliasRestore -FairinoHost $FairinoHost
@@ -54,12 +55,17 @@ if (-not $SkipAliasRestore -and (Test-Path $aliasRestore)) {
         Write-Warning "Alias restore is niet gelukt. De VM/WebApp is mogelijk nog niet klaar: $($_.Exception.Message)"
         Write-Warning "De HMI start wel door; run dit script opnieuw zodra de VM helemaal opgestart is."
     }
+} else {
+    Write-Step "Modbus aliases herstellen/controleren"
+    Write-Host "Overgeslagen voor echte robot. Gebruik -RestoreAliases alleen als je bewust aliases via de Fairino WebApp wilt herstellen."
 }
 
 Write-Step "HMI bridge starten in Modbus mode"
 $node = Find-Node
 $env:HMI_BRIDGE_MODE = "modbus"
+$env:HMI_BIND_HOST = "0.0.0.0"
 $env:FAIRINO_HOST = $FairinoHost
+$env:FAIRINO_PORT = "502"
 $env:PORT = [string]$HmiPort
 
 if (Test-Path $stdoutLogPath) {

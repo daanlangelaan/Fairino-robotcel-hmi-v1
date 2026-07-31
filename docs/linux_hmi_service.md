@@ -48,7 +48,7 @@ npm run start:mock
 Modbus mode, connected to the Fairino controller:
 
 ```bash
-FAIRINO_HOST=192.168.92.130 npm run start:modbus
+FAIRINO_HOST=192.168.58.2 npm run start:modbus
 ```
 
 Open:
@@ -61,7 +61,7 @@ If another PC or tablet must open the HMI from the network, bind to all network
 interfaces:
 
 ```bash
-HMI_BIND_HOST=0.0.0.0 FAIRINO_HOST=192.168.92.130 npm run start:modbus
+HMI_BIND_HOST=0.0.0.0 FAIRINO_HOST=192.168.58.2 npm run start:modbus
 ```
 
 Then open:
@@ -107,9 +107,9 @@ journalctl -u fairino-hmi -f
 | Variable | Default | Description |
 | --- | --- | --- |
 | `PORT` | `8787` | HTTP port for the HMI. |
-| `HMI_BIND_HOST` | `127.0.0.1` | Listen address. Use `0.0.0.0` for network access. |
+| `HMI_BIND_HOST` | `127.0.0.1` mock, `0.0.0.0` modbus starter | Listen address. Use `0.0.0.0` for network access. |
 | `HMI_BRIDGE_MODE` | `mock` | `mock` for local test mode, `modbus` for robot mode. |
-| `FAIRINO_HOST` | `192.168.92.128` | Fairino controller or VM IP address. |
+| `FAIRINO_HOST` | `192.168.58.2` in modbus starter | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |

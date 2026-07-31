@@ -22,11 +22,12 @@ function setEnv(name, value) {
 }
 
 const mode = readArg("mode", process.env.HMI_BRIDGE_MODE || "mock");
-const fairinoHost = readArg("host", readArg("fairino-host", process.env.FAIRINO_HOST));
-const fairinoPort = readArg("fairino-port", process.env.FAIRINO_PORT);
+const modbusMode = mode === "modbus";
+const fairinoHost = readArg("host", readArg("fairino-host", process.env.FAIRINO_HOST || (modbusMode ? "192.168.58.2" : undefined)));
+const fairinoPort = readArg("fairino-port", process.env.FAIRINO_PORT || (modbusMode ? "502" : undefined));
 const unitId = readArg("unit-id", process.env.FAIRINO_UNIT_ID);
 const port = readArg("port", process.env.PORT);
-const bindHost = readArg("bind-host", process.env.HMI_BIND_HOST);
+const bindHost = readArg("bind-host", process.env.HMI_BIND_HOST || (modbusMode ? "0.0.0.0" : undefined));
 const fairinoHttpBase = readArg("fairino-http-base", process.env.FAIRINO_HTTP_BASE);
 
 setEnv("HMI_BRIDGE_MODE", mode);

@@ -48,13 +48,13 @@ Mock mode is for testing the HMI without a robot connection.
 Set the Fairino IP address and start in Modbus mode:
 
 ```bash
-FAIRINO_HOST=192.168.92.130 npm run start:modbus
+FAIRINO_HOST=192.168.58.2 npm run start:modbus
 ```
 
 On Windows PowerShell:
 
 ```powershell
-$env:FAIRINO_HOST = "192.168.92.130"
+$env:FAIRINO_HOST = "192.168.58.2"
 npm run start:modbus
 ```
 
@@ -69,7 +69,7 @@ intact.
 
 ## Network access
 
-By default the HMI listens only on the local machine:
+In mock mode the HMI listens only on the local machine:
 
 ```text
 127.0.0.1:8787
@@ -78,7 +78,7 @@ By default the HMI listens only on the local machine:
 For a Linux HMI box that must be opened from another PC or tablet:
 
 ```bash
-HMI_BIND_HOST=0.0.0.0 FAIRINO_HOST=192.168.92.130 npm run start:modbus
+HMI_BIND_HOST=0.0.0.0 FAIRINO_HOST=192.168.58.2 npm run start:modbus
 ```
 
 Then open:
@@ -103,9 +103,9 @@ npm run check
 | Variable | Default | Description |
 | --- | --- | --- |
 | `PORT` | `8787` | HTTP port for the HMI. |
-| `HMI_BIND_HOST` | `127.0.0.1` | Listen address. Use `0.0.0.0` for network access. |
+| `HMI_BIND_HOST` | `127.0.0.1` mock, `0.0.0.0` modbus starter | Listen address. Use `0.0.0.0` for network access. |
 | `HMI_BRIDGE_MODE` | `mock` | `mock` for local test mode, `modbus` for robot mode. |
-| `FAIRINO_HOST` | `192.168.92.128` | Fairino controller or VM IP address. |
+| `FAIRINO_HOST` | `192.168.58.2` in modbus starter | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
