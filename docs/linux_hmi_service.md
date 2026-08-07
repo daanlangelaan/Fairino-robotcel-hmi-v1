@@ -152,6 +152,7 @@ npm run check:deployed
 ```
 
 The deployment creates a timestamped backup under
-`/opt/fairino-hmi-backups`, refuses to restart a running cell, synchronizes the
-runtime files, restarts the service, and checks the local API. After live
-verification, commit and push the same workspace changes to GitHub.
+`/opt/fairino-hmi-backups`, uses the controller's RPC program state to refuse a
+restart unless the program is stopped, synchronizes the runtime files, restarts
+the service, and checks the local API. After live verification, commit and push
+the same workspace changes to GitHub.

@@ -36,10 +36,11 @@ After testing a workspace change, deploy it on the HMI PC with:
 sudo ./tools/deploy-hmi.sh
 ```
 
-The deployment script runs the repository checks, refuses to restart while
-`CELL_RUNNING` is active, backs up the previous runtime, synchronizes only the
-HMI runtime files, restarts `fairino-hmi`, and verifies the local API. Commit
-and push accepted workspace changes so GitHub remains reproducible.
+The deployment script runs the repository checks, verifies through Fairino RPC
+that the controller program is stopped, backs up the previous runtime,
+synchronizes only the HMI runtime files, restarts `fairino-hmi`, and verifies
+the local API. Commit and push accepted workspace changes so GitHub remains
+reproducible.
 
 Robot programming and Fairino teaching assets remain in their existing project
 folders. The HMI is an operator interface and Modbus bridge; safety and motion

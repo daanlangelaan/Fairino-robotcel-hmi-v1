@@ -36,16 +36,35 @@ npm --prefix "$repo_root" run check
 status_file=$(mktemp)
 trap 'rm -f "$status_file"' EXIT HUP INT TERM
 
-if curl --fail --silent --show-error --max-time 5 "$live_api_url" >"$status_file"; then
-  if node -e '
-    const fs = require("node:fs");
-    const snapshot = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
-    const running = snapshot.discreteInputs?.find((item) => item.name === "CELL_RUNNING")?.value;
-    process.exit(running ? 0 : 1);
-  ' "$status_file"; then
-    echo "Deployment refused: CELL_RUNNING is active." >&2
-    exit 3
-  fi
+if ! curl --fail --silent --show-error --max-time 5 "$live_api_url" >"$status_file"; then
+  echo "Deployment refused: the live HMI API is unavailable for the safety check." >&2
+  exit 3
+fi
+
+controller_host=$(node -e '
+  const fs = require("node:fs");
+  const snapshot = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+  const host = String(snapshot.endpoint || "").split(":")[0];
+  if (!host) process.exit(1);
+  process.stdout.write(host);
+' "$status_file")
+rpc_port=${FAIRINO_RPC_PORT:-20003}
+program_state=$(node --input-type=module -e '
+  const { pathToFileURL } = await import("node:url");
+  const moduleUrl = pathToFileURL(process.argv[1]).href;
+  const { FairinoRpcClient } = await import(moduleUrl);
+  const client = new FairinoRpcClient({
+    host: process.argv[2],
+    port: Number(process.argv[3]),
+    timeout: 3000,
+    verifyDelayMs: 0,
+  });
+  process.stdout.write(String(await client.getProgramState()));
+' "$repo_root/hmi/fairino-rpc.mjs" "$controller_host" "$rpc_port")
+
+if [ "$program_state" -ne 1 ]; then
+  echo "Deployment refused: controller program state is $program_state, not stopped (1)." >&2
+  exit 3
 fi
 
 timestamp=$(date +%Y%m%d_%H%M%S)
