@@ -144,7 +144,9 @@ the reported program state to become `2` (running).
 Every HMI status refresh also reads `GetRobotErrorCode()` directly from the
 controller. A nonzero controller error takes precedence over stale Lua/Modbus
 running registers, so a collision that stops the Lua program is immediately
-shown as an error rather than as a running cycle.
+shown as an error rather than as a running cycle. The exact code remains in the
+red fault badge, while the main status message gives an operator-facing
+explanation. Controller code `4/1` is described as an axis collision.
 
 The HMI labels this control **Reset**, but it can cause immediate robot movement,
 including the Lua program's initial homing move. The operator must remove the

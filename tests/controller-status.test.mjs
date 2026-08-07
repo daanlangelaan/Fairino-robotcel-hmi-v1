@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { overlayControllerFault } from "../hmi/controller-status.mjs";
+import { controllerFaultMessage, overlayControllerFault } from "../hmi/controller-status.mjs";
 
 const staleRunningStatus = {
   discreteInputs: [
@@ -47,4 +47,19 @@ test("Lua process faults remain visible when the controller has no fault", () =>
 
   assert.equal(result.faultActive, true);
   assert.equal(result.faultCode, 991);
+});
+
+test("explains the resettable axis collision without repeating its code", () => {
+  assert.equal(
+    controllerFaultMessage({ mainCode: 4, subCode: 1 }),
+    "Asbotsing gedetecteerd: de robot heeft onverwachte weerstand op een as gemeten. Verwijder het obstakel en controleer of de arm vrij kan bewegen.",
+  );
+});
+
+test("uses a safe generic explanation for an unknown controller fault", () => {
+  assert.match(
+    controllerFaultMessage({ mainCode: 9, subCode: 7 }),
+    /Controllerstoring gedetecteerd/,
+  );
+  assert.equal(controllerFaultMessage({ mainCode: 0, subCode: 0 }), null);
 });

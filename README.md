@@ -169,7 +169,9 @@ state `2` (running).
 The live HMI status also reads `GetRobotErrorCode()` directly from the
 controller. A nonzero controller error overrides stale Lua/Modbus running data,
 turns off the green running indication, and presents the controller main/sub
-code as an error.
+code as an error. Known controller codes also receive an operator-facing
+explanation; `4/1` is shown as an axis-collision warning with instructions to
+remove the obstruction and check that the arm can move freely.
 
 The **Reset** button can cause immediate robot movement, including the Lua
 program's initial homing move. Only use it after the collision cause or

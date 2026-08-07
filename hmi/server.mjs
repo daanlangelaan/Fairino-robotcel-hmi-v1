@@ -1,7 +1,7 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
-import { overlayControllerFault } from "./controller-status.mjs";
+import { controllerFaultMessage, overlayControllerFault } from "./controller-status.mjs";
 import { FairinoRpcClient } from "./fairino-rpc.mjs";
 import { createSingleFlight, ModbusTcpClient } from "./modbus-client.mjs";
 import {
@@ -490,6 +490,7 @@ async function createSnapshot() {
     controller: {
       rpcConnected: controllerRpcConnected,
       error: controllerError,
+      faultMessage: controllerFaultMessage(controllerError),
     },
     capabilities: {
       outputTests: {

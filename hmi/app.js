@@ -85,9 +85,14 @@ function faultCodeText() {
   return String(getInputRegister("CELL_FAULT_CODE"));
 }
 
+function faultMessage() {
+  return snapshot?.controller?.faultMessage
+    || "Processtoring gedetecteerd. Controleer de cel en los de oorzaak op voordat u reset.";
+}
+
 function statusText() {
   if (!snapshot?.connected) return ["Offline", "Geen verbinding met bridge"];
-  if (getDiscrete("CELL_FAULT_ACTIVE")) return ["Error", `Foutcode ${faultCodeText()}`];
+  if (getDiscrete("CELL_FAULT_ACTIVE")) return ["Error", faultMessage()];
   if (operatorNotice && Date.now() < operatorNotice.expiresAt) {
     return [operatorNotice.title, operatorNotice.message];
   }
