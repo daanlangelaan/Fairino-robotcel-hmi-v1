@@ -77,12 +77,20 @@ function getState() {
   return stateByValue.get(value) || snapshot?.machine?.state || { code: "UNKNOWN", value, label: "Onbekend" };
 }
 
+function faultCodeText() {
+  const controllerError = snapshot?.controller?.error;
+  if (controllerError && (controllerError.mainCode !== 0 || controllerError.subCode !== 0)) {
+    return `${controllerError.mainCode}/${controllerError.subCode}`;
+  }
+  return String(getInputRegister("CELL_FAULT_CODE"));
+}
+
 function statusText() {
+  if (!snapshot?.connected) return ["Offline", "Geen verbinding met bridge"];
+  if (getDiscrete("CELL_FAULT_ACTIVE")) return ["Error", `Foutcode ${faultCodeText()}`];
   if (operatorNotice && Date.now() < operatorNotice.expiresAt) {
     return [operatorNotice.title, operatorNotice.message];
   }
-  if (!snapshot?.connected) return ["Offline", "Geen verbinding met bridge"];
-  if (getDiscrete("CELL_FAULT_ACTIVE")) return ["Storing", `Foutcode ${getInputRegister("CELL_FAULT_CODE")}`];
   if (getDiscrete("CELL_BATCH_COMPLETE")) return ["Batch klaar", "Batchdoel bereikt"];
   if (getDiscrete("CELL_RUNNING")) return ["Draait", getState().label];
   if (getDiscrete("CELL_READY")) return ["Ready", "Wachten op start"];
@@ -96,7 +104,7 @@ function renderStatus() {
   const ready = getDiscrete("CELL_READY");
   const state = getState();
   const cycleCount = getInputRegister("CELL_CYCLE_COUNT");
-  const faultCode = getInputRegister("CELL_FAULT_CODE");
+  const faultCode = faultCodeText();
 
   els.runState.className = "status-pill";
   if (fault) els.runState.classList.add("status-fault");
@@ -137,9 +145,10 @@ function renderStatus() {
   els.stateValueView.textContent = `STATE ${state.value}`;
 
   els.faultBanner.classList.toggle("hidden", !fault);
-  els.faultBanner.textContent = fault ? `Fout ${faultCode}` : "Geen storing";
+  els.faultBanner.textContent = fault ? `Error ${faultCode}` : "Geen storing";
 
   els.lampRed.classList.toggle("on", fault);
+  els.lampRed.classList.toggle("fault-flash", fault);
   els.lampAmber.classList.toggle("on", ready && !fault);
   els.lampGreen.classList.toggle("on", running && !fault);
 }
@@ -309,7 +318,7 @@ document.querySelector("#resetBtn").addEventListener("click", async (event) => {
     };
   } finally {
     button.disabled = false;
-    button.textContent = "Reset + herstart";
+    button.textContent = "Reset";
     renderStatus();
   }
 });

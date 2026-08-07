@@ -141,10 +141,15 @@ pulses the existing Modbus cell-reset request, selects automatic mode with
 `Mode(0)`, starts the currently loaded Lua job with `ProgramRun()`, and requires
 the reported program state to become `2` (running).
 
-The HMI labels this control **Reset + herstart** because it can cause immediate
-robot movement, including the Lua program's initial homing move. The operator
-must remove the obstruction and verify that the cell is clear before using it.
-It cannot bypass a non-resettable or still-active hardware safety condition.
+Every HMI status refresh also reads `GetRobotErrorCode()` directly from the
+controller. A nonzero controller error takes precedence over stale Lua/Modbus
+running registers, so a collision that stops the Lua program is immediately
+shown as an error rather than as a running cycle.
+
+The HMI labels this control **Reset**, but it can cause immediate robot movement,
+including the Lua program's initial homing move. The operator must remove the
+obstruction and verify that the cell is clear before using it. It cannot bypass
+a non-resettable or still-active hardware safety condition.
 
 ## Updating an existing HMI installation
 

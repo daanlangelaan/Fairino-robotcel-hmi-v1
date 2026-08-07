@@ -136,7 +136,7 @@ Gedrag:
 - Reset mag nooit automatisch een cyclus starten.
 
 Dit betreft de fysieke safety-reset van de G9SE. De afzonderlijke HMI-knop
-`Reset + herstart` is een procesherstelcommando: die wist een resetbare
+`Reset` is een procesherstelcommando: die wist een resetbare
 controllerfout en start daarna bewust het geladen Lua-programma in automatische
 modus. Daardoor kan direct beweging ontstaan, waaronder de initiale home-beweging.
 De HMI-knop mag niet als safety-reset worden gebruikt en kan een actieve
@@ -213,7 +213,7 @@ Resultaat:
 - Reset start geen beweging.
 
 Deze eis geldt voor de fysieke safety-reset. Na vrijgave van de safetyketen is
-`Reset + herstart` op de HMI een afzonderlijke, bewust bediende startactie die
+`Reset` op de HMI een afzonderlijke, bewust bediende startactie die
 wel beweging kan starten; de gevarenzone moet dus vooraf volledig vrij zijn.
 
 ## Open punten

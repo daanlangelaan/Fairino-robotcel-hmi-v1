@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
+import { overlayControllerFault } from "./controller-status.mjs";
 import { FairinoRpcClient } from "./fairino-rpc.mjs";
 import { createSingleFlight, ModbusTcpClient } from "./modbus-client.mjs";
 import {
@@ -451,20 +452,34 @@ setInterval(() => {
 
 async function createSnapshot() {
   let connected = true;
+  let controllerRpcConnected = bridgeMode !== "modbus";
+  let controllerError = null;
   if (bridgeMode === "modbus") {
-    try {
-      await readModbusSnapshot();
-    } catch (error) {
+    const [modbusResult, controllerResult] = await Promise.allSettled([
+      readModbusSnapshot(),
+      fairinoRpc.getRobotErrorCode(),
+    ]);
+    if (modbusResult.status === "rejected") {
       connected = false;
-      pushLog(`Modbus lezen fout: ${error.message}`);
+      pushLog(`Modbus lezen fout: ${modbusResult.reason.message}`);
+    }
+    if (controllerResult.status === "fulfilled") {
+      controllerRpcConnected = true;
+      controllerError = controllerResult.value;
+    } else {
+      pushLog(`Controllerstatus lezen fout: ${controllerResult.reason.message}`);
     }
   } else {
     publishRegisters();
   }
 
+  const effectiveStatus = overlayControllerFault({
+    discreteInputs: discreteInputs.map((item) => ({ ...item, value: values.discreteInputs[item.name] })),
+    inputRegisters: inputRegisters.map((item) => ({ ...item, value: values.inputRegisters[item.name] })),
+  }, controllerError);
   const stateValue = values.inputRegisters.CELL_STATE;
   const state = states.find((item) => item.value === stateValue) || currentState();
-  machine.faultCode = Number(values.inputRegisters.CELL_FAULT_CODE || 0);
+  machine.faultCode = effectiveStatus.faultCode;
   machine.cycleCount = Number(values.inputRegisters.CELL_CYCLE_COUNT || 0);
   machine.batchDone = Number(values.inputRegisters.CELL_BATCH_DONE || 0);
 
@@ -472,6 +487,10 @@ async function createSnapshot() {
     mode: bridgeMode,
     connected,
     endpoint: bridgeMode === "modbus" ? `${fairinoHost}:${fairinoPort}` : "local mock",
+    controller: {
+      rpcConnected: controllerRpcConnected,
+      error: controllerError,
+    },
     capabilities: {
       outputTests: {
         enabled: outputTestsEnabled,
@@ -482,8 +501,8 @@ async function createSnapshot() {
     states,
     coils: coils.map((item) => ({ ...item, value: values.coils[item.name] })),
     holdingRegisters: holdingRegisters.map((item) => ({ ...item, value: values.holdingRegisters[item.name] })),
-    discreteInputs: discreteInputs.map((item) => ({ ...item, value: values.discreteInputs[item.name] })),
-    inputRegisters: inputRegisters.map((item) => ({ ...item, value: values.inputRegisters[item.name] })),
+    discreteInputs: effectiveStatus.discreteInputs,
+    inputRegisters: effectiveStatus.inputRegisters,
     simInputs,
     machine: {
       state,

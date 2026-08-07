@@ -166,7 +166,12 @@ automatic mode with `Mode(0)`, and call `ProgramRun()` for the currently loaded
 Lua job. The request only reports success after `GetProgramState()` returns
 state `2` (running).
 
-The button is deliberately labelled **Reset + herstart** because it can cause
-immediate robot movement, including the Lua program's initial homing move. Only
-use it after the collision cause or obstruction has been removed and the cell is
-clear. This software control cannot bypass an active hardware safety circuit.
+The live HMI status also reads `GetRobotErrorCode()` directly from the
+controller. A nonzero controller error overrides stale Lua/Modbus running data,
+turns off the green running indication, and presents the controller main/sub
+code as an error.
+
+The **Reset** button can cause immediate robot movement, including the Lua
+program's initial homing move. Only use it after the collision cause or
+obstruction has been removed and the cell is clear. This software control cannot
+bypass an active hardware safety circuit.
