@@ -28,8 +28,16 @@ function decodeXml(value) {
     .replaceAll("&amp;", "&");
 }
 
-function methodCall(methodName) {
-  return `<?xml version="1.0"?><methodCall><methodName>${escapeXml(methodName)}</methodName><params></params></methodCall>`;
+function encodeParameter(value) {
+  if (!Number.isInteger(value)) {
+    throw new FairinoRpcError(`Unsupported Fairino RPC parameter: ${JSON.stringify(value)}`, 500);
+  }
+  return `<param><value><i4>${value}</i4></value></param>`;
+}
+
+function methodCall(methodName, parameters = []) {
+  const params = parameters.map(encodeParameter).join("");
+  return `<?xml version="1.0"?><methodCall><methodName>${escapeXml(methodName)}</methodName><params>${params}</params></methodCall>`;
 }
 
 export function parseXmlRpcResponse(xml) {
@@ -47,15 +55,22 @@ export function parseXmlRpcResponse(xml) {
 }
 
 export class FairinoRpcClient {
-  constructor({ host, port = 20003, timeout = 3000, verifyDelayMs = 1000 }) {
+  constructor({
+    host,
+    port = 20003,
+    timeout = 3000,
+    verifyDelayMs = 1000,
+    programStartDelayMs = 1000,
+  }) {
     this.host = host;
     this.port = port;
     this.timeout = timeout;
     this.verifyDelayMs = verifyDelayMs;
+    this.programStartDelayMs = programStartDelayMs;
   }
 
-  call(methodName) {
-    const body = methodCall(methodName);
+  call(methodName, parameters = []) {
+    const body = methodCall(methodName, parameters);
     return new Promise((resolve, reject) => {
       const req = request({
         host: this.host,
@@ -146,5 +161,37 @@ export class FairinoRpcClient {
       );
     }
     return { programState, before, after };
+  }
+
+  async enterAutomaticModeAndRun() {
+    const programStateBefore = await this.getProgramState();
+    if (programStateBefore !== 1) {
+      throw new FairinoRpcError(
+        `Robot start refused: program state ${programStateBefore} is not stopped`,
+        409,
+      );
+    }
+
+    const modeResult = await this.call("Mode", [0]);
+    if (modeResult !== 0) {
+      throw new FairinoRpcError(`Mode(0) was rejected with code ${modeResult}`);
+    }
+
+    const runResult = await this.call("ProgramRun");
+    if (runResult !== 0) {
+      throw new FairinoRpcError(`ProgramRun was rejected with code ${runResult}`);
+    }
+
+    if (this.programStartDelayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, this.programStartDelayMs));
+    }
+    const programStateAfter = await this.getProgramState();
+    if (programStateAfter !== 2) {
+      throw new FairinoRpcError(
+        `Robot program did not enter running state (state ${programStateAfter})`,
+        409,
+      );
+    }
+    return { programStateBefore, programStateAfter };
   }
 }

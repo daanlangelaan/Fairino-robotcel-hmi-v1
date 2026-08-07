@@ -133,7 +133,7 @@ manual output tests.
 | `HMI_OUTPUT_TESTS_ENABLED` | `false` | Service-level gate for the Advanced active-low control-box output tests. |
 | `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
-| `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used to clear and verify resettable controller faults. |
+| `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
 
@@ -161,6 +161,12 @@ In Modbus mode, the HMI Reset button calls the controller's official
 `ResetAllError()` RPC method and then confirms with `GetRobotErrorCode()` that
 both the main and sub error codes are zero. It first verifies through
 `GetProgramState()` that the robot program is stopped. Only after confirmation
-does it pulse the existing cell-level `HMI_RESET_REQ`. Reset never starts or
-resumes robot motion; restarting the robot program remains a separate procedure
-after the obstruction or fault cause has been removed.
+does it clear the HMI stop requests, pulse the cell-level `HMI_RESET_REQ`, select
+automatic mode with `Mode(0)`, and call `ProgramRun()` for the currently loaded
+Lua job. The request only reports success after `GetProgramState()` returns
+state `2` (running).
+
+The button is deliberately labelled **Reset + herstart** because it can cause
+immediate robot movement, including the Lua program's initial homing move. Only
+use it after the collision cause or obstruction has been removed and the cell is
+clear. This software control cannot bypass an active hardware safety circuit.

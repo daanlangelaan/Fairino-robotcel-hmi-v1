@@ -103,3 +103,73 @@ test("refuses to reset unless the controller program is stopped", async (t) => {
   );
   assert.equal(fake.calls.length, 1);
 });
+
+test("selects automatic mode, runs the loaded program, and verifies it is running", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 1]),
+    scalarResponse(0),
+    scalarResponse(0),
+    arrayResponse([0, 2]),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({
+    host: "127.0.0.1",
+    port: fake.port,
+    timeout: 1000,
+    programStartDelayMs: 0,
+  });
+  const result = await client.enterAutomaticModeAndRun();
+
+  assert.deepEqual(result, { programStateBefore: 1, programStateAfter: 2 });
+  assert.match(fake.calls[0].body, /<methodName>GetProgramState<\/methodName>/);
+  assert.match(fake.calls[1].body, /<methodName>Mode<\/methodName>/);
+  assert.match(fake.calls[1].body, /<params><param><value><i4>0<\/i4><\/value><\/param><\/params>/);
+  assert.match(fake.calls[2].body, /<methodName>ProgramRun<\/methodName>/);
+  assert.match(fake.calls[3].body, /<methodName>GetProgramState<\/methodName>/);
+});
+
+test("does not run the program when automatic mode is rejected", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 1]),
+    scalarResponse(14),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({
+    host: "127.0.0.1",
+    port: fake.port,
+    timeout: 1000,
+    programStartDelayMs: 0,
+  });
+
+  await assert.rejects(
+    () => client.enterAutomaticModeAndRun(),
+    (error) => error instanceof FairinoRpcError && /Mode\(0\).*14/.test(error.message),
+  );
+  assert.equal(fake.calls.length, 2);
+});
+
+test("reports a start failure unless the controller reaches running state", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 1]),
+    scalarResponse(0),
+    scalarResponse(0),
+    arrayResponse([0, 1]),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({
+    host: "127.0.0.1",
+    port: fake.port,
+    timeout: 1000,
+    programStartDelayMs: 0,
+  });
+
+  await assert.rejects(
+    () => client.enterAutomaticModeAndRun(),
+    (error) => error instanceof FairinoRpcError
+      && error.statusCode === 409
+      && /state 1/.test(error.message),
+  );
+});

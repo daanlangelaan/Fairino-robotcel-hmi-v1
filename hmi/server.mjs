@@ -133,6 +133,21 @@ const fairinoRpc = new FairinoRpcClient({
   verifyDelayMs: 1000,
 });
 
+const recoverRobotAndRun = createSingleFlight(async () => {
+  const resetResult = await fairinoRpc.resetAllErrorsAndVerify();
+  pushLog(
+    `Fairino controller reset ${resetResult.before.mainCode}/${resetResult.before.subCode} -> 0/0`,
+  );
+  await setModbusCoil("HMI_STOP_REQ", false);
+  await setModbusCoil("HMI_ESTOP_REQ", false);
+  await pulseModbusCoil("HMI_RESET_REQ", 5000);
+  const runResult = await fairinoRpc.enterAutomaticModeAndRun();
+  pushLog(
+    `Fairino automatische modus actief; Lua-programma status ${runResult.programStateAfter}`,
+  );
+  return { resetResult, runResult };
+});
+
 async function readBits(request, functionCode, address, quantity) {
   const pdu = Buffer.alloc(5);
   pdu.writeUInt8(functionCode, 0);
@@ -518,13 +533,7 @@ async function handleApi(req, res, url) {
         }
       }
       if (body.command === "reset") {
-        const resetResult = await fairinoRpc.resetAllErrorsAndVerify();
-        pushLog(
-          `Fairino controller reset ${resetResult.before.mainCode}/${resetResult.before.subCode} -> 0/0`,
-        );
-        await setModbusCoil("HMI_STOP_REQ", false);
-        await setModbusCoil("HMI_ESTOP_REQ", false);
-        await pulseModbusCoil("HMI_RESET_REQ", 5000);
+        await recoverRobotAndRun();
       }
       if (body.command === "ack") await pulseModbusCoil("HMI_ACK_REQ", 2000);
       sendJson(res, 200, await snapshot());

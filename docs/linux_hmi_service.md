@@ -112,7 +112,7 @@ journalctl -u fairino-hmi -f
 | `HMI_OUTPUT_TESTS_ENABLED` | `false` | Explicit service gate for Advanced active-low output tests. |
 | `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
-| `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port for verified controller-fault reset. |
+| `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
 
@@ -136,9 +136,15 @@ The operator Reset button clears a resettable controller fault directly through
 Fairino XML-RPC on port `20003`. The bridge executes `ResetAllError()`, waits one
 second, and verifies with `GetRobotErrorCode()` that the main and sub codes are
 both zero. Before clearing an error, it also requires `GetProgramState()` to
-report that the robot program is stopped. It then pulses the existing Modbus
-cell-reset request. A reset does not start or resume the robot program and
-cannot bypass a non-resettable or still-active safety condition.
+report that the robot program is stopped. It then clears the HMI stop requests,
+pulses the existing Modbus cell-reset request, selects automatic mode with
+`Mode(0)`, starts the currently loaded Lua job with `ProgramRun()`, and requires
+the reported program state to become `2` (running).
+
+The HMI labels this control **Reset + herstart** because it can cause immediate
+robot movement, including the Lua program's initial homing move. The operator
+must remove the obstruction and verify that the cell is clear before using it.
+It cannot bypass a non-resettable or still-active hardware safety condition.
 
 ## Updating an existing HMI installation
 

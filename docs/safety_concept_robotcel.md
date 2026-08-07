@@ -135,6 +135,13 @@ Gedrag:
 - Resetknop indrukken: G9SE controleert feedback en schakelt pas weer in als de keten gezond is.
 - Reset mag nooit automatisch een cyclus starten.
 
+Dit betreft de fysieke safety-reset van de G9SE. De afzonderlijke HMI-knop
+`Reset + herstart` is een procesherstelcommando: die wist een resetbare
+controllerfout en start daarna bewust het geladen Lua-programma in automatische
+modus. Daardoor kan direct beweging ontstaan, waaronder de initiale home-beweging.
+De HMI-knop mag niet als safety-reset worden gebruikt en kan een actieve
+hardware-safetyketen niet omzeilen.
+
 ## Voorlopige risicobeoordeling
 
 | Gevaar | Mogelijk letsel | Risico zonder maatregel | Maatregel | Voorlopig PLr |
@@ -205,6 +212,10 @@ Resultaat:
 - Daarna aparte start vereist.
 - Reset start geen beweging.
 
+Deze eis geldt voor de fysieke safety-reset. Na vrijgave van de safetyketen is
+`Reset + herstart` op de HMI een afzonderlijke, bewust bediende startactie die
+wel beweging kan starten; de gevarenzone moet dus vooraf volledig vrij zijn.
+
 ## Open punten
 
 - Exact type lichtscherm kiezen en datasheet/certificaat opnemen.
@@ -234,4 +245,3 @@ Voor formele uitwerking rekening houden met onder andere:
 - EN ISO 10218-1/-2 - robots en robot systems/integration.
 - IEC 61496 - electro-sensitive protective equipment, zoals lichtschermen.
 - ISO 13855 - positionering/afstand van beschermende voorzieningen.
-

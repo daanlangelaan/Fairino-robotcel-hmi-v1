@@ -288,8 +288,8 @@ document.querySelector("#resetBtn").addEventListener("click", async (event) => {
   button.disabled = true;
   button.textContent = "Resetten...";
   operatorNotice = {
-    title: "Robot resetten",
-    message: "Controllerfout wordt gewist en gecontroleerd",
+    title: "Robot resetten en herstarten",
+    message: "Fout wissen, automatische modus inschakelen en Lua-programma starten",
     expiresAt: Date.now() + 10000,
   };
   renderStatus();
@@ -298,7 +298,7 @@ document.querySelector("#resetBtn").addEventListener("click", async (event) => {
     await command("reset");
     operatorNotice = {
       title: "Reset voltooid",
-      message: "Robotfout gewist; robotprogramma blijft gestopt",
+      message: "Robotfout gewist; automatische modus en Lua-programma actief",
       expiresAt: Date.now() + 5000,
     };
   } catch (error) {
@@ -309,7 +309,7 @@ document.querySelector("#resetBtn").addEventListener("click", async (event) => {
     };
   } finally {
     button.disabled = false;
-    button.textContent = "Reset";
+    button.textContent = "Reset + herstart";
     renderStatus();
   }
 });
