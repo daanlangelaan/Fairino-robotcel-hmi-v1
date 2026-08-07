@@ -172,6 +172,12 @@ code as an error. Known controller codes also receive an operator-facing
 explanation; `4/1` is shown as an axis-collision warning with instructions to
 remove the obstruction and check that the arm can move freely.
 
+The live status also reads `GetProgramState()`. Controller state `1` overrides a
+stale Lua `CELL_RUNNING` bit, so a failed start is shown as **Gestopt** instead of
+green/**Draait**. Recovery waits for automatic mode to settle and retries a
+controller-rejected `ProgramRun()` up to three times; it never retries after an
+accepted start that subsequently stops.
+
 The **Reset** button can cause immediate robot movement, including the Lua
 program's initial homing move. Only use it after the collision cause or
 obstruction has been removed and the cell is clear. This software control cannot

@@ -156,10 +156,14 @@ test("selects automatic mode, runs the loaded program, and verifies it is runnin
     port: fake.port,
     timeout: 1000,
     programStartDelayMs: 0,
+    modeSettleDelayMs: 0,
+    programStartRetryDelayMs: 0,
+    programStatePollMs: 0,
+    programStartTimeoutMs: 0,
   });
   const result = await client.enterAutomaticModeAndRun();
 
-  assert.deepEqual(result, { programStateBefore: 1, programStateAfter: 2 });
+  assert.deepEqual(result, { programStateBefore: 1, programStateAfter: 2, attempts: 1 });
   assert.match(fake.calls[0].body, /<methodName>GetProgramState<\/methodName>/);
   assert.match(fake.calls[1].body, /<methodName>Mode<\/methodName>/);
   assert.match(fake.calls[1].body, /<params><param><value><i4>0<\/i4><\/value><\/param><\/params>/);
@@ -179,6 +183,9 @@ test("does not run the program when automatic mode is rejected", async (t) => {
     port: fake.port,
     timeout: 1000,
     programStartDelayMs: 0,
+    modeSettleDelayMs: 0,
+    programStartAttempts: 1,
+    programStartRetryDelayMs: 0,
   });
 
   await assert.rejects(
@@ -202,6 +209,11 @@ test("reports a start failure unless the controller reaches running state", asyn
     port: fake.port,
     timeout: 1000,
     programStartDelayMs: 0,
+    modeSettleDelayMs: 0,
+    programStartAttempts: 1,
+    programStartRetryDelayMs: 0,
+    programStatePollMs: 0,
+    programStartTimeoutMs: 0,
   });
 
   await assert.rejects(
@@ -210,4 +222,32 @@ test("reports a start failure unless the controller reaches running state", asyn
       && error.statusCode === 409
       && /state 1/.test(error.message),
   );
+});
+
+test("retries a rejected program start after automatic mode settles", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 1]),
+    scalarResponse(0),
+    scalarResponse(14),
+    scalarResponse(0),
+    scalarResponse(0),
+    arrayResponse([0, 2]),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({
+    host: "127.0.0.1",
+    port: fake.port,
+    timeout: 1000,
+    programStartDelayMs: 0,
+    modeSettleDelayMs: 0,
+    programStartAttempts: 2,
+    programStartRetryDelayMs: 0,
+    programStatePollMs: 0,
+    programStartTimeoutMs: 0,
+  });
+  const result = await client.enterAutomaticModeAndRun();
+
+  assert.deepEqual(result, { programStateBefore: 1, programStateAfter: 2, attempts: 2 });
+  assert.equal(fake.calls.filter(({ body }) => /<methodName>ProgramRun<\/methodName>/.test(body)).length, 2);
 });

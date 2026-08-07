@@ -101,6 +101,9 @@ function faultMessage() {
 function statusText() {
   if (!snapshot?.connected) return ["Offline", "Geen verbinding met bridge"];
   if (getDiscrete("CELL_FAULT_ACTIVE")) return ["Error", faultMessage()];
+  if (snapshot?.controller?.programState === 1) {
+    return ["Gestopt", "Lua-programma is niet actief; druk op Reset om opnieuw te starten"];
+  }
   if (operatorNotice && Date.now() < operatorNotice.expiresAt) {
     return [operatorNotice.title, operatorNotice.message];
   }

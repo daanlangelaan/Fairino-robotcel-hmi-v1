@@ -147,6 +147,12 @@ shown as an error rather than as a running cycle. The exact code remains in the
 red fault badge, while the main status message gives an operator-facing
 explanation. Controller code `4/1` is described as an axis collision.
 
+The status refresh also reads `GetProgramState()` directly. State `1` (stopped)
+overrides stale Lua running registers and is shown as **Gestopt**. During reset,
+the bridge waits one second after `Mode(0)` and retries only controller-rejected
+`ProgramRun()` calls, up to three attempts. Once `ProgramRun()` is accepted, it
+polls for running state without issuing another start command.
+
 The HMI labels this control **Reset**, but it can cause immediate robot movement,
 including the Lua program's initial homing move. The operator must remove the
 obstruction and verify that the cell is clear before using it. It cannot bypass

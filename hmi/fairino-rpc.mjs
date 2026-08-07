@@ -61,6 +61,11 @@ export class FairinoRpcClient {
     timeout = 3000,
     verifyDelayMs = 1000,
     programStartDelayMs = 1000,
+    modeSettleDelayMs = 1000,
+    programStartAttempts = 3,
+    programStartRetryDelayMs = 1000,
+    programStatePollMs = 250,
+    programStartTimeoutMs = 5000,
     programStopDelayMs = 1000,
   }) {
     this.host = host;
@@ -68,6 +73,11 @@ export class FairinoRpcClient {
     this.timeout = timeout;
     this.verifyDelayMs = verifyDelayMs;
     this.programStartDelayMs = programStartDelayMs;
+    this.modeSettleDelayMs = modeSettleDelayMs;
+    this.programStartAttempts = programStartAttempts;
+    this.programStartRetryDelayMs = programStartRetryDelayMs;
+    this.programStatePollMs = programStatePollMs;
+    this.programStartTimeoutMs = programStartTimeoutMs;
     this.programStopDelayMs = programStopDelayMs;
   }
 
@@ -197,26 +207,45 @@ export class FairinoRpcClient {
       );
     }
 
-    const modeResult = await this.call("Mode", [0]);
-    if (modeResult !== 0) {
-      throw new FairinoRpcError(`Mode(0) was rejected with code ${modeResult}`);
-    }
+    let lastRejection = "unknown rejection";
+    for (let attempt = 1; attempt <= this.programStartAttempts; attempt += 1) {
+      const modeResult = await this.call("Mode", [0]);
+      if (modeResult !== 0) {
+        lastRejection = `Mode(0) was rejected with code ${modeResult}`;
+      } else {
+        if (this.modeSettleDelayMs > 0) {
+          await new Promise((resolve) => setTimeout(resolve, this.modeSettleDelayMs));
+        }
+        const runResult = await this.call("ProgramRun");
+        if (runResult === 0) {
+          if (this.programStartDelayMs > 0) {
+            await new Promise((resolve) => setTimeout(resolve, this.programStartDelayMs));
+          }
+          const deadline = Date.now() + this.programStartTimeoutMs;
+          let programStateAfter;
+          do {
+            programStateAfter = await this.getProgramState();
+            if (programStateAfter === 2) {
+              return { programStateBefore, programStateAfter, attempts: attempt };
+            }
+            if (this.programStatePollMs > 0 && Date.now() < deadline) {
+              await new Promise((resolve) => setTimeout(resolve, this.programStatePollMs));
+            }
+          } while (Date.now() < deadline);
+          throw new FairinoRpcError(
+            `Robot program did not enter running state (state ${programStateAfter})`,
+            409,
+          );
+        }
+        lastRejection = `ProgramRun was rejected with code ${runResult}`;
+      }
 
-    const runResult = await this.call("ProgramRun");
-    if (runResult !== 0) {
-      throw new FairinoRpcError(`ProgramRun was rejected with code ${runResult}`);
+      if (attempt < this.programStartAttempts && this.programStartRetryDelayMs > 0) {
+        await new Promise((resolve) => setTimeout(resolve, this.programStartRetryDelayMs));
+      }
     }
-
-    if (this.programStartDelayMs > 0) {
-      await new Promise((resolve) => setTimeout(resolve, this.programStartDelayMs));
-    }
-    const programStateAfter = await this.getProgramState();
-    if (programStateAfter !== 2) {
-      throw new FairinoRpcError(
-        `Robot program did not enter running state (state ${programStateAfter})`,
-        409,
-      );
-    }
-    return { programStateBefore, programStateAfter };
+    throw new FairinoRpcError(
+      `${lastRejection} after ${this.programStartAttempts} attempts`,
+    );
   }
 }

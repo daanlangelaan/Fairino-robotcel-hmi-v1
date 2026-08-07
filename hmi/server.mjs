@@ -162,7 +162,7 @@ const recoverRobotAndRun = createSingleFlight(async () => {
   await pulseModbusCoil("HMI_RESET_REQ", 5000);
   const runResult = await fairinoRpc.enterAutomaticModeAndRun();
   pushLog(
-    `Fairino automatische modus actief; Lua-programma status ${runResult.programStateAfter}`,
+    `Fairino automatische modus actief; Lua-programma status ${runResult.programStateAfter} na ${runResult.attempts} startpoging(en)`,
   );
   return { resetResult, runResult };
 });
@@ -460,20 +460,27 @@ async function createSnapshot() {
   let connected = true;
   let controllerRpcConnected = bridgeMode !== "modbus";
   let controllerError = null;
+  let controllerProgramState = null;
   if (bridgeMode === "modbus") {
-    const [modbusResult, controllerResult] = await Promise.allSettled([
+    const [modbusResult, controllerErrorResult, controllerProgramResult] = await Promise.allSettled([
       readModbusSnapshot(),
       fairinoRpc.getRobotErrorCode(),
+      fairinoRpc.getProgramState(),
     ]);
     if (modbusResult.status === "rejected") {
       connected = false;
       pushLog(`Modbus lezen fout: ${modbusResult.reason.message}`);
     }
-    if (controllerResult.status === "fulfilled") {
+    if (controllerErrorResult.status === "fulfilled") {
       controllerRpcConnected = true;
-      controllerError = controllerResult.value;
+      controllerError = controllerErrorResult.value;
     } else {
-      pushLog(`Controllerstatus lezen fout: ${controllerResult.reason.message}`);
+      pushLog(`Controllerfoutstatus lezen fout: ${controllerErrorResult.reason.message}`);
+    }
+    if (controllerProgramResult.status === "fulfilled") {
+      controllerProgramState = controllerProgramResult.value;
+    } else {
+      pushLog(`Controllerprogrammastatus lezen fout: ${controllerProgramResult.reason.message}`);
     }
   } else {
     publishRegisters();
@@ -482,7 +489,10 @@ async function createSnapshot() {
   const effectiveStatus = overlayControllerFault({
     discreteInputs: discreteInputs.map((item) => ({ ...item, value: values.discreteInputs[item.name] })),
     inputRegisters: inputRegisters.map((item) => ({ ...item, value: values.inputRegisters[item.name] })),
-  }, controllerError, { hmiEstopActive: values.coils.HMI_ESTOP_REQ });
+  }, controllerError, {
+    hmiEstopActive: values.coils.HMI_ESTOP_REQ,
+    controllerProgramState,
+  });
   const stateValue = values.inputRegisters.CELL_STATE;
   const state = states.find((item) => item.value === stateValue) || currentState();
   machine.faultCode = effectiveStatus.faultCode;
@@ -497,6 +507,7 @@ async function createSnapshot() {
       rpcConnected: controllerRpcConnected,
       error: controllerError,
       faultMessage: controllerFaultMessage(controllerError),
+      programState: controllerProgramState,
     },
     capabilities: {
       outputTests: {
@@ -562,7 +573,12 @@ async function handleApi(req, res, url) {
         }
       }
       if (body.command === "reset") {
-        await recoverRobotAndRun();
+        try {
+          await recoverRobotAndRun();
+        } catch (error) {
+          pushLog(`Fairino herstel mislukt: ${error.message}`);
+          throw error;
+        }
       }
       if (body.command === "ack") await pulseModbusCoil("HMI_ACK_REQ", 2000);
       sendJson(res, 200, await snapshot());
