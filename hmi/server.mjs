@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
+import { FairinoRpcClient } from "./fairino-rpc.mjs";
 import { createSingleFlight, ModbusTcpClient } from "./modbus-client.mjs";
 import {
   assertOutputTestInterlock,
@@ -16,6 +17,7 @@ const bindHost = process.env.HMI_BIND_HOST || "127.0.0.1";
 const bridgeMode = process.env.HMI_BRIDGE_MODE || "mock";
 const fairinoHost = process.env.FAIRINO_HOST || "192.168.58.2";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
+const fairinoRpcPort = Number(process.env.FAIRINO_RPC_PORT || 20003);
 const unitId = Number(process.env.FAIRINO_UNIT_ID || 1);
 const fairinoHttpBase = process.env.FAIRINO_HTTP_BASE || `http://${fairinoHost}`;
 const outputTestsEnabled = parseBooleanFlag(process.env.HMI_OUTPUT_TESTS_ENABLED);
@@ -124,6 +126,12 @@ const modbusClient = new ModbusTcpClient({
   unitId,
   timeout: 2000,
 });
+const fairinoRpc = new FairinoRpcClient({
+  host: fairinoHost,
+  port: fairinoRpcPort,
+  timeout: 3000,
+  verifyDelayMs: 1000,
+});
 
 async function readBits(request, functionCode, address, quantity) {
   const pdu = Buffer.alloc(5);
@@ -196,18 +204,6 @@ async function sendFairinoProgramStop() {
   const text = await response.text();
   if (!response.ok || text.trim() !== "success") {
     throw new Error(`Fairino program stop rejected: ${response.status} ${text}`);
-  }
-}
-
-async function sendFairinoProgramStart() {
-  const response = await fetch(`${fairinoHttpBase}/action/set`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ cmd: 101, data: {} }),
-  });
-  const text = await response.text();
-  if (!response.ok || text.trim() !== "success") {
-    throw new Error(`Fairino program start rejected: ${response.status} ${text}`);
   }
 }
 
@@ -522,14 +518,13 @@ async function handleApi(req, res, url) {
         }
       }
       if (body.command === "reset") {
+        const resetResult = await fairinoRpc.resetAllErrorsAndVerify();
+        pushLog(
+          `Fairino controller reset ${resetResult.before.mainCode}/${resetResult.before.subCode} -> 0/0`,
+        );
         await setModbusCoil("HMI_STOP_REQ", false);
         await setModbusCoil("HMI_ESTOP_REQ", false);
         await pulseModbusCoil("HMI_RESET_REQ", 5000);
-        try {
-          await sendFairinoProgramStart();
-        } catch (error) {
-          pushLog(`Fairino program start na reset fout: ${error.message}`);
-        }
       }
       if (body.command === "ack") await pulseModbusCoil("HMI_ACK_REQ", 2000);
       sendJson(res, 200, await snapshot());

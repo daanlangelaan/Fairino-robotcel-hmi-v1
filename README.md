@@ -132,6 +132,7 @@ manual output tests.
 | `HMI_OUTPUT_TESTS_ENABLED` | `false` | Service-level gate for the Advanced active-low control-box output tests. |
 | `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
+| `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used to clear and verify resettable controller faults. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
 
@@ -152,3 +153,13 @@ docs/linux_hmi_service.md
 
 The production `/etc/fairino-hmi.env`, browser profile, logs, and MiniPC desktop
 configuration are intentionally not part of the HMI source repository.
+
+## Robot reset behavior
+
+In Modbus mode, the HMI Reset button calls the controller's official
+`ResetAllError()` RPC method and then confirms with `GetRobotErrorCode()` that
+both the main and sub error codes are zero. It first verifies through
+`GetProgramState()` that the robot program is stopped. Only after confirmation
+does it pulse the existing cell-level `HMI_RESET_REQ`. Reset never starts or
+resumes robot motion; Start remains a separate operator action after the
+obstruction or fault cause has been removed.

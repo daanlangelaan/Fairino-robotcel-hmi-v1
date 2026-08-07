@@ -4,6 +4,7 @@ let activeTab = "user";
 let batchTargetEditing = false;
 let lastRobotHeartbeat = null;
 let lastRobotHeartbeatAt = 0;
+let operatorNotice = null;
 
 const els = {
   runState: document.querySelector("#runState"),
@@ -77,6 +78,9 @@ function getState() {
 }
 
 function statusText() {
+  if (operatorNotice && Date.now() < operatorNotice.expiresAt) {
+    return [operatorNotice.title, operatorNotice.message];
+  }
   if (!snapshot?.connected) return ["Offline", "Geen verbinding met bridge"];
   if (getDiscrete("CELL_FAULT_ACTIVE")) return ["Storing", `Foutcode ${getInputRegister("CELL_FAULT_CODE")}`];
   if (getDiscrete("CELL_BATCH_COMPLETE")) return ["Batch klaar", "Batchdoel bereikt"];
@@ -276,9 +280,39 @@ document.querySelectorAll(".tab").forEach((button) => {
 
 document.querySelector("#startBtn").addEventListener("click", () => command("start"));
 document.querySelector("#stopBtn").addEventListener("click", () => command("stop"));
-document.querySelector("#resetBtn").addEventListener("click", () => command("reset"));
 document.querySelector("#estopBtn").addEventListener("click", () => command("estop"));
 document.querySelector("#ackBtn").addEventListener("click", () => command("ack"));
+
+document.querySelector("#resetBtn").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  button.disabled = true;
+  button.textContent = "Resetten...";
+  operatorNotice = {
+    title: "Robot resetten",
+    message: "Controllerfout wordt gewist en gecontroleerd",
+    expiresAt: Date.now() + 10000,
+  };
+  renderStatus();
+
+  try {
+    await command("reset");
+    operatorNotice = {
+      title: "Reset voltooid",
+      message: "Robotfout gewist; Start blijft een aparte handeling",
+      expiresAt: Date.now() + 5000,
+    };
+  } catch (error) {
+    operatorNotice = {
+      title: "Reset mislukt",
+      message: error.message,
+      expiresAt: Date.now() + 10000,
+    };
+  } finally {
+    button.disabled = false;
+    button.textContent = "Reset";
+    renderStatus();
+  }
+});
 
 document.querySelector("#exitHmiBtn").addEventListener("click", () => {
   els.exitHmiStatus.classList.add("hidden");

@@ -112,6 +112,7 @@ journalctl -u fairino-hmi -f
 | `HMI_OUTPUT_TESTS_ENABLED` | `false` | Explicit service gate for Advanced active-low output tests. |
 | `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
+| `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port for verified controller-fault reset. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
 
@@ -128,6 +129,16 @@ feature is protected by all of the following:
 
 Keep the service setting `false` during normal operation. These controls do not
 replace physical isolation or the robot's safety system.
+
+## Controller fault reset
+
+The operator Reset button clears a resettable controller fault directly through
+Fairino XML-RPC on port `20003`. The bridge executes `ResetAllError()`, waits one
+second, and verifies with `GetRobotErrorCode()` that the main and sub codes are
+both zero. Before clearing an error, it also requires `GetProgramState()` to
+report that the robot program is stopped. It then pulses the existing Modbus
+cell-reset request. A reset does not start or resume the robot program and
+cannot bypass a non-resettable or still-active safety condition.
 
 ## Updating an existing HMI installation
 
