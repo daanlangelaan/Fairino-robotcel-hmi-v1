@@ -436,6 +436,38 @@ button.action {
   flex-wrap: wrap;
 }
 
+.stop-notice {
+  flex: 1 0 100%;
+  grid-column: 1 / -1;
+  margin: 2px 0 0;
+  color: var(--amber);
+  font-size: 16px;
+  font-weight: 760;
+  letter-spacing: 0.02em;
+  text-align: center;
+  animation: stop-notice-pulse 2.4s ease-in-out infinite;
+}
+
+.stop-notice.hidden {
+  display: none;
+}
+
+@keyframes stop-notice-pulse {
+  0%, 100% {
+    opacity: 0.42;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 12px rgba(242, 184, 75, 0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stop-notice {
+    animation: none;
+  }
+}
+
 .machine-band {
   margin-bottom: 18px;
   padding: 18px;

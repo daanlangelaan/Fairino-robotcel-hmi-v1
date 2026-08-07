@@ -18,6 +18,7 @@ const els = {
   operatorTitle: document.querySelector("#operatorTitle"),
   operatorMessage: document.querySelector("#operatorMessage"),
   faultBanner: document.querySelector("#faultBanner"),
+  stopNotice: document.querySelector("#stopNotice"),
   batchTarget: document.querySelector("#batchTarget"),
   batchTargetView: document.querySelector("#batchTargetView"),
   batchDone: document.querySelector("#batchDone"),
@@ -62,6 +63,10 @@ function command(name) {
 
 function getDiscrete(name) {
   return Boolean(snapshot?.discreteInputs?.find((item) => item.name === name)?.value);
+}
+
+function getCoil(name) {
+  return Boolean(snapshot?.coils?.find((item) => item.name === name)?.value);
 }
 
 function getInputRegister(name) {
@@ -159,6 +164,10 @@ function renderStatus() {
   els.lampRed.classList.toggle("fault-flash", fault);
   els.lampAmber.classList.toggle("on", ready && !fault);
   els.lampGreen.classList.toggle("on", running && !fault);
+  els.stopNotice.classList.toggle(
+    "hidden",
+    !getCoil("HMI_STOP_REQ") || !running || fault,
+  );
 }
 
 function renderStations() {
