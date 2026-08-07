@@ -57,8 +57,8 @@ Open:
 http://127.0.0.1:8787
 ```
 
-If another PC or tablet must open the HMI from the network, bind to all network
-interfaces:
+The default is loopback-only. If another PC or tablet must open the HMI from the
+network, intentionally bind to all network interfaces:
 
 ```bash
 HMI_BIND_HOST=0.0.0.0 FAIRINO_HOST=192.168.58.2 npm run start:modbus
@@ -72,7 +72,7 @@ http://<linux-machine-ip>:8787
 
 ## 4. Install the systemd service
 
-Create a dedicated user if desired:
+Create the dedicated service user:
 
 ```bash
 sudo useradd --system --home /opt/fairino-robotcel-hmi --shell /usr/sbin/nologin fairino
@@ -107,9 +107,40 @@ journalctl -u fairino-hmi -f
 | Variable | Default | Description |
 | --- | --- | --- |
 | `PORT` | `8787` | HTTP port for the HMI. |
-| `HMI_BIND_HOST` | `127.0.0.1` mock, `0.0.0.0` modbus starter | Listen address. Use `0.0.0.0` for network access. |
+| `HMI_BIND_HOST` | `127.0.0.1` | Listen address. Use `0.0.0.0` only on an isolated, trusted network. |
 | `HMI_BRIDGE_MODE` | `mock` | `mock` for local test mode, `modbus` for robot mode. |
-| `FAIRINO_HOST` | `192.168.58.2` in modbus starter | Fairino controller or VM IP address. |
+| `HMI_OUTPUT_TESTS_ENABLED` | `false` | Explicit service gate for Advanced active-low output tests. |
+| `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
+
+## Advanced output tests
+
+The Advanced tab can test control-box coils `300`, `301`, `305`, `306`, and
+`307`. These outputs are active-low and can actuate connected hardware. The
+feature is protected by all of the following:
+
+- `HMI_OUTPUT_TESTS_ENABLED=true` in the production environment;
+- a separate arming checkbox in the browser;
+- a backend address allowlist and explicit request confirmation;
+- a backend interlock that rejects requests while `CELL_RUNNING` is active.
+
+Keep the service setting `false` during normal operation. These controls do not
+replace physical isolation or the robot's safety system.
+
+## Updating an existing HMI installation
+
+The Git workspace is authoritative. Do not edit `/opt/fairino-robotcel-hmi`
+directly. From the workspace, run:
+
+```bash
+npm run check
+sudo ./tools/deploy-hmi.sh
+npm run check:deployed
+```
+
+The deployment creates a timestamped backup under
+`/opt/fairino-hmi-backups`, refuses to restart a running cell, synchronizes the
+runtime files, restarts the service, and checks the local API. After live
+verification, commit and push the same workspace changes to GitHub.

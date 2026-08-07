@@ -10,21 +10,40 @@ hmi/
   index.html
   app.js
   styles.css
+  modbus-client.mjs
+  output-tests.mjs
   server.mjs
 ```
 
 The project runs on Windows and Linux with Node.js 18 or newer. No external npm
 packages are required at the moment.
 
-## Current implementation scope
+## Source of truth and deployment
 
-The first target is to run the HMI on the Linux machine. Install the Linux
-dependencies there, clone this repository there, and use Codex on that Linux
-machine to implement and test the HMI startup/service setup.
+This repository is the source of truth for the HMI software. The installed copy
+at `/opt/fairino-robotcel-hmi` is a deployment target, not a development folder.
+Make HMI changes here, test them here, and then deploy them to `/opt`.
 
-Robot programming and Fairino teaching work are intentionally kept on the
-existing Windows + VMware workflow for now. The Linux machine only needs to run
-the HMI bridge and browser interface at this stage.
+Check whether the workspace and deployed runtime match:
+
+```bash
+npm run check:deployed
+```
+
+After testing a workspace change, deploy it on the HMI PC with:
+
+```bash
+sudo ./tools/deploy-hmi.sh
+```
+
+The deployment script runs the repository checks, refuses to restart while
+`CELL_RUNNING` is active, backs up the previous runtime, synchronizes only the
+HMI runtime files, restarts `fairino-hmi`, and verifies the local API. Commit
+and push accepted workspace changes so GitHub remains reproducible.
+
+Robot programming and Fairino teaching assets remain in their existing project
+folders. The HMI is an operator interface and Modbus bridge; safety and motion
+logic remain outside the browser application.
 
 ## Quick start
 
@@ -32,6 +51,7 @@ Install Node.js 18 or newer, then from the repository root:
 
 ```bash
 npm install
+npm run check
 npm run start:mock
 ```
 
@@ -98,14 +118,19 @@ npm run check
 
 `npm run start` defaults to mock mode unless `HMI_BRIDGE_MODE` is set.
 
+The deployed HMI includes serialized Modbus polling over a persistent TCP
+connection and automated tests for request ordering, concurrency, and protected
+manual output tests.
+
 ## Configuration
 
 | Variable | Default | Description |
 | --- | --- | --- |
 | `PORT` | `8787` | HTTP port for the HMI. |
-| `HMI_BIND_HOST` | `127.0.0.1` mock, `0.0.0.0` modbus starter | Listen address. Use `0.0.0.0` for network access. |
+| `HMI_BIND_HOST` | `127.0.0.1` | Listen address. Use `0.0.0.0` only when intentionally exposing the HMI to a trusted network. |
 | `HMI_BRIDGE_MODE` | `mock` | `mock` for local test mode, `modbus` for robot mode. |
-| `FAIRINO_HOST` | `192.168.58.2` in modbus starter | Fairino controller or VM IP address. |
+| `HMI_OUTPUT_TESTS_ENABLED` | `false` | Service-level gate for the Advanced active-low control-box output tests. |
+| `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
@@ -124,3 +149,6 @@ Full Linux setup instructions are in:
 ```text
 docs/linux_hmi_service.md
 ```
+
+The production `/etc/fairino-hmi.env`, browser profile, logs, and MiniPC desktop
+configuration are intentionally not part of the HMI source repository.

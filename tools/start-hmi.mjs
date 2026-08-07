@@ -27,7 +27,7 @@ const fairinoHost = readArg("host", readArg("fairino-host", process.env.FAIRINO_
 const fairinoPort = readArg("fairino-port", process.env.FAIRINO_PORT || (modbusMode ? "502" : undefined));
 const unitId = readArg("unit-id", process.env.FAIRINO_UNIT_ID);
 const port = readArg("port", process.env.PORT);
-const bindHost = readArg("bind-host", process.env.HMI_BIND_HOST || (modbusMode ? "0.0.0.0" : undefined));
+const bindHost = readArg("bind-host", process.env.HMI_BIND_HOST);
 const fairinoHttpBase = readArg("fairino-http-base", process.env.FAIRINO_HTTP_BASE);
 
 setEnv("HMI_BRIDGE_MODE", mode);
@@ -42,6 +42,6 @@ console.log("Fairino HMI starter");
 console.log(`Mode:        ${process.env.HMI_BRIDGE_MODE || "mock"}`);
 console.log(`HMI bind:    ${process.env.HMI_BIND_HOST || "127.0.0.1"}`);
 console.log(`HMI port:    ${process.env.PORT || "8787"}`);
-console.log(`Fairino:     ${process.env.FAIRINO_HOST || "192.168.92.128"}:${process.env.FAIRINO_PORT || "502"}`);
+console.log(`Fairino:     ${process.env.FAIRINO_HOST || "192.168.58.2"}:${process.env.FAIRINO_PORT || "502"}`);
 
 await import("../hmi/server.mjs");

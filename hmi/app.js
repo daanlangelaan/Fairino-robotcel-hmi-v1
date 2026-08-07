@@ -30,8 +30,11 @@ const els = {
   log: document.querySelector("#log"),
   heartbeatView: document.querySelector("#heartbeatView"),
   stateValueView: document.querySelector("#stateValueView"),
+  exitHmiDialog: document.querySelector("#exitHmiDialog"),
+  exitHmiStatus: document.querySelector("#exitHmiStatus"),
   ioOutputTests: document.querySelector("#ioOutputTests"),
   ioTestEnable: document.querySelector("#ioTestEnable"),
+  ioTestStatus: document.querySelector("#ioTestStatus"),
 };
 
 async function api(path, options = {}) {
@@ -39,8 +42,9 @@ async function api(path, options = {}) {
     headers: { "Content-Type": "application/json" },
     ...options,
   });
-  if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-  return response.json();
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.error || `${response.status} ${response.statusText}`);
+  return body;
 }
 
 async function post(path, body) {
@@ -203,11 +207,25 @@ function renderRegisters() {
 }
 
 function renderAdvanced() {
-  const testEnabled = Boolean(els.ioTestEnable?.checked);
-  const cycleRunning = getDiscrete("CELL_RUNNING");
-  els.ioOutputTests?.querySelectorAll("button").forEach((button) => {
-    button.disabled = !testEnabled || cycleRunning;
+  const configured = Boolean(snapshot?.capabilities?.outputTests?.enabled);
+  const running = getDiscrete("CELL_RUNNING");
+  if (!configured || running) els.ioTestEnable.checked = false;
+  els.ioTestEnable.disabled = !configured || running;
+
+  const armed = configured && !running && els.ioTestEnable.checked;
+  els.ioOutputTests.querySelectorAll("button").forEach((button) => {
+    button.disabled = !armed;
   });
+
+  if (!configured) {
+    els.ioTestStatus.textContent = "Uitgeschakeld in serviceconfiguratie";
+  } else if (running) {
+    els.ioTestStatus.textContent = "Geblokkeerd: robotcyclus draait";
+  } else if (armed) {
+    els.ioTestStatus.textContent = "Vrijgegeven voor handmatige IO-test";
+  } else {
+    els.ioTestStatus.textContent = "Vergrendeld";
+  }
 }
 
 function renderLog() {
@@ -249,6 +267,10 @@ document.querySelectorAll(".tab").forEach((button) => {
     document.querySelectorAll(".tab-page").forEach((page) => {
       page.classList.toggle("active", page.id === `${activeTab}Tab`);
     });
+    if (activeTab !== "advanced") {
+      els.ioTestEnable.checked = false;
+      renderAdvanced();
+    }
   });
 });
 
@@ -257,6 +279,22 @@ document.querySelector("#stopBtn").addEventListener("click", () => command("stop
 document.querySelector("#resetBtn").addEventListener("click", () => command("reset"));
 document.querySelector("#estopBtn").addEventListener("click", () => command("estop"));
 document.querySelector("#ackBtn").addEventListener("click", () => command("ack"));
+
+document.querySelector("#exitHmiBtn").addEventListener("click", () => {
+  els.exitHmiStatus.classList.add("hidden");
+  els.exitHmiDialog.showModal();
+});
+
+document.querySelector("#confirmExitHmiBtn").addEventListener("click", (event) => {
+  event.preventDefault();
+  window.close();
+
+  // Chromium app windows normally close immediately. If the browser blocks
+  // window.close(), keep the confirmation open and show the safe fallback.
+  window.setTimeout(() => {
+    els.exitHmiStatus.classList.remove("hidden");
+  }, 500);
+});
 
 document.querySelector("#setBatchBtn").addEventListener("click", () => {
   batchTargetEditing = false;
@@ -303,15 +341,15 @@ els.commandRegisters.addEventListener("click", (event) => {
   post("/api/coil", { name: row.dataset.name, value: true });
 });
 
-els.ioOutputTests?.addEventListener("click", (event) => {
+els.ioOutputTests.addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-output-action]");
   const row = event.target.closest(".output-test-row");
-  if (!button || !row) return;
-  if (!els.ioTestEnable.checked || getDiscrete("CELL_RUNNING")) return;
+  if (!button || !row || !els.ioTestEnable.checked || getDiscrete("CELL_RUNNING")) return;
 
   const action = button.dataset.outputAction;
   const body = {
     address: Number(row.dataset.address),
+    confirmed: true,
     value: action === "off",
   };
   if (action === "pulse") {
@@ -319,10 +357,18 @@ els.ioOutputTests?.addEventListener("click", (event) => {
     body.pulseMs = 500;
     body.resetValue = true;
   }
-  post("/api/modbus/coil", body);
+
+  try {
+    await post("/api/modbus/coil", body);
+    els.ioTestStatus.textContent = `Coil ${body.address}: ${action}`;
+  } catch (error) {
+    els.ioTestEnable.checked = false;
+    renderAdvanced();
+    els.ioTestStatus.textContent = error.message;
+  }
 });
 
-els.ioTestEnable?.addEventListener("change", renderAdvanced);
+els.ioTestEnable.addEventListener("change", renderAdvanced);
 
 setInterval(refresh, 700);
 refresh();

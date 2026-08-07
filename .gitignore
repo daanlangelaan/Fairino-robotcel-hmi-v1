@@ -3,6 +3,10 @@
 hmi/hmi_modbus_server.out.log
 hmi/hmi_modbus_server.err.log
 
+# Local environment configuration
+.env
+.env.*
+
 # Local editor and OS noise
 .DS_Store
 Thumbs.db
@@ -13,4 +17,3 @@ Thumbs.db
 node_modules/
 .venv/
 __pycache__/
-

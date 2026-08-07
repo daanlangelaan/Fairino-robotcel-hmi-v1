@@ -63,7 +63,7 @@ if ($RestoreAliases -and -not $SkipAliasRestore -and (Test-Path $aliasRestore)) 
 Write-Step "HMI bridge starten in Modbus mode"
 $node = Find-Node
 $env:HMI_BRIDGE_MODE = "modbus"
-$env:HMI_BIND_HOST = "0.0.0.0"
+$env:HMI_BIND_HOST = "127.0.0.1"
 $env:FAIRINO_HOST = $FairinoHost
 $env:FAIRINO_PORT = "502"
 $env:PORT = [string]$HmiPort

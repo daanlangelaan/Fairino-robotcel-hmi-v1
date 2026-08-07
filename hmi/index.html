@@ -143,6 +143,7 @@
         <div class="toolbar">
           <button id="ackBtn">Ack</button>
           <button id="resetCountersBtn">Reset tellers</button>
+          <button id="exitHmiBtn" class="desktop-button">Desktop</button>
         </div>
         <div class="mode-row">
           <span id="heartbeatView" class="status-code">HB 0</span>
@@ -185,12 +186,16 @@
       <section class="grid">
         <div class="panel wide-panel">
           <h2>Fairino control-box DO test</h2>
+          <p class="output-test-warning">
+            Commissioningfunctie: deze knoppen kunnen fysieke uitgangen en aangesloten apparatuur direct activeren.
+            Alleen gebruiken met een veilige, stilstaande cel. De uitgangen zijn active-low.
+          </p>
           <div class="test-enable-row">
             <label>
               <input id="ioTestEnable" type="checkbox">
-              IO-test vrijgeven
+              IO-test bewust vrijgeven
             </label>
-            <span>Alleen gebruiken als de robotcyclus stil staat.</span>
+            <span id="ioTestStatus">Uitgeschakeld</span>
           </div>
           <div id="ioOutputTests" class="output-test-list">
             <div class="output-test-row" data-address="300">
@@ -238,6 +243,21 @@
       </section>
     </section>
   </main>
+
+  <dialog id="exitHmiDialog" class="exit-dialog" aria-labelledby="exitHmiTitle">
+    <form method="dialog">
+      <h2 id="exitHmiTitle">HMI afsluiten?</h2>
+      <p>Het HMI-venster sluit en de Linux-desktop wordt zichtbaar.</p>
+      <p class="exit-dialog-note">De HMI-backend en robotcommunicatie blijven actief.</p>
+      <p id="exitHmiStatus" class="exit-dialog-status hidden" role="alert">
+        Het venster kon niet automatisch sluiten. Gebruik de snelkoppeling <strong>Close HMI</strong> op het bureaublad.
+      </p>
+      <div class="exit-dialog-actions">
+        <button id="cancelExitHmiBtn" value="cancel">Annuleren</button>
+        <button id="confirmExitHmiBtn" class="desktop-button" value="confirm">Naar desktop</button>
+      </div>
+    </form>
+  </dialog>
 
   <script src="./app.js"></script>
 </body>

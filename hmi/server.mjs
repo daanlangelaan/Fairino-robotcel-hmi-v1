@@ -1,16 +1,24 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
-import net from "node:net";
+import { createSingleFlight, ModbusTcpClient } from "./modbus-client.mjs";
+import {
+  assertOutputTestInterlock,
+  outputTestCoils,
+  OutputTestRequestError,
+  parseBooleanFlag,
+  parseOutputTestRequest,
+} from "./output-tests.mjs";
 
 const root = new URL(".", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const port = Number(process.env.PORT || 8787);
 const bindHost = process.env.HMI_BIND_HOST || "127.0.0.1";
 const bridgeMode = process.env.HMI_BRIDGE_MODE || "mock";
-const fairinoHost = process.env.FAIRINO_HOST || "192.168.92.128";
+const fairinoHost = process.env.FAIRINO_HOST || "192.168.58.2";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
 const unitId = Number(process.env.FAIRINO_UNIT_ID || 1);
 const fairinoHttpBase = process.env.FAIRINO_HTTP_BASE || `http://${fairinoHost}`;
+const outputTestsEnabled = parseBooleanFlag(process.env.HMI_OUTPUT_TESTS_ENABLED);
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -82,8 +90,6 @@ const inputRegisters = [
   { address: 105, name: "CELL_ROBOT_HEARTBEAT", label: "Robot heartbeat" },
 ];
 
-const outputTestCoils = new Set([300, 301, 305, 306, 307]);
-
 const simInputs = {
   safety_ok: true,
   filter_present: true,
@@ -112,41 +118,19 @@ const values = {
   inputRegisters: Object.fromEntries(inputRegisters.map((item) => [item.name, 0])),
 };
 
-let modbusTransactionId = 1;
+const modbusClient = new ModbusTcpClient({
+  host: fairinoHost,
+  port: fairinoPort,
+  unitId,
+  timeout: 2000,
+});
 
-function modbusRequest(pdu) {
-  return new Promise((resolve, reject) => {
-    const socket = net.createConnection({ host: fairinoHost, port: fairinoPort, timeout: 2000 });
-    const transactionId = modbusTransactionId++ % 65535;
-    const mbap = Buffer.alloc(7);
-    mbap.writeUInt16BE(transactionId, 0);
-    mbap.writeUInt16BE(0, 2);
-    mbap.writeUInt16BE(pdu.length + 1, 4);
-    mbap.writeUInt8(unitId, 6);
-
-    socket.on("connect", () => socket.write(Buffer.concat([mbap, pdu])));
-    socket.on("data", (data) => {
-      socket.end();
-      if (data[7] >= 0x80) {
-        reject(new Error(`Modbus exception ${data[8]}`));
-        return;
-      }
-      resolve(data.subarray(7));
-    });
-    socket.on("timeout", () => {
-      socket.destroy();
-      reject(new Error("Modbus timeout"));
-    });
-    socket.on("error", reject);
-  });
-}
-
-async function readBits(functionCode, address, quantity) {
+async function readBits(request, functionCode, address, quantity) {
   const pdu = Buffer.alloc(5);
   pdu.writeUInt8(functionCode, 0);
   pdu.writeUInt16BE(address, 1);
   pdu.writeUInt16BE(quantity, 3);
-  const response = await modbusRequest(pdu);
+  const response = await request(pdu);
   const bits = [];
   for (let index = 0; index < quantity; index += 1) {
     const byte = response[2 + Math.floor(index / 8)];
@@ -155,12 +139,12 @@ async function readBits(functionCode, address, quantity) {
   return bits;
 }
 
-async function readRegisters(functionCode, address, quantity) {
+async function readRegisters(request, functionCode, address, quantity) {
   const pdu = Buffer.alloc(5);
   pdu.writeUInt8(functionCode, 0);
   pdu.writeUInt16BE(address, 1);
   pdu.writeUInt16BE(quantity, 3);
-  const response = await modbusRequest(pdu);
+  const response = await request(pdu);
   const registers = [];
   for (let index = 0; index < quantity; index += 1) {
     registers.push(response.readUInt16BE(2 + index * 2));
@@ -173,7 +157,7 @@ async function writeCoil(address, value) {
   pdu.writeUInt8(5, 0);
   pdu.writeUInt16BE(address, 1);
   pdu.writeUInt16BE(value ? 0xff00 : 0x0000, 3);
-  await modbusRequest(pdu);
+  await modbusClient.request(pdu);
 }
 
 async function writeHoldingRegister(address, value) {
@@ -181,7 +165,7 @@ async function writeHoldingRegister(address, value) {
   pdu.writeUInt8(6, 0);
   pdu.writeUInt16BE(address, 1);
   pdu.writeUInt16BE(Math.max(0, Math.min(65535, Number(value) || 0)), 3);
-  await modbusRequest(pdu);
+  await modbusClient.request(pdu);
 }
 
 function addressOf(items, name) {
@@ -232,23 +216,17 @@ async function readModbusSnapshot() {
   const holdingStart = holdingRegisters[0].address;
   const discreteStart = discreteInputs[0].address;
   const inputStart = inputRegisters[0].address;
-  const [coilBits, holding, discreteBits, input] = await Promise.all([
-    readBits(1, coilStart, coils.length),
-    readRegisters(3, holdingStart, holdingRegisters.length),
-    readBits(2, discreteStart, discreteInputs.length),
-    readRegisters(4, inputStart, inputRegisters.length),
-  ]);
+  const { coilBits, holding, discreteBits, input } = await modbusClient.runExclusive(async (request) => ({
+    coilBits: await readBits(request, 1, coilStart, coils.length),
+    holding: await readRegisters(request, 3, holdingStart, holdingRegisters.length),
+    discreteBits: await readBits(request, 2, discreteStart, discreteInputs.length),
+    input: await readRegisters(request, 4, inputStart, inputRegisters.length),
+  }));
 
   coils.forEach((item, index) => values.coils[item.name] = coilBits[index]);
   holdingRegisters.forEach((item, index) => values.holdingRegisters[item.name] = holding[index]);
   discreteInputs.forEach((item, index) => values.discreteInputs[item.name] = discreteBits[index]);
   inputRegisters.forEach((item, index) => values.inputRegisters[item.name] = input[index]);
-}
-
-async function refreshModbusSnapshotIfNeeded() {
-  if (bridgeMode === "modbus") {
-    await readModbusSnapshot();
-  }
 }
 
 function currentState() {
@@ -460,7 +438,7 @@ setInterval(() => {
     .catch((error) => pushLog(`Modbus heartbeat fout: ${error.message}`));
 }, 700);
 
-async function snapshot() {
+async function createSnapshot() {
   let connected = true;
   if (bridgeMode === "modbus") {
     try {
@@ -483,6 +461,13 @@ async function snapshot() {
     mode: bridgeMode,
     connected,
     endpoint: bridgeMode === "modbus" ? `${fairinoHost}:${fairinoPort}` : "local mock",
+    capabilities: {
+      outputTests: {
+        enabled: outputTestsEnabled,
+        activeLow: true,
+        coils: outputTestCoils,
+      },
+    },
     states,
     coils: coils.map((item) => ({ ...item, value: values.coils[item.name] })),
     holdingRegisters: holdingRegisters.map((item) => ({ ...item, value: values.holdingRegisters[item.name] })),
@@ -499,6 +484,8 @@ async function snapshot() {
     },
   };
 }
+
+const snapshot = createSingleFlight(createSnapshot);
 
 function sendJson(res, status, body) {
   res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
@@ -604,31 +591,29 @@ async function handleApi(req, res, url) {
 
   if (req.method === "POST" && url.pathname === "/api/modbus/coil") {
     const body = await readJson(req);
-    const address = Number(body.address);
-    if (!Number.isInteger(address) || !outputTestCoils.has(address)) {
-      sendJson(res, 400, { error: "Ongeldig Modbus coil adres" });
-      return true;
-    }
+    const command = parseOutputTestRequest(body, { enabled: outputTestsEnabled });
 
     if (bridgeMode === "modbus") {
-      await refreshModbusSnapshotIfNeeded();
-      if (values.discreteInputs.CELL_RUNNING) {
-        sendJson(res, 409, { error: "IO-test geblokkeerd: robotcyclus draait" });
-        return true;
+      try {
+        await readModbusSnapshot();
+      } catch (error) {
+        throw new OutputTestRequestError(502, `IO-test statuscontrole mislukt: ${error.message}`);
       }
-      await writeCoil(address, Boolean(body.value));
-      const pulseMs = Number(body.pulseMs || 0);
-      if (pulseMs > 0) {
-        const resetValue = Object.hasOwn(body, "resetValue") ? Boolean(body.resetValue) : false;
+      assertOutputTestInterlock({ running: values.discreteInputs.CELL_RUNNING });
+      await writeCoil(command.address, command.value);
+      if (command.pulseMs > 0) {
         setTimeout(() => {
-          writeCoil(address, resetValue).catch((error) => pushLog(`DO pulse reset fout: ${error.message}`));
-        }, Math.max(50, Math.min(5000, pulseMs)));
+          writeCoil(command.address, command.resetValue)
+            .catch((error) => pushLog(`DO pulse reset fout: ${error.message}`));
+        }, command.pulseMs);
       }
+      pushLog(`IO-test coil ${command.address} = ${command.value ? 1 : 0}`);
       sendJson(res, 200, await snapshot());
       return true;
     }
 
-    pushLog(`Mock DO coil ${address} = ${body.value ? 1 : 0}`);
+    assertOutputTestInterlock({ running: values.discreteInputs.CELL_RUNNING });
+    pushLog(`Mock IO-test coil ${command.address} = ${command.value ? 1 : 0}`);
     sendJson(res, 200, await snapshot());
     return true;
   }
@@ -661,7 +646,7 @@ createServer(async (req, res) => {
       return;
     }
   } catch (error) {
-    sendJson(res, 500, { error: error.message });
+    sendJson(res, error.statusCode || 500, { error: error.message });
     return;
   }
 
