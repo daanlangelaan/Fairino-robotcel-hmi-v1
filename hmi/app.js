@@ -86,6 +86,9 @@ function faultCodeText() {
 }
 
 function faultMessage() {
+  if (getInputRegister("CELL_FAULT_CODE") === 991) {
+    return "HMI-noodstop actief. Controleer of de cel veilig en vrij is en druk daarna op Reset.";
+  }
   return snapshot?.controller?.faultMessage
     || "Processtoring gedetecteerd. Controleer de cel en los de oorzaak op voordat u reset.";
 }

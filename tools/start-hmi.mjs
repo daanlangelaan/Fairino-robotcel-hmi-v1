@@ -28,7 +28,6 @@ const fairinoPort = readArg("fairino-port", process.env.FAIRINO_PORT || (modbusM
 const unitId = readArg("unit-id", process.env.FAIRINO_UNIT_ID);
 const port = readArg("port", process.env.PORT);
 const bindHost = readArg("bind-host", process.env.HMI_BIND_HOST);
-const fairinoHttpBase = readArg("fairino-http-base", process.env.FAIRINO_HTTP_BASE);
 
 setEnv("HMI_BRIDGE_MODE", mode);
 setEnv("FAIRINO_HOST", fairinoHost);
@@ -36,7 +35,6 @@ setEnv("FAIRINO_PORT", fairinoPort);
 setEnv("FAIRINO_UNIT_ID", unitId);
 setEnv("PORT", port);
 setEnv("HMI_BIND_HOST", bindHost);
-setEnv("FAIRINO_HTTP_BASE", fairinoHttpBase);
 
 console.log("Fairino HMI starter");
 console.log(`Mode:        ${process.env.HMI_BRIDGE_MODE || "mock"}`);

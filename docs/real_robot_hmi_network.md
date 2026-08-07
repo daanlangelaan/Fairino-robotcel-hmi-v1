@@ -34,7 +34,6 @@ HMI_BRIDGE_MODE=modbus
 FAIRINO_HOST=192.168.58.2
 FAIRINO_PORT=502
 FAIRINO_UNIT_ID=1
-FAIRINO_HTTP_BASE=http://192.168.58.2
 ```
 
 The Lua teaching program must be open and running on the robot before the HMI

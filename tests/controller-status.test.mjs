@@ -49,6 +49,19 @@ test("Lua process faults remain visible when the controller has no fault", () =>
   assert.equal(result.faultCode, 991);
 });
 
+test("latched HMI Noodstop overrides stale running status even after Lua stops", () => {
+  const result = overlayControllerFault(
+    staleRunningStatus,
+    { mainCode: 0, subCode: 0 },
+    { hmiEstopActive: true },
+  );
+  const discrete = Object.fromEntries(result.discreteInputs.map((item) => [item.name, item.value]));
+
+  assert.equal(discrete.CELL_RUNNING, false);
+  assert.equal(discrete.CELL_FAULT_ACTIVE, true);
+  assert.equal(result.faultCode, 991);
+});
+
 test("explains the resettable axis collision without repeating its code", () => {
   assert.equal(
     controllerFaultMessage({ mainCode: 4, subCode: 1 }),

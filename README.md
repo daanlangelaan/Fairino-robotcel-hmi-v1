@@ -135,7 +135,6 @@ manual output tests.
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
-| `FAIRINO_HTTP_BASE` | `http://$FAIRINO_HOST` | Optional Fairino WebApp HTTP base URL. |
 
 ## Linux service
 
@@ -177,3 +176,9 @@ The **Reset** button can cause immediate robot movement, including the Lua
 program's initial homing move. Only use it after the collision cause or
 obstruction has been removed and the cell is clear. This software control cannot
 bypass an active hardware safety circuit.
+
+The HMI Noodstop command uses the controller's authenticated-independent
+`ProgramStop()` XML-RPC method and verifies program state `1` (stopped). Reset
+also recognizes an already-running Lua safety state `990/991`, clears the
+latched HMI emergency-stop request, and sends the Lua reset request so this fault
+does not remain stuck.

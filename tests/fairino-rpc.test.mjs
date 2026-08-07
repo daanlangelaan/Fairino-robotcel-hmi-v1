@@ -104,6 +104,44 @@ test("refuses to reset unless the controller program is stopped", async (t) => {
   assert.equal(fake.calls.length, 1);
 });
 
+test("stops the loaded program through RPC and verifies stopped state", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 2]),
+    scalarResponse(0),
+    arrayResponse([0, 1]),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({
+    host: "127.0.0.1",
+    port: fake.port,
+    timeout: 1000,
+    programStopDelayMs: 0,
+  });
+  const result = await client.programStopAndVerify();
+
+  assert.deepEqual(result, { programStateBefore: 2, programStateAfter: 1 });
+  assert.match(fake.calls[0].body, /<methodName>GetProgramState<\/methodName>/);
+  assert.match(fake.calls[1].body, /<methodName>ProgramStop<\/methodName>/);
+  assert.match(fake.calls[2].body, /<methodName>GetProgramState<\/methodName>/);
+});
+
+test("does not send ProgramStop when the loaded program is already stopped", async (t) => {
+  const fake = await startFakeRpcServer([arrayResponse([0, 1])]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({
+    host: "127.0.0.1",
+    port: fake.port,
+    timeout: 1000,
+    programStopDelayMs: 0,
+  });
+  const result = await client.programStopAndVerify();
+
+  assert.deepEqual(result, { programStateBefore: 1, programStateAfter: 1 });
+  assert.equal(fake.calls.length, 1);
+});
+
 test("selects automatic mode, runs the loaded program, and verifies it is running", async (t) => {
   const fake = await startFakeRpcServer([
     arrayResponse([0, 1]),

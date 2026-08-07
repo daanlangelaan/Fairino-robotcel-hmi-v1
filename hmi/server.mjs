@@ -20,7 +20,6 @@ const fairinoHost = process.env.FAIRINO_HOST || "192.168.58.2";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
 const fairinoRpcPort = Number(process.env.FAIRINO_RPC_PORT || 20003);
 const unitId = Number(process.env.FAIRINO_UNIT_ID || 1);
-const fairinoHttpBase = process.env.FAIRINO_HTTP_BASE || `http://${fairinoHost}`;
 const outputTestsEnabled = parseBooleanFlag(process.env.HMI_OUTPUT_TESTS_ENABLED);
 
 const mime = {
@@ -135,6 +134,25 @@ const fairinoRpc = new FairinoRpcClient({
 });
 
 const recoverRobotAndRun = createSingleFlight(async () => {
+  await readModbusSnapshot();
+  const [programState, controllerError] = await Promise.all([
+    fairinoRpc.getProgramState(),
+    fairinoRpc.getRobotErrorCode(),
+  ]);
+  const runningHmiEstop = programState === 2
+    && controllerError.mainCode === 0
+    && controllerError.subCode === 0
+    && values.coils.HMI_ESTOP_REQ
+    && Number(values.inputRegisters.CELL_FAULT_CODE) === 991;
+
+  if (runningHmiEstop) {
+    await setModbusCoil("HMI_STOP_REQ", false);
+    await setModbusCoil("HMI_ESTOP_REQ", false);
+    await pulseModbusCoil("HMI_RESET_REQ", 5000);
+    pushLog("HMI-noodstop 991 gewist; actief Lua-programma herstelt via reset request");
+    return { recovery: "running-hmi-estop" };
+  }
+
   const resetResult = await fairinoRpc.resetAllErrorsAndVerify();
   pushLog(
     `Fairino controller reset ${resetResult.before.mainCode}/${resetResult.before.subCode} -> 0/0`,
@@ -209,18 +227,6 @@ async function setModbusCoil(name, value) {
   const address = addressOf(coils, name);
   if (address === undefined) return;
   await writeCoil(address, Boolean(value));
-}
-
-async function sendFairinoProgramStop() {
-  const response = await fetch(`${fairinoHttpBase}/action/set`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ cmd: 102, data: {} }),
-  });
-  const text = await response.text();
-  if (!response.ok || text.trim() !== "success") {
-    throw new Error(`Fairino program stop rejected: ${response.status} ${text}`);
-  }
 }
 
 async function readModbusSnapshot() {
@@ -476,7 +482,7 @@ async function createSnapshot() {
   const effectiveStatus = overlayControllerFault({
     discreteInputs: discreteInputs.map((item) => ({ ...item, value: values.discreteInputs[item.name] })),
     inputRegisters: inputRegisters.map((item) => ({ ...item, value: values.inputRegisters[item.name] })),
-  }, controllerError);
+  }, controllerError, { hmiEstopActive: values.coils.HMI_ESTOP_REQ });
   const stateValue = values.inputRegisters.CELL_STATE;
   const state = states.find((item) => item.value === stateValue) || currentState();
   machine.faultCode = effectiveStatus.faultCode;
@@ -547,7 +553,10 @@ async function handleApi(req, res, url) {
       if (body.command === "estop") {
         await setModbusCoil("HMI_ESTOP_REQ", true);
         try {
-          await sendFairinoProgramStop();
+          const stopResult = await fairinoRpc.programStopAndVerify();
+          pushLog(
+            `Fairino Lua-programma gestopt: status ${stopResult.programStateBefore} -> ${stopResult.programStateAfter}`,
+          );
         } catch (error) {
           pushLog(`Fairino program stop fout: ${error.message}`);
         }

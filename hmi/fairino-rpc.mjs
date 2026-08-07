@@ -61,12 +61,14 @@ export class FairinoRpcClient {
     timeout = 3000,
     verifyDelayMs = 1000,
     programStartDelayMs = 1000,
+    programStopDelayMs = 1000,
   }) {
     this.host = host;
     this.port = port;
     this.timeout = timeout;
     this.verifyDelayMs = verifyDelayMs;
     this.programStartDelayMs = programStartDelayMs;
+    this.programStopDelayMs = programStopDelayMs;
   }
 
   call(methodName, parameters = []) {
@@ -134,6 +136,29 @@ export class FairinoRpcClient {
       throw new FairinoRpcError(`GetProgramState failed: ${JSON.stringify(result)}`);
     }
     return result[1];
+  }
+
+  async programStopAndVerify() {
+    const programStateBefore = await this.getProgramState();
+    if (programStateBefore === 1) {
+      return { programStateBefore, programStateAfter: 1 };
+    }
+
+    const result = await this.call("ProgramStop");
+    if (result !== 0) {
+      throw new FairinoRpcError(`ProgramStop was rejected with code ${result}`);
+    }
+    if (this.programStopDelayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, this.programStopDelayMs));
+    }
+    const programStateAfter = await this.getProgramState();
+    if (programStateAfter !== 1) {
+      throw new FairinoRpcError(
+        `Robot program did not enter stopped state (state ${programStateAfter})`,
+        409,
+      );
+    }
+    return { programStateBefore, programStateAfter };
   }
 
   async resetAllErrorsAndVerify() {
