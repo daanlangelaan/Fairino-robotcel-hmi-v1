@@ -162,5 +162,5 @@ In Modbus mode, the HMI Reset button calls the controller's official
 both the main and sub error codes are zero. It first verifies through
 `GetProgramState()` that the robot program is stopped. Only after confirmation
 does it pulse the existing cell-level `HMI_RESET_REQ`. Reset never starts or
-resumes robot motion; Start remains a separate operator action after the
-obstruction or fault cause has been removed.
+resumes robot motion; restarting the robot program remains a separate procedure
+after the obstruction or fault cause has been removed.

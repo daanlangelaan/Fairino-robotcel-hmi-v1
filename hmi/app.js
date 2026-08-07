@@ -298,7 +298,7 @@ document.querySelector("#resetBtn").addEventListener("click", async (event) => {
     await command("reset");
     operatorNotice = {
       title: "Reset voltooid",
-      message: "Robotfout gewist; Start blijft een aparte handeling",
+      message: "Robotfout gewist; robotprogramma blijft gestopt",
       expiresAt: Date.now() + 5000,
     };
   } catch (error) {
