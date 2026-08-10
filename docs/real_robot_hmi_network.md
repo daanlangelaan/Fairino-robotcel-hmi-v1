@@ -13,6 +13,7 @@ For the local WebApp teaching page and our Modbus HMI bridge, use the
 ## Cell Addresses
 
 - Fairino robot: `192.168.58.2`
+- M31 Remote IO: `192.168.58.7`
 - Development laptop on USB Ethernet: `192.168.58.10`
 - Mini PC HMI: `192.168.58.20`
 - Netmask: `255.255.255.0`
@@ -24,6 +25,9 @@ Do not reuse these IP addresses on Wi-Fi, VMware adapters, or another NIC.
 
 The HMI must run as a Modbus TCP client/master against the robot Modbus TCP
 slave on port `502`.
+
+At the same time, the Fairino is a Modbus TCP client/master to the M31 server
+at `192.168.58.7:502`. Both connections use the same isolated cell switch.
 
 Use these environment values on the mini PC:
 
@@ -48,6 +52,8 @@ ping -S 192.168.58.10 -n 30 192.168.58.2
 Test-NetConnection 192.168.58.2 -Port 80
 Test-NetConnection 192.168.58.2 -Port 502
 Test-NetConnection 192.168.58.2 -Port 9999
+ping -S 192.168.58.10 -n 30 192.168.58.7
+Test-NetConnection 192.168.58.7 -Port 502
 ```
 
 Port meanings:

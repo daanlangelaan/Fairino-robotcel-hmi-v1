@@ -20,6 +20,10 @@ function set_output(port, active)
     else
         SetDO(port, OUTPUT_INACTIVE_LEVEL, 0, 0)
     end
+
+    -- Optional no-load commissioning mirror. The controller output above is
+    -- deliberately written first and remains the primary output path.
+    remote_io_write_output(port, active)
 end
 
 function all_outputs_off()

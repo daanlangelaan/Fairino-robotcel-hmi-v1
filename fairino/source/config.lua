@@ -80,6 +80,18 @@ GLUE_ROTATION_SPEED = 80
 -- Keep disabled until the Fairino Modbus TCP slave aliases are configured.
 HMI_MODBUS_ENABLED = 0
 
+-- Remote IO commissioning.
+-- Keep disabled for normal builds. Enable only with a confirmed non-PN M31
+-- Modbus TCP slave, disconnected actuator loads, and a proven LED test.
+-- In mirror mode the Fairino controller DO remains active and authoritative.
+-- Fairino WebApp must contain master alias M31_REMOTE_IO and start-register
+-- aliases M31_DI_0 (DI address 0) and M31_DO_0 (DO address 0).
+REMOTE_IO_OUTPUT_MIRROR_ENABLED = 0
+REMOTE_IO_DI_COUNT = 32
+REMOTE_IO_DO_COUNT = 16
+REMOTE_IO_OUTPUT_ACTIVE_LEVEL = 1
+REMOTE_IO_OUTPUT_INACTIVE_LEVEL = 0
+
 -- Defaults used while the Fairino WebApp validates Modbus instructions during
 -- file open. The state machine overwrites these at runtime.
 current_state = S00_INIT

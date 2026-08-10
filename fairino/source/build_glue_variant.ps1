@@ -16,6 +16,7 @@ $out = Join-Path $releaseDir $outName
 
 $parts = @(
     "config.lua",
+    "io_remote_mirror.lua",
     "io_sim.lua",
     "motion.lua",
     "station_glue.lua",
