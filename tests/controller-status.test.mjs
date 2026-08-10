@@ -74,6 +74,34 @@ test("stopped controller overrides stale Lua running status", () => {
   assert.equal(discrete.CELL_FAULT_ACTIVE, false);
 });
 
+test("unexpected loaded program overrides stale Lua running status", () => {
+  const result = overlayControllerFault(
+    staleRunningStatus,
+    { mainCode: 0, subCode: 0 },
+    { controllerProgramState: 2, controllerProgramMatches: false },
+  );
+  const discrete = Object.fromEntries(result.discreteInputs.map((item) => [item.name, item.value]));
+
+  assert.equal(discrete.CELL_RUNNING, false);
+  assert.equal(discrete.CELL_FAULT_ACTIVE, false);
+});
+
+test("stale Lua heartbeat overrides stale running status", () => {
+  const result = overlayControllerFault(
+    staleRunningStatus,
+    { mainCode: 0, subCode: 0 },
+    {
+      controllerProgramState: 2,
+      controllerProgramMatches: true,
+      luaHeartbeatFresh: false,
+    },
+  );
+  const discrete = Object.fromEntries(result.discreteInputs.map((item) => [item.name, item.value]));
+
+  assert.equal(discrete.CELL_RUNNING, false);
+  assert.equal(discrete.CELL_FAULT_ACTIVE, false);
+});
+
 test("explains the resettable axis collision without repeating its code", () => {
   assert.equal(
     controllerFaultMessage({ mainCode: 4, subCode: 1 }),

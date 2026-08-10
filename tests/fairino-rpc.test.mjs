@@ -2,14 +2,23 @@ import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import test from "node:test";
 
-import { FairinoRpcClient, FairinoRpcError, parseXmlRpcResponse } from "../hmi/fairino-rpc.mjs";
+import {
+  FairinoRpcClient,
+  FairinoRpcError,
+  normalizeProgramName,
+  parseXmlRpcResponse,
+} from "../hmi/fairino-rpc.mjs";
 
 function scalarResponse(value) {
   return `<?xml version="1.0"?><methodResponse><params><param><value><i4>${value}</i4></value></param></params></methodResponse>`;
 }
 
 function arrayResponse(values) {
-  const items = values.map((value) => `<value><i4>${value}</i4></value>`).join("");
+  const items = values.map((value) => (
+    typeof value === "string"
+      ? `<value><string>${value}</string></value>`
+      : `<value><i4>${value}</i4></value>`
+  )).join("");
   return `<?xml version="1.0"?><methodResponse><params><param><value><array><data>${items}</data></array></value></param></params></methodResponse>`;
 }
 
@@ -27,9 +36,66 @@ async function startFakeRpcServer(responses) {
   return { server, port: server.address().port, calls };
 }
 
-test("parses scalar and array XML-RPC integer responses", () => {
+test("parses scalar and mixed array XML-RPC responses", () => {
   assert.equal(parseXmlRpcResponse(scalarResponse(0)), 0);
   assert.deepEqual(parseXmlRpcResponse(arrayResponse([0, 4, 1])), [0, 4, 1]);
+  assert.deepEqual(
+    parseXmlRpcResponse(arrayResponse([0, "/fruser/cell&amp;main.lua"])),
+    [0, "/fruser/cell&main.lua"],
+  );
+  assert.equal(normalizeProgramName("/fruser/cell.lua"), "cell.lua");
+  assert.equal(normalizeProgramName("C:\\programs\\cell.lua"), "cell.lua");
+});
+
+test("keeps the configured Lua program when it is already loaded", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 1]),
+    arrayResponse([0, "/fruser/cell.lua"]),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({ host: "127.0.0.1", port: fake.port, timeout: 1000 });
+  const result = await client.ensureProgramLoaded("cell.lua");
+
+  assert.deepEqual(result, {
+    programState: 1,
+    loadedBefore: "/fruser/cell.lua",
+    loadedAfter: "/fruser/cell.lua",
+    changed: false,
+  });
+  assert.equal(fake.calls.length, 2);
+});
+
+test("loads and verifies the configured Lua program while stopped", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 1]),
+    arrayResponse([0, "/fruser/old.lua"]),
+    scalarResponse(0),
+    arrayResponse([0, "/fruser/cell&amp;main.lua"]),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({ host: "127.0.0.1", port: fake.port, timeout: 1000 });
+  const result = await client.ensureProgramLoaded("cell&main.lua");
+
+  assert.equal(result.changed, true);
+  assert.equal(result.loadedAfter, "/fruser/cell&main.lua");
+  assert.match(fake.calls[2].body, /<methodName>ProgramLoad<\/methodName>/);
+  assert.match(fake.calls[2].body, /<string>cell&amp;main\.lua<\/string>/);
+});
+
+test("refuses to load a Lua program unless the controller program is stopped", async (t) => {
+  const fake = await startFakeRpcServer([arrayResponse([0, 2])]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({ host: "127.0.0.1", port: fake.port, timeout: 1000 });
+  await assert.rejects(
+    () => client.ensureProgramLoaded("cell.lua"),
+    (error) => error instanceof FairinoRpcError
+      && error.statusCode === 409
+      && /not stopped/.test(error.message),
+  );
+  assert.equal(fake.calls.length, 1);
 });
 
 test("uses the official RPC2 ResetAllError call and verifies the fault cleared", async (t) => {

@@ -135,6 +135,7 @@ manual output tests.
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
+| `FAIRINO_PROGRAM_NAME` | `mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua` | Exact production Lua job that **Cel inschakelen** and Reset are allowed to load and run. |
 
 ## Linux service
 
@@ -154,16 +155,37 @@ docs/linux_hmi_service.md
 The production `/etc/fairino-hmi.env`, browser profile, logs, and MiniPC desktop
 configuration are intentionally not part of the HMI source repository.
 
+## Central cell startup
+
+After a controller or MiniPC restart, the operator does not need the Fairino
+WebApp. The HMI shows **Cel niet ingeschakeld** while `GetProgramState()` reports
+state `1`. The deliberate **Cel inschakelen** action then:
+
+1. requires a healthy controller, an inactive HMI Noodstop, and stopped program state;
+2. checks `GetLoadedProgram()` against `FAIRINO_PROGRAM_NAME`;
+3. loads the configured Lua job with `ProgramLoad()` when another job is selected;
+4. selects automatic mode with `Mode(0)` and starts the job with `ProgramRun()`;
+5. requires controller state `2` and a changing Lua/Modbus heartbeat before reporting success.
+
+The production **Start** button remains disabled until those checks pass. If the
+configured program is already running, the HMI attaches to it without issuing
+another start. **Cel inschakelen** can cause the Lua job's immediate homing move,
+so the operator must first verify that the cell is clear.
+
+This is intentionally an operator-confirmed startup rather than unattended
+motion at power-on. The HMI service itself still starts automatically with
+Linux.
+
 ## Robot reset behavior
 
 In Modbus mode, the HMI Reset button calls the controller's official
 `ResetAllError()` RPC method and then confirms with `GetRobotErrorCode()` that
 both the main and sub error codes are zero. It first verifies through
 `GetProgramState()` that the robot program is stopped. Only after confirmation
-does it clear the HMI stop requests, pulse the cell-level `HMI_RESET_REQ`, select
-automatic mode with `Mode(0)`, and call `ProgramRun()` for the currently loaded
-Lua job. The request only reports success after `GetProgramState()` returns
-state `2` (running).
+does it clear the HMI stop requests, pulse the cell-level `HMI_RESET_REQ`, verify
+or load `FAIRINO_PROGRAM_NAME`, select automatic mode with `Mode(0)`, and call
+`ProgramRun()`. The request only reports success after `GetProgramState()`
+returns state `2` and the Lua heartbeat changes.
 
 The live HMI status also reads `GetRobotErrorCode()` directly from the
 controller. A nonzero controller error overrides stale Lua/Modbus running data,
@@ -173,8 +195,8 @@ explanation; `4/1` is shown as an axis-collision warning with instructions to
 remove the obstruction and check that the arm can move freely.
 
 The live status also reads `GetProgramState()`. Controller state `1` overrides a
-stale Lua `CELL_RUNNING` bit, so a failed start is shown as **Gestopt** instead of
-green/**Draait**. Recovery waits for automatic mode to settle and retries a
+stale Lua `CELL_RUNNING` bit, so a failed start is shown as **Cel niet
+ingeschakeld** instead of green/**Draait**. Recovery waits for automatic mode to settle and retries a
 controller-rejected `ProgramRun()` up to three times; it never retries after an
 accepted start that subsequently stops.
 

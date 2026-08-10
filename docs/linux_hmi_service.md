@@ -114,6 +114,7 @@ journalctl -u fairino-hmi -f
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
+| `FAIRINO_PROGRAM_NAME` | `mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua` | Exact production Lua job that the HMI may load and run. |
 
 ## Advanced output tests
 
@@ -129,6 +130,26 @@ feature is protected by all of the following:
 Keep the service setting `false` during normal operation. These controls do not
 replace physical isolation or the robot's safety system.
 
+## Central cell startup
+
+The service starts automatically, but it never starts robot motion merely
+because the MiniPC receives power. When the controller program is stopped, the
+operator HMI shows **Cel niet ingeschakeld** and enables **Cel inschakelen**.
+That action checks the controller fault and HMI Noodstop state, verifies the
+loaded job against `FAIRINO_PROGRAM_NAME`, loads the configured job if needed,
+selects automatic mode, and starts the job. Success requires both controller
+program state `2` and a newly changing Lua heartbeat.
+
+The normal production **Start** command is rejected until the configured job is
+running. An already-running correct job is reused without sending another start
+command. An unexpected running job, paused job, active HMI Noodstop, controller
+fault, failed program load, or missing heartbeat leaves the cell unready and
+produces an operator-facing error.
+
+**Cel inschakelen** can cause immediate robot motion through the Lua job's
+startup/home sequence. The operator must verify that the cell is clear before
+pressing it. Hardware emergency-stop and safety functions remain independent.
+
 ## Controller fault reset
 
 The operator Reset button clears a resettable controller fault directly through
@@ -136,9 +157,10 @@ Fairino XML-RPC on port `20003`. The bridge executes `ResetAllError()`, waits on
 second, and verifies with `GetRobotErrorCode()` that the main and sub codes are
 both zero. Before clearing an error, it also requires `GetProgramState()` to
 report that the robot program is stopped. It then clears the HMI stop requests,
-pulses the existing Modbus cell-reset request, selects automatic mode with
-`Mode(0)`, starts the currently loaded Lua job with `ProgramRun()`, and requires
-the reported program state to become `2` (running).
+pulses the existing Modbus cell-reset request, verifies or loads
+`FAIRINO_PROGRAM_NAME`, selects automatic mode with `Mode(0)`, starts that Lua
+job with `ProgramRun()`, and requires both program state `2` and a changing Lua
+heartbeat.
 
 Every HMI status refresh also reads `GetRobotErrorCode()` directly from the
 controller. A nonzero controller error takes precedence over stale Lua/Modbus
@@ -148,7 +170,7 @@ red fault badge, while the main status message gives an operator-facing
 explanation. Controller code `4/1` is described as an axis collision.
 
 The status refresh also reads `GetProgramState()` directly. State `1` (stopped)
-overrides stale Lua running registers and is shown as **Gestopt**. During reset,
+overrides stale Lua running registers and is shown as **Cel niet ingeschakeld**. During reset,
 the bridge waits one second after `Mode(0)` and retries only controller-rejected
 `ProgramRun()` calls, up to three attempts. Once `ProgramRun()` is accepted, it
 polls for running state without issuing another start command.

@@ -16,7 +16,12 @@ export function controllerFaultMessage(controllerError) {
 export function overlayControllerFault(
   { discreteInputs, inputRegisters },
   controllerError,
-  { hmiEstopActive = false, controllerProgramState = null } = {},
+  {
+    hmiEstopActive = false,
+    controllerProgramState = null,
+    controllerProgramMatches = null,
+    luaHeartbeatFresh = null,
+  } = {},
 ) {
   const mainCode = Number(controllerError?.mainCode || 0);
   const subCode = Number(controllerError?.subCode || 0);
@@ -38,7 +43,12 @@ export function overlayControllerFault(
     faultCode,
     discreteInputs: discreteInputs.map((item) => {
       if (item.name === "CELL_FAULT_ACTIVE") return { ...item, value: faultActive };
-      if (item.name === "CELL_RUNNING" && (faultActive || controllerProgramState === 1)) {
+      if (item.name === "CELL_RUNNING" && (
+        faultActive
+        || controllerProgramState === 1
+        || controllerProgramMatches === false
+        || luaHeartbeatFresh === false
+      )) {
         return { ...item, value: false };
       }
       return item;

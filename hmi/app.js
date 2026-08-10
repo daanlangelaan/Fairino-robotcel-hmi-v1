@@ -5,6 +5,7 @@ let batchTargetEditing = false;
 let lastRobotHeartbeat = null;
 let lastRobotHeartbeatAt = 0;
 let operatorNotice = null;
+let robotActionPending = null;
 
 const els = {
   runState: document.querySelector("#runState"),
@@ -18,6 +19,10 @@ const els = {
   operatorTitle: document.querySelector("#operatorTitle"),
   operatorMessage: document.querySelector("#operatorMessage"),
   faultBanner: document.querySelector("#faultBanner"),
+  enableCellBtn: document.querySelector("#enableCellBtn"),
+  startBtn: document.querySelector("#startBtn"),
+  resetBtn: document.querySelector("#resetBtn"),
+  startupNotice: document.querySelector("#startupNotice"),
   stopNotice: document.querySelector("#stopNotice"),
   batchTarget: document.querySelector("#batchTarget"),
   batchTargetView: document.querySelector("#batchTargetView"),
@@ -101,11 +106,21 @@ function faultMessage() {
 function statusText() {
   if (!snapshot?.connected) return ["Offline", "Geen verbinding met bridge"];
   if (getDiscrete("CELL_FAULT_ACTIVE")) return ["Error", faultMessage()];
-  if (snapshot?.controller?.programState === 1) {
-    return ["Gestopt", "Lua-programma is niet actief; druk op Reset om opnieuw te starten"];
-  }
   if (operatorNotice && Date.now() < operatorNotice.expiresAt) {
     return [operatorNotice.title, operatorNotice.message];
+  }
+  if (snapshot?.controller?.programMatches === false) {
+    const loaded = snapshot.controller.loadedProgram || "onbekend";
+    return ["Programma controleren", `Geladen: ${loaded}; Cel inschakelen laadt het juiste productieprogramma`];
+  }
+  if (snapshot?.controller?.programState === 1) {
+    return ["Cel niet ingeschakeld", "Controleer of de cel vrij is en druk op Cel inschakelen"];
+  }
+  if (snapshot?.controller?.programState === 3) {
+    return ["Programma gepauzeerd", "Stop het Lua-programma voordat de cel opnieuw wordt ingeschakeld"];
+  }
+  if (snapshot?.controller?.programState === 2 && snapshot?.controller?.luaHeartbeatFresh === false) {
+    return ["Lua communicatie ontbreekt", "Programma meldt actief, maar de robot-heartbeat verandert niet"];
   }
   if (getDiscrete("CELL_BATCH_COMPLETE")) return ["Batch klaar", "Batchdoel bereikt"];
   if (getDiscrete("CELL_RUNNING")) return ["Draait", getState().label];
@@ -167,6 +182,30 @@ function renderStatus() {
   els.lampRed.classList.toggle("fault-flash", fault);
   els.lampAmber.classList.toggle("on", ready && !fault);
   els.lampGreen.classList.toggle("on", running && !fault);
+  const cellEnableConfigured = Boolean(snapshot?.capabilities?.cellEnable?.enabled);
+  const programState = snapshot?.controller?.programState;
+  const programMatches = snapshot?.controller?.programMatches;
+  const cellAlreadyEnabled = programState === 2
+    && programMatches === true
+    && snapshot?.controller?.luaHeartbeatFresh === true;
+  const canEnableCell = cellEnableConfigured
+    && snapshot?.connected
+    && snapshot?.controller?.rpcConnected
+    && !fault
+    && !getCoil("HMI_ESTOP_REQ")
+    && programState === 1;
+  els.enableCellBtn.classList.toggle("hidden", !cellEnableConfigured);
+  els.enableCellBtn.disabled = robotActionPending !== null || !canEnableCell;
+  els.enableCellBtn.textContent = robotActionPending === "enable"
+    ? "Inschakelen..."
+    : (cellAlreadyEnabled ? "Cel ingeschakeld" : "Cel inschakelen");
+  els.enableCellBtn.title = canEnableCell
+    ? "Zet de robot in automatische modus en start het gecontroleerde Lua-programma"
+    : "De cel kan alleen vanuit een foutvrije, gestopte programmastatus worden ingeschakeld";
+  els.startupNotice.classList.toggle("hidden", !canEnableCell || robotActionPending !== null);
+  els.startBtn.disabled = robotActionPending !== null || fault || !cellAlreadyEnabled;
+  els.resetBtn.disabled = robotActionPending !== null;
+  els.resetBtn.textContent = robotActionPending === "reset" ? "Resetten..." : "Reset";
   els.stopNotice.classList.toggle(
     "hidden",
     !getCoil("HMI_STOP_REQ") || !running || fault,
@@ -312,10 +351,36 @@ document.querySelector("#stopBtn").addEventListener("click", () => command("stop
 document.querySelector("#estopBtn").addEventListener("click", () => command("estop"));
 document.querySelector("#ackBtn").addEventListener("click", () => command("ack"));
 
-document.querySelector("#resetBtn").addEventListener("click", async (event) => {
-  const button = event.currentTarget;
-  button.disabled = true;
-  button.textContent = "Resetten...";
+document.querySelector("#enableCellBtn").addEventListener("click", async () => {
+  robotActionPending = "enable";
+  operatorNotice = {
+    title: "Cel inschakelen",
+    message: "Productieprogramma controleren, automatische modus kiezen en Lua-programma starten",
+    expiresAt: Date.now() + 15000,
+  };
+  renderStatus();
+
+  try {
+    await command("enable");
+    operatorNotice = {
+      title: "Cel ingeschakeld",
+      message: "Automatische modus, productieprogramma en robot-heartbeat zijn actief",
+      expiresAt: Date.now() + 5000,
+    };
+  } catch (error) {
+    operatorNotice = {
+      title: "Inschakelen mislukt",
+      message: error.message,
+      expiresAt: Date.now() + 10000,
+    };
+  } finally {
+    robotActionPending = null;
+    renderStatus();
+  }
+});
+
+document.querySelector("#resetBtn").addEventListener("click", async () => {
+  robotActionPending = "reset";
   operatorNotice = {
     title: "Robot resetten en herstarten",
     message: "Fout wissen, automatische modus inschakelen en Lua-programma starten",
@@ -337,8 +402,7 @@ document.querySelector("#resetBtn").addEventListener("click", async (event) => {
       expiresAt: Date.now() + 10000,
     };
   } finally {
-    button.disabled = false;
-    button.textContent = "Reset";
+    robotActionPending = null;
     renderStatus();
   }
 });

@@ -29,10 +29,13 @@ function decodeXml(value) {
 }
 
 function encodeParameter(value) {
-  if (!Number.isInteger(value)) {
-    throw new FairinoRpcError(`Unsupported Fairino RPC parameter: ${JSON.stringify(value)}`, 500);
+  if (Number.isInteger(value)) {
+    return `<param><value><i4>${value}</i4></value></param>`;
   }
-  return `<param><value><i4>${value}</i4></value></param>`;
+  if (typeof value === "string") {
+    return `<param><value><string>${escapeXml(value)}</string></value></param>`;
+  }
+  throw new FairinoRpcError(`Unsupported Fairino RPC parameter: ${JSON.stringify(value)}`, 500);
 }
 
 function methodCall(methodName, parameters = []) {
@@ -46,12 +49,24 @@ export function parseXmlRpcResponse(xml) {
     throw new FairinoRpcError(`Fairino RPC fault: ${decodeXml(fault[1]).trim()}`);
   }
 
-  const integers = [...xml.matchAll(/<(?:i4|int)>\s*(-?\d+)\s*<\/(?:i4|int)>/gi)]
-    .map((match) => Number(match[1]));
-  if (integers.length === 0) {
-    throw new FairinoRpcError("Fairino RPC response did not contain an integer result");
+  const values = [...xml.matchAll(/<value>\s*<(i4|int|string)>\s*([\s\S]*?)\s*<\/\1>\s*<\/value>/gi)]
+    .map((match) => (
+      match[1].toLowerCase() === "string"
+        ? decodeXml(match[2])
+        : Number(match[2])
+    ));
+  if (values.length === 0) {
+    throw new FairinoRpcError("Fairino RPC response did not contain a supported result");
   }
-  return integers.length === 1 ? integers[0] : integers;
+  return values.length === 1 ? values[0] : values;
+}
+
+export function normalizeProgramName(programName) {
+  return String(programName || "")
+    .replaceAll("\\", "/")
+    .split("/")
+    .filter(Boolean)
+    .at(-1) || "";
 }
 
 export class FairinoRpcClient {
@@ -146,6 +161,47 @@ export class FairinoRpcClient {
       throw new FairinoRpcError(`GetProgramState failed: ${JSON.stringify(result)}`);
     }
     return result[1];
+  }
+
+  async getLoadedProgram() {
+    const result = await this.call("GetLoadedProgram");
+    if (!Array.isArray(result) || result.length < 2 || result[0] !== 0 || typeof result[1] !== "string") {
+      throw new FairinoRpcError(`GetLoadedProgram failed: ${JSON.stringify(result)}`);
+    }
+    return result[1];
+  }
+
+  async ensureProgramLoaded(programName) {
+    const expectedProgram = normalizeProgramName(programName);
+    if (!expectedProgram.toLowerCase().endsWith(".lua")) {
+      throw new FairinoRpcError(`Invalid configured Lua program: ${JSON.stringify(programName)}`, 500);
+    }
+
+    const programState = await this.getProgramState();
+    if (programState !== 1) {
+      throw new FairinoRpcError(
+        `Robot program load refused: program state ${programState} is not stopped`,
+        409,
+      );
+    }
+
+    const loadedBefore = await this.getLoadedProgram();
+    if (normalizeProgramName(loadedBefore) === expectedProgram) {
+      return { programState, loadedBefore, loadedAfter: loadedBefore, changed: false };
+    }
+
+    const result = await this.call("ProgramLoad", [expectedProgram]);
+    if (result !== 0) {
+      throw new FairinoRpcError(`ProgramLoad was rejected with code ${result}`);
+    }
+    const loadedAfter = await this.getLoadedProgram();
+    if (normalizeProgramName(loadedAfter) !== expectedProgram) {
+      throw new FairinoRpcError(
+        `Robot loaded ${JSON.stringify(loadedAfter)} instead of ${JSON.stringify(expectedProgram)}`,
+        409,
+      );
+    }
+    return { programState, loadedBefore, loadedAfter, changed: true };
   }
 
   async programStopAndVerify() {

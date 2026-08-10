@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { controllerFaultMessage, overlayControllerFault } from "./controller-status.mjs";
-import { FairinoRpcClient } from "./fairino-rpc.mjs";
+import { FairinoRpcClient, FairinoRpcError, normalizeProgramName } from "./fairino-rpc.mjs";
 import { createSingleFlight, ModbusTcpClient } from "./modbus-client.mjs";
 import {
   assertOutputTestInterlock,
@@ -19,6 +19,8 @@ const bridgeMode = process.env.HMI_BRIDGE_MODE || "mock";
 const fairinoHost = process.env.FAIRINO_HOST || "192.168.58.2";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
 const fairinoRpcPort = Number(process.env.FAIRINO_RPC_PORT || 20003);
+const fairinoProgramName = process.env.FAIRINO_PROGRAM_NAME
+  || "mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua";
 const unitId = Number(process.env.FAIRINO_UNIT_ID || 1);
 const outputTestsEnabled = parseBooleanFlag(process.env.HMI_OUTPUT_TESTS_ENABLED);
 
@@ -119,6 +121,8 @@ const values = {
   discreteInputs: Object.fromEntries(discreteInputs.map((item) => [item.name, false])),
   inputRegisters: Object.fromEntries(inputRegisters.map((item) => [item.name, 0])),
 };
+let lastLuaHeartbeat = null;
+let lastLuaHeartbeatChangeAt = 0;
 
 const modbusClient = new ModbusTcpClient({
   host: fairinoHost,
@@ -133,7 +137,71 @@ const fairinoRpc = new FairinoRpcClient({
   verifyDelayMs: 1000,
 });
 
-const recoverRobotAndRun = createSingleFlight(async () => {
+let robotStartupAction = null;
+
+function runRobotStartupAction(operation) {
+  if (robotStartupAction) {
+    throw new FairinoRpcError(
+      "Een andere celopstart- of resetactie is al actief",
+      409,
+    );
+  }
+
+  const current = Promise.resolve().then(operation);
+  robotStartupAction = current;
+  current.finally(() => {
+    if (robotStartupAction === current) robotStartupAction = null;
+  }).catch(() => {});
+  return current;
+}
+
+const enableCell = () => runRobotStartupAction(async () => {
+  await readModbusSnapshot();
+  const [programState, controllerError, loadedProgram] = await Promise.all([
+    fairinoRpc.getProgramState(),
+    fairinoRpc.getRobotErrorCode(),
+    fairinoRpc.getLoadedProgram(),
+  ]);
+
+  if (controllerError.mainCode !== 0 || controllerError.subCode !== 0) {
+    throw new FairinoRpcError(
+      `Cel inschakelen geweigerd: controllerfout ${controllerError.mainCode}/${controllerError.subCode}; gebruik Reset nadat de oorzaak is opgelost`,
+      409,
+    );
+  }
+  if (values.coils.HMI_ESTOP_REQ) {
+    throw new FairinoRpcError(
+      "Cel inschakelen geweigerd: HMI-noodstop is actief; controleer de cel en gebruik Reset",
+      409,
+    );
+  }
+  if (programState === 2) {
+    if (normalizeProgramName(loadedProgram) !== normalizeProgramName(fairinoProgramName)) {
+      throw new FairinoRpcError(
+        `Cel inschakelen geweigerd: onverwacht programma actief (${loadedProgram})`,
+        409,
+      );
+    }
+    const heartbeatBefore = Number(values.inputRegisters.CELL_ROBOT_HEARTBEAT || 0);
+    const heartbeatAfter = await waitForLuaHeartbeat(heartbeatBefore);
+    pushLog(`Cel is al ingeschakeld met ${normalizeProgramName(loadedProgram)}`);
+    return { alreadyRunning: true, loadedProgram, heartbeatBefore, heartbeatAfter };
+  }
+  if (programState !== 1) {
+    throw new FairinoRpcError(
+      `Cel inschakelen geweigerd: Lua-programmastatus ${programState}; stop het programma eerst`,
+      409,
+    );
+  }
+
+  const startResult = await startConfiguredProgram();
+  pushLog(
+    `Cel ingeschakeld; ${normalizeProgramName(startResult.loadResult.loadedAfter)} actief na ${startResult.runResult.attempts} startpoging(en)`,
+  );
+  return startResult;
+});
+
+const recoverRobotAndRun = () => runRobotStartupAction(async () => {
   await readModbusSnapshot();
   const [programState, controllerError] = await Promise.all([
     fairinoRpc.getProgramState(),
@@ -160,11 +228,11 @@ const recoverRobotAndRun = createSingleFlight(async () => {
   await setModbusCoil("HMI_STOP_REQ", false);
   await setModbusCoil("HMI_ESTOP_REQ", false);
   await pulseModbusCoil("HMI_RESET_REQ", 5000);
-  const runResult = await fairinoRpc.enterAutomaticModeAndRun();
+  const { loadResult, runResult } = await startConfiguredProgram();
   pushLog(
-    `Fairino automatische modus actief; Lua-programma status ${runResult.programStateAfter} na ${runResult.attempts} startpoging(en)`,
+    `Fairino automatische modus actief; ${normalizeProgramName(loadResult.loadedAfter)} status ${runResult.programStateAfter} na ${runResult.attempts} startpoging(en)`,
   );
-  return { resetResult, runResult };
+  return { resetResult, loadResult, runResult };
 });
 
 async function readBits(request, functionCode, address, quantity) {
@@ -245,6 +313,43 @@ async function readModbusSnapshot() {
   holdingRegisters.forEach((item, index) => values.holdingRegisters[item.name] = holding[index]);
   discreteInputs.forEach((item, index) => values.discreteInputs[item.name] = discreteBits[index]);
   inputRegisters.forEach((item, index) => values.inputRegisters[item.name] = input[index]);
+  const heartbeat = Number(values.inputRegisters.CELL_ROBOT_HEARTBEAT || 0);
+  if (lastLuaHeartbeat === null) {
+    lastLuaHeartbeat = heartbeat;
+  } else if (heartbeat !== lastLuaHeartbeat) {
+    lastLuaHeartbeat = heartbeat;
+    lastLuaHeartbeatChangeAt = Date.now();
+  }
+}
+
+async function waitForLuaHeartbeat(previousHeartbeat, timeoutMs = 10000) {
+  const deadline = Date.now() + timeoutMs;
+  do {
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    await readModbusSnapshot();
+    const heartbeat = Number(values.inputRegisters.CELL_ROBOT_HEARTBEAT || 0);
+    if (heartbeat !== previousHeartbeat) return heartbeat;
+  } while (Date.now() < deadline);
+
+  throw new FairinoRpcError(
+    "Lua-programma is gestart, maar de HMI ontvangt geen nieuwe robot-heartbeat",
+    409,
+  );
+}
+
+async function startConfiguredProgram() {
+  await readModbusSnapshot();
+  const heartbeatBefore = Number(values.inputRegisters.CELL_ROBOT_HEARTBEAT || 0);
+  const loadResult = await fairinoRpc.ensureProgramLoaded(fairinoProgramName);
+  if (loadResult.changed) {
+    pushLog(
+      `Lua-programma geladen: ${normalizeProgramName(loadResult.loadedBefore) || "geen"} -> ${normalizeProgramName(loadResult.loadedAfter)}`,
+    );
+  }
+  await setModbusCoil("HMI_STOP_REQ", false);
+  const runResult = await fairinoRpc.enterAutomaticModeAndRun();
+  const heartbeatAfter = await waitForLuaHeartbeat(heartbeatBefore);
+  return { loadResult, runResult, heartbeatBefore, heartbeatAfter };
 }
 
 function currentState() {
@@ -461,11 +566,18 @@ async function createSnapshot() {
   let controllerRpcConnected = bridgeMode !== "modbus";
   let controllerError = null;
   let controllerProgramState = null;
+  let controllerLoadedProgram = null;
   if (bridgeMode === "modbus") {
-    const [modbusResult, controllerErrorResult, controllerProgramResult] = await Promise.allSettled([
+    const [
+      modbusResult,
+      controllerErrorResult,
+      controllerProgramResult,
+      controllerLoadedProgramResult,
+    ] = await Promise.allSettled([
       readModbusSnapshot(),
       fairinoRpc.getRobotErrorCode(),
       fairinoRpc.getProgramState(),
+      fairinoRpc.getLoadedProgram(),
     ]);
     if (modbusResult.status === "rejected") {
       connected = false;
@@ -482,9 +594,21 @@ async function createSnapshot() {
     } else {
       pushLog(`Controllerprogrammastatus lezen fout: ${controllerProgramResult.reason.message}`);
     }
+    if (controllerLoadedProgramResult.status === "fulfilled") {
+      controllerLoadedProgram = controllerLoadedProgramResult.value;
+    } else {
+      pushLog(`Geladen Lua-programma lezen fout: ${controllerLoadedProgramResult.reason.message}`);
+    }
   } else {
     publishRegisters();
   }
+
+  const controllerProgramMatches = controllerLoadedProgram === null
+    ? null
+    : normalizeProgramName(controllerLoadedProgram) === normalizeProgramName(fairinoProgramName);
+  const luaHeartbeatFresh = bridgeMode === "mock"
+    ? null
+    : lastLuaHeartbeatChangeAt > 0 && Date.now() - lastLuaHeartbeatChangeAt < 5000;
 
   const effectiveStatus = overlayControllerFault({
     discreteInputs: discreteInputs.map((item) => ({ ...item, value: values.discreteInputs[item.name] })),
@@ -492,6 +616,8 @@ async function createSnapshot() {
   }, controllerError, {
     hmiEstopActive: values.coils.HMI_ESTOP_REQ,
     controllerProgramState,
+    controllerProgramMatches,
+    luaHeartbeatFresh,
   });
   const stateValue = values.inputRegisters.CELL_STATE;
   const state = states.find((item) => item.value === stateValue) || currentState();
@@ -508,8 +634,16 @@ async function createSnapshot() {
       error: controllerError,
       faultMessage: controllerFaultMessage(controllerError),
       programState: controllerProgramState,
+      expectedProgram: fairinoProgramName,
+      loadedProgram: controllerLoadedProgram,
+      programMatches: controllerProgramMatches,
+      luaHeartbeatFresh,
     },
     capabilities: {
+      cellEnable: {
+        enabled: bridgeMode === "modbus",
+        expectedProgram: fairinoProgramName,
+      },
       outputTests: {
         enabled: outputTestsEnabled,
         activeLow: true,
@@ -556,7 +690,34 @@ async function handleApi(req, res, url) {
   if (req.method === "POST" && url.pathname === "/api/command") {
     const body = await readJson(req);
     if (bridgeMode === "modbus") {
+      if (body.command === "enable") {
+        try {
+          await enableCell();
+        } catch (error) {
+          pushLog(`Cel inschakelen mislukt: ${error.message}`);
+          throw error;
+        }
+      }
       if (body.command === "start") {
+        await readModbusSnapshot();
+        const [programState, loadedProgram] = await Promise.all([
+          fairinoRpc.getProgramState(),
+          fairinoRpc.getLoadedProgram(),
+        ]);
+        if (programState !== 2) {
+          throw new FairinoRpcError(
+            "Productiestart geweigerd: schakel de cel eerst in",
+            409,
+          );
+        }
+        if (normalizeProgramName(loadedProgram) !== normalizeProgramName(fairinoProgramName)) {
+          throw new FairinoRpcError(
+            `Productiestart geweigerd: onverwacht Lua-programma actief (${loadedProgram})`,
+            409,
+          );
+        }
+        const heartbeatBefore = Number(values.inputRegisters.CELL_ROBOT_HEARTBEAT || 0);
+        await waitForLuaHeartbeat(heartbeatBefore, 3000);
         await setModbusCoil("HMI_STOP_REQ", false);
         await pulseModbusCoil("HMI_START_REQ", 5000);
       }
