@@ -117,6 +117,15 @@ Then open:
 http://<linux-machine-ip>:8787
 ```
 
+## Remote beheer met Codex
+
+De robotcel-MiniPC kan vanaf de vertrouwde beheerlaptop als remote Codex-project
+worden gebruikt via SSH over Tailscale. De inrichting, controles,
+Windows-configuratie en herstelstappen staan in
+[`docs/remote_codex_access.md`](docs/remote_codex_access.md). De daadwerkelijke
+SSH-, Tailscale- en slaapinstellingen zijn hostconfiguratie en worden daarom
+niet als secrets of systeembestanden in deze repository opgeslagen.
+
 ## Useful commands
 
 ```bash
