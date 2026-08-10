@@ -155,6 +155,14 @@ docs/linux_hmi_service.md
 The production `/etc/fairino-hmi.env`, browser profile, logs, and MiniPC desktop
 configuration are intentionally not part of the HMI source repository.
 
+## Operator manual
+
+The Dutch living operator manual is maintained in
+[`docs/gebruikershandleiding_hmi.md`](docs/gebruikershandleiding_hmi.md). Any
+operator-facing change to buttons, status text, fault recovery, or the normal
+workflow must update that manual in the same commit. PDF or Word releases may be
+generated from this version-controlled source at formal release milestones.
+
 ## Central cell startup
 
 After a controller or MiniPC restart, the operator does not need the Fairino
