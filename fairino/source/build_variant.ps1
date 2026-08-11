@@ -2,7 +2,9 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$Variant,
 
-    [switch]$EnableHmiModbus
+    [switch]$EnableHmiModbus,
+
+    [switch]$EnableRemoteIoOutputMirror
 )
 
 $ErrorActionPreference = "Stop"
@@ -24,6 +26,7 @@ if ($EnableHmiModbus) {
 
 $parts = @(
     "config.lua",
+    "io_remote_mirror.lua",
     "io_sim.lua",
     $hmiLayer,
     "motion.lua",
@@ -47,6 +50,9 @@ foreach ($part in $parts) {
     $partContent = Get-Content -Path $path
     if ($part -eq "config.lua" -and $EnableHmiModbus) {
         $partContent = $partContent -replace '^HMI_MODBUS_ENABLED\s*=\s*0$', 'HMI_MODBUS_ENABLED = 1'
+    }
+    if ($part -eq "config.lua" -and $EnableRemoteIoOutputMirror) {
+        $partContent = $partContent -replace '^REMOTE_IO_OUTPUT_MIRROR_ENABLED\s*=\s*0$', 'REMOTE_IO_OUTPUT_MIRROR_ENABLED = 1'
     }
     $content += $partContent
     $content += "-- END $part"

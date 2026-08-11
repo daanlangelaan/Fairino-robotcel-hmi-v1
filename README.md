@@ -46,6 +46,15 @@ Robot programming and Fairino teaching assets remain in their existing project
 folders. The HMI is an operator interface and Modbus bridge; safety and motion
 logic remain outside the browser application.
 
+## M31 Remote IO
+
+The Remote IO commissioning path uses the Modbus set
+`M31-AXXXA000G-U` + `M31-GAXXXA000-U` + `M31-GXXAX00A0-U`. Start with
+[the hardware and migration notes](docs/hardware/remote_io_cdsenet_m31.md) and
+[the TCP startcheck](docs/hardware/remote_io_tcp_startcheck.md). The Remote IO
+output mirror is disabled by default and may only be enabled after the
+standalone 16-output LED test succeeds with all actuator loads disconnected.
+
 ## Quick start
 
 Install Node.js 18 or newer, then from the repository root:
@@ -107,6 +116,15 @@ Then open:
 ```text
 http://<linux-machine-ip>:8787
 ```
+
+## Remote beheer met Codex
+
+De robotcel-MiniPC kan vanaf de vertrouwde beheerlaptop als remote Codex-project
+worden gebruikt via SSH over Tailscale. De inrichting, controles,
+Windows-configuratie en herstelstappen staan in
+[`docs/remote_codex_access.md`](docs/remote_codex_access.md). De daadwerkelijke
+SSH-, Tailscale- en slaapinstellingen zijn hostconfiguratie en worden daarom
+niet als secrets of systeembestanden in deze repository opgeslagen.
 
 ## Useful commands
 

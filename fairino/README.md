@@ -9,6 +9,15 @@ This folder contains Fairino Lua programs and related controller-side notes.
 - External HMI is a thin interface only.
 - Safety remains hardware-based and separate from normal Lua/HMI logic.
 
+## M31 Remote IO commissioning
+
+The confirmed hardware is a `M31-AXXXA000G-U` 16DI Modbus host with
+`M31-GAXXXA000-U` 16DI and `M31-GXXAX00A0-U` 16DO expansions. Follow
+[the M31 hardware notes](../docs/hardware/remote_io_cdsenet_m31.md) before using
+`programs/remote_io_led_test.lua` or enabling the optional parallel output
+mirror. Existing Fairino controller IO remains authoritative until each remote
+channel has been commissioned.
+
 ## HMI / VM recovery
 
 After unpacking or restoring a Fairino SimMachine VM, use the recovery runbook:
