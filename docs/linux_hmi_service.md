@@ -15,10 +15,12 @@ for this phase.
 
 ## 1. Install Node.js
 
-Install Node.js 18 or newer on the Linux machine.
+Install Node.js 18 or newer on the Linux machine. Install FFmpeg and V4L2 tools
+when cycle-triggered fault video will be used:
 
 ```bash
 node --version
+sudo apt-get install ffmpeg v4l-utils ustreamer
 ```
 
 ## 2. Put the repository on the Linux machine
@@ -82,6 +84,7 @@ sudo chown -R fairino:fairino /opt/fairino-robotcel-hmi
 Copy the service and environment example:
 
 ```bash
+sudo cp deploy/systemd/fairino-camera.service /etc/systemd/system/fairino-camera.service
 sudo cp deploy/systemd/fairino-hmi.service /etc/systemd/system/fairino-hmi.service
 sudo cp deploy/systemd/fairino-hmi.env.example /etc/fairino-hmi.env
 sudo nano /etc/fairino-hmi.env
@@ -91,15 +94,15 @@ Enable and start:
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable fairino-hmi
+sudo systemctl enable fairino-camera fairino-hmi
 sudo systemctl start fairino-hmi
 ```
 
 Check status and logs:
 
 ```bash
-sudo systemctl status fairino-hmi
-journalctl -u fairino-hmi -f
+sudo systemctl status fairino-camera fairino-hmi
+journalctl -u fairino-camera -u fairino-hmi -f
 ```
 
 ## Environment variables
@@ -110,6 +113,19 @@ journalctl -u fairino-hmi -f
 | `HMI_BIND_HOST` | `127.0.0.1` | Listen address. Use `0.0.0.0` only on an isolated, trusted network. |
 | `HMI_BRIDGE_MODE` | `mock` | `mock` for local test mode, `modbus` for robot mode. |
 | `HMI_OUTPUT_TESTS_ENABLED` | `false` | Explicit service gate for Advanced active-low output tests. |
+| `HMI_CAMERA_ENABLED` | `false` | Enables the rolling fault-video recorder after commissioning. |
+| `HMI_CAMERA_DEVICE` | camera by-id path | Stable V4L2 capture device. |
+| `HMI_CAMERA_STORAGE_DIR` | `/var/lib/fairino-hmi/camera` | Private recorder storage. |
+| `HMI_CAMERA_INPUT_FORMAT` | `mjpeg` | Camera input pixel format. |
+| `HMI_CAMERA_WIDTH` / `HMI_CAMERA_HEIGHT` | `1920` / `1080` | Native Full HD capture resolution. |
+| `HMI_CAMERA_FPS` | `25` | Capture rate. |
+| `HMI_CAMERA_SOURCE_PORT` | `8788` | Loopback-only shared MJPEG source port. |
+| `HMI_CAMERA_SOURCE_URL` | `http://127.0.0.1:8788/stream` | Fixed local stream used by FFmpeg. |
+| `HMI_CAMERA_BUFFER_SECONDS` | `60` | Approximate pre-fault window. |
+| `HMI_CAMERA_POSTFAULT_SECONDS` | `10` | Retained video after the fault edge. |
+| `HMI_CAMERA_SEGMENT_SECONDS` | `4` | Rolling segment size. |
+| `HMI_CAMERA_RETENTION_DAYS` | `30` | Maximum incident age. |
+| `HMI_CAMERA_MAX_INCIDENTS` | `50` | Maximum incident count. |
 | `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port for verified controller-fault recovery and program restart. |
@@ -129,6 +145,64 @@ feature is protected by all of the following:
 
 Keep the service setting `false` during normal operation. These controls do not
 replace physical isolation or the robot's safety system.
+
+## Fault-video commissioning
+
+The recorder is disabled by default. Before enabling it:
+
+1. List stable camera paths and supported modes with:
+
+   ```bash
+   v4l2-ctl --list-devices
+   v4l2-ctl --device=/dev/v4l/by-id/<camera>-video-index0 --list-formats-ext
+   ```
+
+2. Position the camera so the intended robot, gripper, and process stations are
+   visible without unnecessarily recording neighboring work areas.
+3. Install both service definitions. `fairino-camera` is the single process that
+   opens the USB device and serves MJPEG only on `127.0.0.1:8788`; the HMI and
+   FFmpeg recorder consume that shared source:
+
+   ```bash
+   sudo cp deploy/systemd/fairino-camera.service /etc/systemd/system/fairino-camera.service
+   sudo cp deploy/systemd/fairino-hmi.service /etc/systemd/system/fairino-hmi.service
+   sudo systemctl daemon-reload
+   sudo systemctl enable fairino-camera fairino-hmi
+   ```
+
+4. Copy the camera variables from `deploy/systemd/fairino-hmi.env.example` to
+   `/etc/fairino-hmi.env`, keep `HMI_CAMERA_ENABLED=false`, and restart once.
+5. Test one recording with the robot and all actuators safely idle. Verify
+   framing, timestamp, playback, browser seeking, and that no audio is present.
+6. Set `HMI_CAMERA_ENABLED=true` only after this check and restart both services:
+
+   ```bash
+   sudo systemctl restart fairino-camera fairino-hmi
+   ```
+
+Recording starts on the rising `CELL_RUNNING` status. A normal stop discards
+the temporary ring. A fault preserves approximately 60 seconds before and 10
+seconds after the fault. Each incident has an MP4, JSON metadata file, and
+normally a JPEG thumbnail in `/var/lib/fairino-hmi/camera/incidents`. The newest
+50 incidents younger than 30 days are retained by default; retention is applied
+at startup and after every saved fault. Camera failure is diagnostic and must
+not stop or alter robot control.
+
+The installed camera produced approximately 9.7 MB for 12.1 seconds at
+1920x1080/25 fps during commissioning, equivalent to roughly 48 MB per minute
+for that scene. With the default 50-incident limit, reserve at least 3 GB plus
+temporary headroom; actual H.264 usage varies with movement and detail. Monitor
+the state filesystem as part of normal MiniPC maintenance.
+
+The **Camera** tab provides live view and read-only incident playback. The image
+is not a safety function and must never replace local inspection before Start,
+Reset, or Cel inschakelen. Both `fairino-camera` and the HMI remain bound to
+loopback. Do not bind, reverse-proxy, or port-forward the unauthenticated
+combined HMI for remote viewing. A future remote support design must use
+encrypted transport, authenticated users, role-based authorization, session and
+audit logging, and a read-only video role. Any remote action that can initiate
+motion needs separate risk assessment and a local physical confirmation; camera
+availability must never be an interlock or motion permission.
 
 ## Central cell startup
 

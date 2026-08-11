@@ -1,8 +1,8 @@
 # Gebruikershandleiding Fairino robotcel HMI
 
 - Status: levende gebruikershandleiding
-- Laatste wijziging: 10 augustus 2026
-- HMI-softwareversie: `04e0ba9`
+- Laatste wijziging: 11 augustus 2026
+- HMI-softwareversie: werkversie `main`
 - Actief productieprogramma: `mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua`
 
 ## 1. Doel en doelgroep
@@ -31,6 +31,8 @@ personeel.
   de gevarenzone aanwezig is.
 - Druk bij een mislukte reset niet herhaaldelijk zonder eerst de melding en de
   toestand van de cel te controleren.
+- Gebruik een storingvideo uitsluitend om de oorzaak te onderzoeken. Het beeld
+  is geen veiligheidsfunctie en bewijst nooit dat de cel vrij is.
 
 ## 3. Normale opstart na inschakelen
 
@@ -134,6 +136,25 @@ de foutstatus en raadpleeg technisch personeel wanneer de fout terugkomt.
 De HMI-reset is een procesherstel en is niet hetzelfde als de fysieke
 veiligheidsreset.
 
+### 7.4 Storingvideo terugkijken
+
+Wanneer de video-optie door technisch personeel is vrijgegeven, start de HMI
+automatisch een tijdelijke videobuffer zodra de productiecyclus begint. Alleen
+de laatste ongeveer 60 seconden worden onthouden; er wordt geen audio opgenomen.
+
+Bij een fout blijft de opname nog ongeveer 10 seconden lopen. Daarna stelt de
+HMI het fragment in enkele seconden samen. Open **Camera**, of gebruik **Bekijk
+storingvideo** wanneer die knop zichtbaar is. Kies de storing op datum en tijd
+in de bibliotheek en gebruik de afspeelknoppen om terug te kijken en te zoeken.
+
+- Een normale cyclus zonder fout wordt niet bewaard.
+- De bibliotheek bewaart standaard maximaal 50 storingen en maximaal 30 dagen;
+  de oudste opname wordt automatisch verwijderd zodra een grens is bereikt.
+- Een ontbrekende of mislukte opname verandert niets aan de robotstatus. Gebruik
+  dan foutcode, melding en eventlog voor diagnose.
+- Start, Reset en Cel inschakelen blijven lokale, bewuste bedienhandelingen. Een
+  video is nooit voldoende om te bepalen dat de robot veilig kan bewegen.
+
 ## 8. Tabbladen voor technisch personeel
 
 ### Troubleshoot
@@ -147,6 +168,21 @@ mislukt.
   productietellers te beheren; de robotcontroller kan de live tellerwaarde
   opnieuw aan de HMI doorgeven.
 - **Desktop** sluit de HMI-weergave en gaat naar de MiniPC-desktop.
+
+### Camera
+
+Dit tabblad toont het lokale livebeeld en de storingsbibliotheek. Het livebeeld
+wordt alleen geladen terwijl dit tabblad open is. Een rode stip betekent dat
+tijdens een productiecyclus een tijdelijke buffer actief is; groen betekent dat
+opnames beschikbaar zijn; oranje meldt een camerafout. Iedere opname toont
+datum, tijd, foutcode en waar beschikbaar een thumbnail en foutomschrijving.
+Gebruik **Video opnieuw laden** wanneer de browser het gekozen fragment niet
+direct toont. Er wordt geen audio opgenomen.
+
+De huidige HMI is alleen voor lokaal gebruik. Remote support mag later pas
+worden vrijgegeven met persoonlijke accounts, rollen en logging. Start, Reset,
+Cel inschakelen en andere beweging-activerende handelingen vereisen bovendien
+lokale controle en bevestiging; livebeeld is daarvoor geen veiligheidsbewijs.
 
 ### Advanced
 
@@ -177,4 +213,5 @@ de Markdown-versie blijft leidend voor verdere ontwikkeling.
 
 | Datum | Softwareversie | Wijziging handleiding |
 | --- | --- | --- |
+| 2026-08-11 | werkversie `main` | Live Full-HD camerabeeld en een begrensde storingsbibliotheek met 60 s vóór en 10 s na de fout toegevoegd. |
 | 2026-08-10 | `04e0ba9` | Eerste gebruikershandleiding: centrale celopstart, normale bediening, Stop, Reset, softwarematige Noodstop, statussen en foutafhandeling. |

@@ -149,6 +149,19 @@ manual output tests.
 | `HMI_BIND_HOST` | `127.0.0.1` | Listen address. Use `0.0.0.0` only when intentionally exposing the HMI to a trusted network. |
 | `HMI_BRIDGE_MODE` | `mock` | `mock` for local test mode, `modbus` for robot mode. |
 | `HMI_OUTPUT_TESTS_ENABLED` | `false` | Service-level gate for the Advanced active-low control-box output tests. |
+| `HMI_CAMERA_ENABLED` | `false` | Enables cycle-triggered fault-video buffering after camera commissioning. |
+| `HMI_CAMERA_DEVICE` | Jieli by-id path | Stable Linux V4L2 camera device. Prefer `/dev/v4l/by-id/...` over `/dev/videoN`. |
+| `HMI_CAMERA_STORAGE_DIR` | `/var/lib/fairino-hmi/camera` | Private ring-buffer and incident-library storage. |
+| `HMI_CAMERA_INPUT_FORMAT` | `mjpeg` | V4L2 input format validated for the installed camera. |
+| `HMI_CAMERA_WIDTH` / `HMI_CAMERA_HEIGHT` | `1920` / `1080` | Recorded native Full HD resolution. |
+| `HMI_CAMERA_FPS` | `25` | Recorded frames per second. |
+| `HMI_CAMERA_SOURCE_PORT` | `8788` | Loopback-only port for the shared local MJPEG source. |
+| `HMI_CAMERA_SOURCE_URL` | `http://127.0.0.1:8788/stream` | Fixed local source used by the recorder. |
+| `HMI_CAMERA_BUFFER_SECONDS` | `60` | Approximate pre-fault video window. |
+| `HMI_CAMERA_POSTFAULT_SECONDS` | `10` | Video retained after the fault edge. |
+| `HMI_CAMERA_SEGMENT_SECONDS` | `4` | Internal rolling segment duration. |
+| `HMI_CAMERA_RETENTION_DAYS` | `30` | Maximum incident age. |
+| `HMI_CAMERA_MAX_INCIDENTS` | `50` | Maximum number of incident clips. |
 | `FAIRINO_HOST` | `192.168.58.2` | Fairino controller or VM IP address. |
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used for verified controller-fault recovery and program restart. |
@@ -161,6 +174,7 @@ Systemd examples are included in:
 
 ```text
 deploy/systemd/fairino-hmi.service
+deploy/systemd/fairino-camera.service
 deploy/systemd/fairino-hmi.env.example
 ```
 
@@ -169,6 +183,36 @@ Full Linux setup instructions are in:
 ```text
 docs/linux_hmi_service.md
 ```
+
+## Cycle-triggered fault video
+
+The optional local camera source opens the USB camera once and shares its
+loopback-only MJPEG stream between live HMI viewing and recording. The recorder
+starts on the rising edge of `CELL_RUNNING`, retains an approximately 60-second
+rolling window without audio, and continues for 10 seconds after a rising
+`CELL_FAULT_ACTIVE` status. A normal cycle stop discards the temporary ring.
+
+Each fault is stored as a separate MP4 with UTC metadata and a thumbnail under
+`/var/lib/fairino-hmi/camera/incidents`. The library is newest-first and is
+bounded to 50 incidents and 30 days by default. The **Camera** tab shows the
+live Full-HD view, local date/time, fault details, thumbnails, and read-only
+playback with browser seeking. Capture or storage failure is reported in the
+HMI but never changes robot state or blocks machine control. Video is diagnostic
+evidence only and is not a safety function.
+
+The installed Full HD mode produced approximately 9.7 MB for 12.1 seconds in a
+commissioning test, or roughly 48 MB per minute at that scene complexity. Allow
+at least 150 MB of temporary headroom while the ring, previous clip, and atomic
+replacement can briefly coexist; actual H.264 size varies with movement and
+image detail.
+
+Linux requires `ffmpeg`, `v4l-utils`, `ustreamer`, camera access for the
+`fairino` service account, and a private state directory. Keep both HTTP services
+on loopback. The current control HMI has state-changing APIs without user
+authentication, so it must not be exposed or port-forwarded for remote video.
+Future remote support must add authenticated users, role separation, encrypted
+transport, logging, and local confirmation for every action that can move the
+robot; the camera remains diagnostic and cannot provide safety clearance.
 
 The production `/etc/fairino-hmi.env`, browser profile, logs, and MiniPC desktop
 configuration are intentionally not part of the HMI source repository.

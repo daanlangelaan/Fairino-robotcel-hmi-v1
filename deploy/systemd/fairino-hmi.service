@@ -1,7 +1,7 @@
 [Unit]
 Description=Fairino Robotcel HMI
-After=network-online.target
-Wants=network-online.target
+After=network-online.target fairino-camera.service
+Wants=network-online.target fairino-camera.service
 
 [Service]
 Type=simple
@@ -12,6 +12,10 @@ Restart=on-failure
 RestartSec=3
 User=fairino
 Group=fairino
+SupplementaryGroups=video
+StateDirectory=fairino-hmi
+StateDirectoryMode=0750
+UMask=0027
 
 [Install]
 WantedBy=multi-user.target

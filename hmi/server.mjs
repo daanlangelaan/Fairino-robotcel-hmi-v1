@@ -1,7 +1,14 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
+import { CameraSourceClient, cameraSourceConfigFromEnv } from "./camera-source.mjs";
 import { controllerFaultMessage, overlayControllerFault } from "./controller-status.mjs";
+import {
+  CycleFaultVideoRecorder,
+  serveThumbnail,
+  serveVideoFile,
+  videoRecorderConfigFromEnv,
+} from "./cycle-video-recorder.mjs";
 import { FairinoRpcClient, FairinoRpcError, normalizeProgramName } from "./fairino-rpc.mjs";
 import { createSingleFlight, ModbusTcpClient } from "./modbus-client.mjs";
 import {
@@ -366,6 +373,18 @@ function pushLog(message) {
   machine.log = machine.log.slice(0, 80);
 }
 
+const cameraSource = new CameraSourceClient(cameraSourceConfigFromEnv());
+await cameraSource.refresh();
+
+const videoRecorder = new CycleFaultVideoRecorder(videoRecorderConfigFromEnv(), {
+  onEvent: ({ message }) => pushLog(message),
+});
+try {
+  await videoRecorder.initialize();
+} catch (error) {
+  videoRecorder.setError(`Camera-initialisatie mislukt: ${error.message}`);
+}
+
 function pulseCoil(name) {
   values.coils[name] = true;
   setTimeout(() => {
@@ -549,7 +568,7 @@ function publishRegisters() {
   values.discreteInputs.CELL_FAULT_ACTIVE = machine.faultCode !== 0;
 }
 
-setInterval(() => {
+const heartbeatTimer = setInterval(() => {
   machine.robotHeartbeat = (machine.robotHeartbeat + 1) % 65535;
   if (bridgeMode === "mock") {
     stepMachine();
@@ -624,6 +643,16 @@ async function createSnapshot() {
   machine.faultCode = effectiveStatus.faultCode;
   machine.cycleCount = Number(values.inputRegisters.CELL_CYCLE_COUNT || 0);
   machine.batchDone = Number(values.inputRegisters.CELL_BATCH_DONE || 0);
+  const effectiveFaultActive = effectiveStatus.discreteInputs
+    .find((item) => item.name === "CELL_FAULT_ACTIVE")?.value;
+  videoRecorder.observe({
+    productionActive: effectiveStatus.discreteInputs
+      .find((item) => item.name === "CELL_RUNNING")?.value,
+    faultActive: effectiveFaultActive,
+    faultCode: effectiveStatus.faultCode,
+    faultMessage: controllerFaultMessage(controllerError)
+      || (effectiveFaultActive ? `${state.code}: ${state.label}` : null),
+  }).catch((error) => pushLog(`Videorecorder fout: ${error.message}`));
 
   return {
     mode: bridgeMode,
@@ -664,10 +693,20 @@ async function createSnapshot() {
       running: machine.running,
       log: machine.log,
     },
+    camera: {
+      ...videoRecorder.status(),
+      source: cameraSource.status(),
+    },
   };
 }
 
 const snapshot = createSingleFlight(createSnapshot);
+const recorderMonitor = setInterval(() => {
+  snapshot().catch((error) => pushLog(`Camerastatuscontrole fout: ${error.message}`));
+}, 700);
+const cameraSourceMonitor = setInterval(() => {
+  cameraSource.refresh().catch((error) => pushLog(`Camerabroncontrole fout: ${error.message}`));
+}, 2000);
 
 function sendJson(res, status, body) {
   res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
@@ -682,6 +721,52 @@ async function readJson(req) {
 }
 
 async function handleApi(req, res, url) {
+  if (req.method === "GET" && url.pathname === "/api/video/live") {
+    cameraSource.proxyLive(req, res);
+    return true;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/video/incidents") {
+    sendJson(res, 200, {
+      incidents: videoRecorder.listIncidents(),
+      retentionDays: videoRecorder.config.retentionDays,
+      maxIncidents: videoRecorder.config.maxIncidents,
+    });
+    return true;
+  }
+
+  const thumbnailMatch = /^\/api\/video\/incidents\/([A-Za-z0-9-]+)\/thumbnail$/.exec(url.pathname);
+  if ((req.method === "GET" || req.method === "HEAD") && thumbnailMatch) {
+    const incident = videoRecorder.getIncident(thumbnailMatch[1]);
+    if (!incident || !incident.thumbnailAvailable) {
+      sendJson(res, 404, { error: "Geen thumbnail beschikbaar" });
+      return true;
+    }
+    await serveThumbnail(req, res, incident.thumbnailPath);
+    return true;
+  }
+
+  const incidentMatch = /^\/api\/video\/incidents\/([A-Za-z0-9-]+)$/.exec(url.pathname);
+  if ((req.method === "GET" || req.method === "HEAD") && incidentMatch) {
+    const incident = videoRecorder.getIncident(incidentMatch[1]);
+    if (!incident) {
+      sendJson(res, 404, { error: "Storingvideo niet gevonden" });
+      return true;
+    }
+    await serveVideoFile(req, res, incident.clipPath);
+    return true;
+  }
+
+  if ((req.method === "GET" || req.method === "HEAD") && url.pathname === "/api/video/fault") {
+    const latest = videoRecorder.latestIncident();
+    if (!latest) {
+      sendJson(res, 404, { error: "Geen storingvideo beschikbaar" });
+      return true;
+    }
+    await serveVideoFile(req, res, latest.clipPath);
+    return true;
+  }
+
   if (req.method === "GET" && url.pathname === "/api/registers") {
     sendJson(res, 200, await snapshot());
     return true;
@@ -848,7 +933,7 @@ async function handleApi(req, res, url) {
   return false;
 }
 
-createServer(async (req, res) => {
+const hmiServer = createServer(async (req, res) => {
   const url = new URL(req.url || "/", `http://${bindHost}:${port}`);
 
   try {
@@ -871,12 +956,34 @@ createServer(async (req, res) => {
 
   try {
     const data = await readFile(file);
-    res.writeHead(200, { "Content-Type": mime[extname(file)] || "application/octet-stream" });
+    res.writeHead(200, {
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+      "Content-Type": mime[extname(file)] || "application/octet-stream",
+      "Pragma": "no-cache",
+    });
     res.end(data);
   } catch {
     res.writeHead(404);
     res.end("Not found");
   }
-}).listen(port, bindHost, () => {
+});
+
+hmiServer.listen(port, bindHost, () => {
   console.log(`HMI simulator bridge: http://${bindHost}:${port}/`);
 });
+
+let shuttingDown = false;
+async function shutdown(signal) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  clearInterval(heartbeatTimer);
+  clearInterval(recorderMonitor);
+  clearInterval(cameraSourceMonitor);
+  console.log(`HMI afsluiten na ${signal}`);
+  await videoRecorder.shutdown().catch((error) => console.error(error));
+  hmiServer.close(() => process.exit(0));
+  setTimeout(() => process.exit(1), 7000).unref();
+}
+
+process.once("SIGINT", () => shutdown("SIGINT"));
+process.once("SIGTERM", () => shutdown("SIGTERM"));

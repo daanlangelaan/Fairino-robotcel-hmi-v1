@@ -1,11 +1,19 @@
 const stateByValue = new Map();
 let snapshot = null;
-let activeTab = "user";
+const requestedTab = new URLSearchParams(window.location.search).get("tab");
+let activeTab = ["user", "troubleshoot", "camera", "advanced"].includes(requestedTab)
+  ? requestedTab
+  : "user";
 let batchTargetEditing = false;
 let lastRobotHeartbeat = null;
 let lastRobotHeartbeatAt = 0;
 let operatorNotice = null;
 let robotActionPending = null;
+let loadedIncidentId = null;
+let incidentLibrary = [];
+let incidentLibrarySignature = "";
+let incidentRefreshPending = null;
+let liveCameraActive = false;
 
 const els = {
   runState: document.querySelector("#runState"),
@@ -42,6 +50,27 @@ const els = {
   ioOutputTests: document.querySelector("#ioOutputTests"),
   ioTestEnable: document.querySelector("#ioTestEnable"),
   ioTestStatus: document.querySelector("#ioTestStatus"),
+  cameraTabBadge: document.querySelector("#cameraTabBadge"),
+  cameraStatusText: document.querySelector("#cameraStatusText"),
+  cameraSourceState: document.querySelector("#cameraSourceState"),
+  cameraState: document.querySelector("#cameraState"),
+  liveCameraPlaceholder: document.querySelector("#liveCameraPlaceholder"),
+  liveCamera: document.querySelector("#liveCamera"),
+  liveCameraResolution: document.querySelector("#liveCameraResolution"),
+  liveCameraRecording: document.querySelector("#liveCameraRecording"),
+  cameraBufferDetails: document.querySelector("#cameraBufferDetails"),
+  cameraSourceDetails: document.querySelector("#cameraSourceDetails"),
+  retryLiveCameraBtn: document.querySelector("#retryLiveCameraBtn"),
+  incidentRetention: document.querySelector("#incidentRetention"),
+  incidentCount: document.querySelector("#incidentCount"),
+  incidentList: document.querySelector("#incidentList"),
+  incidentPlayerPlaceholder: document.querySelector("#incidentPlayerPlaceholder"),
+  faultVideo: document.querySelector("#faultVideo"),
+  selectedIncidentTitle: document.querySelector("#selectedIncidentTitle"),
+  selectedIncidentMessage: document.querySelector("#selectedIncidentMessage"),
+  selectedIncidentDetails: document.querySelector("#selectedIncidentDetails"),
+  reloadIncidentVideoBtn: document.querySelector("#reloadIncidentVideoBtn"),
+  viewFaultVideoBtn: document.querySelector("#viewFaultVideoBtn"),
 };
 
 async function api(path, options = {}) {
@@ -309,6 +338,197 @@ function renderLog() {
   });
 }
 
+function formatBytes(bytes) {
+  if (!Number.isFinite(Number(bytes))) return "onbekende grootte";
+  const megabytes = Number(bytes) / (1024 * 1024);
+  return `${megabytes.toLocaleString("nl-NL", { maximumFractionDigits: 1 })} MB`;
+}
+
+function incidentMoment(incident) {
+  const date = incident?.faultAt ? new Date(incident.faultAt) : null;
+  return date && !Number.isNaN(date.valueOf())
+    ? date.toLocaleString("nl-NL")
+    : "Onbekend tijdstip";
+}
+
+function selectIncident(incident, force = false) {
+  if (!incident) return;
+  if (!force && loadedIncidentId === incident.id) return;
+  loadedIncidentId = incident.id;
+  els.faultVideo.src = `/api/video/incidents/${encodeURIComponent(incident.id)}?v=${Date.now()}`;
+  els.faultVideo.load();
+  els.faultVideo.classList.remove("hidden");
+  els.incidentPlayerPlaceholder.classList.add("hidden");
+  els.reloadIncidentVideoBtn.disabled = false;
+  els.selectedIncidentTitle.textContent = `Fout ${incident.faultCode ?? "?"} · ${incidentMoment(incident)}`;
+  els.selectedIncidentMessage.textContent = incident.faultMessage || "Geen storingsomschrijving opgeslagen";
+  const duration = Number.isFinite(Number(incident.durationSeconds))
+    ? `${Math.round(Number(incident.durationSeconds))} s`
+    : "duur onbekend";
+  els.selectedIncidentDetails.textContent = `${duration} · ${formatBytes(incident.sizeBytes)}`;
+  renderIncidentList();
+}
+
+function renderIncidentList() {
+  els.incidentList.innerHTML = "";
+  if (incidentLibrary.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "incident-list-empty";
+    empty.textContent = "Er zijn nog geen storingvideo's opgeslagen.";
+    els.incidentList.append(empty);
+    return;
+  }
+
+  incidentLibrary.forEach((incident) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `incident-item${loadedIncidentId === incident.id ? " active" : ""}`;
+    button.addEventListener("click", () => selectIncident(incident));
+
+    if (incident.thumbnailAvailable) {
+      const thumbnail = document.createElement("img");
+      thumbnail.className = "incident-thumb";
+      thumbnail.src = `/api/video/incidents/${encodeURIComponent(incident.id)}/thumbnail`;
+      thumbnail.alt = "";
+      thumbnail.loading = "lazy";
+      button.append(thumbnail);
+    } else {
+      const thumbnail = document.createElement("span");
+      thumbnail.className = "incident-thumb incident-thumb-empty";
+      thumbnail.textContent = "Geen beeld";
+      button.append(thumbnail);
+    }
+
+    const text = document.createElement("span");
+    text.className = "incident-item-text";
+    const title = document.createElement("strong");
+    title.textContent = `Fout ${incident.faultCode ?? "?"}`;
+    const moment = document.createElement("span");
+    moment.textContent = incidentMoment(incident);
+    const message = document.createElement("span");
+    message.textContent = incident.faultMessage || "Geen omschrijving";
+    text.append(title, moment, message);
+    button.append(text);
+    els.incidentList.append(button);
+  });
+}
+
+async function loadIncidentLibrary({ forceSelection = false } = {}) {
+  if (incidentRefreshPending) return incidentRefreshPending;
+  incidentRefreshPending = api("/api/video/incidents")
+    .then((body) => {
+      incidentLibrary = Array.isArray(body.incidents) ? body.incidents : [];
+      els.incidentRetention.textContent = `Maximaal ${body.maxIncidents || 50} storingen en ${body.retentionDays || 30} dagen`;
+      els.incidentCount.textContent = `${incidentLibrary.length} ${incidentLibrary.length === 1 ? "opname" : "opnames"}`;
+      const selected = incidentLibrary.find((item) => item.id === loadedIncidentId);
+      renderIncidentList();
+      if (forceSelection || (!selected && incidentLibrary.length > 0)) selectIncident(incidentLibrary[0], true);
+      if (incidentLibrary.length === 0 && loadedIncidentId !== null) clearIncidentPlayer();
+    })
+    .catch((error) => {
+      els.incidentCount.textContent = "Bibliotheek offline";
+      els.incidentList.innerHTML = "";
+      const failure = document.createElement("div");
+      failure.className = "incident-list-empty";
+      failure.textContent = error.message;
+      els.incidentList.append(failure);
+    })
+    .finally(() => {
+      incidentRefreshPending = null;
+    });
+  return incidentRefreshPending;
+}
+
+function clearIncidentPlayer() {
+  loadedIncidentId = null;
+  els.faultVideo.removeAttribute("src");
+  els.faultVideo.load();
+  els.faultVideo.classList.add("hidden");
+  els.incidentPlayerPlaceholder.classList.remove("hidden");
+  els.reloadIncidentVideoBtn.disabled = true;
+  els.selectedIncidentTitle.textContent = "Geen storing geselecteerd";
+  els.selectedIncidentMessage.textContent = "";
+  els.selectedIncidentDetails.textContent = "";
+}
+
+function stopLiveCamera(message = "Open de Camera-tab om het livebeeld te laden.") {
+  if (liveCameraActive) els.liveCamera.removeAttribute("src");
+  liveCameraActive = false;
+  els.liveCamera.classList.add("hidden");
+  els.liveCameraPlaceholder.classList.remove("hidden");
+  els.liveCameraPlaceholder.textContent = message;
+}
+
+function startLiveCamera(force = false) {
+  const source = snapshot?.camera?.source;
+  if (activeTab !== "camera" || document.hidden || !source?.online) {
+    stopLiveCamera(source?.error || "Livebeeld is niet beschikbaar.");
+    return;
+  }
+  if (liveCameraActive && !force) return;
+  stopLiveCamera("Livebeeld wordt geladen…");
+  liveCameraActive = true;
+  // An MJPEG response never completes, so Chromium does not reliably emit a
+  // normal image `load` event. Reveal the element as soon as the stream starts.
+  els.liveCamera.classList.remove("hidden");
+  els.liveCameraPlaceholder.classList.add("hidden");
+  els.liveCamera.src = `/api/video/live?v=${Date.now()}`;
+}
+
+function renderCamera() {
+  const camera = snapshot?.camera || { enabled: false, state: "disabled" };
+  const source = camera.source || { online: false };
+  const stateLabels = {
+    disabled: "Uitgeschakeld",
+    idle: "Gereed",
+    buffering: "Buffer actief",
+    "post-fault": "Na-opname",
+    finalizing: "Video verwerken",
+    "fault-ready": "Bibliotheek gereed",
+    error: "Opnamefout",
+  };
+
+  els.cameraState.textContent = stateLabels[camera.state] || camera.state;
+  els.cameraSourceState.textContent = source.online ? "Bron online" : "Bron offline";
+  els.cameraTabBadge.className = "camera-tab-badge";
+  if (camera.error || source.error) els.cameraTabBadge.classList.add("error");
+  else if (camera.recording) els.cameraTabBadge.classList.add("recording");
+  else if (camera.incidentCount > 0) els.cameraTabBadge.classList.add("available");
+
+  if (!camera.enabled) {
+    els.cameraStatusText.textContent = "Video-opname is uitgeschakeld in de serviceconfiguratie";
+  } else if (camera.error) {
+    els.cameraStatusText.textContent = camera.error;
+  } else if (camera.state === "buffering") {
+    els.cameraStatusText.textContent = `Laatste ${camera.bufferSeconds} seconden van de productiecyclus worden tijdelijk onthouden`;
+  } else if (camera.state === "post-fault") {
+    els.cameraStatusText.textContent = `Storing gezien; nog ${camera.postFaultSeconds} seconden na de fout worden vastgelegd`;
+  } else if (camera.state === "finalizing") {
+    els.cameraStatusText.textContent = "Foutfragment wordt veilig samengesteld; dit kan enkele seconden duren";
+  } else if (camera.incidentCount > 0) {
+    els.cameraStatusText.textContent = "Livebeeld is beschikbaar en opgeslagen storingen kunnen worden teruggekeken";
+  } else {
+    els.cameraStatusText.textContent = "De opname start automatisch zodra een productiecyclus begint";
+  }
+
+  els.liveCameraResolution.textContent = `${source.resolution || camera.resolution || "onbekend"} @ ${source.desiredFps || camera.fps || "?"} fps`;
+  els.liveCameraRecording.textContent = camera.recording ? "Opnamebuffer actief" : "Geen opname";
+  els.cameraBufferDetails.textContent = `Buffer: ${camera.bufferSeconds || 60} s vóór + ${camera.postFaultSeconds || 0} s na een fout`;
+  els.cameraSourceDetails.textContent = source.online
+    ? `USB-camera online${Number.isFinite(source.capturedFps) ? ` · werkelijk ${source.capturedFps.toLocaleString("nl-NL", { maximumFractionDigits: 1 })} fps` : ""}`
+    : (source.error || "Camerabron niet bereikbaar");
+  els.incidentRetention.textContent = `Maximaal ${camera.maxIncidents || 50} storingen en ${camera.retentionDays || 30} dagen`;
+  els.incidentCount.textContent = `${camera.incidentCount || 0} ${(camera.incidentCount || 0) === 1 ? "opname" : "opnames"}`;
+  els.viewFaultVideoBtn.classList.toggle("hidden", !camera.incidentCount);
+
+  if (activeTab === "camera") startLiveCamera();
+  const signature = `${camera.incidentCount || 0}:${camera.latestIncident?.id || ""}`;
+  if (signature !== incidentLibrarySignature) {
+    incidentLibrarySignature = signature;
+    loadIncidentLibrary();
+  }
+}
+
 function render() {
   if (!snapshot) return;
   snapshot.states.forEach((item) => stateByValue.set(item.value, item));
@@ -319,6 +539,7 @@ function render() {
   renderRegisters();
   renderAdvanced();
   renderLog();
+  renderCamera();
 }
 
 async function refresh() {
@@ -332,10 +553,9 @@ async function refresh() {
   }
 }
 
-document.querySelectorAll(".tab").forEach((button) => {
-  button.addEventListener("click", () => {
-    activeTab = button.dataset.tab;
-    document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab === button));
+function activateTab(tabName) {
+  activeTab = tabName;
+  document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === tabName));
     document.querySelectorAll(".tab-page").forEach((page) => {
       page.classList.toggle("active", page.id === `${activeTab}Tab`);
     });
@@ -343,6 +563,17 @@ document.querySelectorAll(".tab").forEach((button) => {
       els.ioTestEnable.checked = false;
       renderAdvanced();
     }
+    if (activeTab === "camera") {
+      startLiveCamera();
+      loadIncidentLibrary();
+    } else {
+      stopLiveCamera();
+    }
+}
+
+document.querySelectorAll(".tab").forEach((button) => {
+  button.addEventListener("click", () => {
+    activateTab(button.dataset.tab);
   });
 });
 
@@ -350,6 +581,26 @@ document.querySelector("#startBtn").addEventListener("click", () => command("sta
 document.querySelector("#stopBtn").addEventListener("click", () => command("stop"));
 document.querySelector("#estopBtn").addEventListener("click", () => command("estop"));
 document.querySelector("#ackBtn").addEventListener("click", () => command("ack"));
+els.viewFaultVideoBtn.addEventListener("click", async () => {
+  activateTab("camera");
+  await loadIncidentLibrary({ forceSelection: true });
+});
+els.reloadIncidentVideoBtn.addEventListener("click", () => {
+  const incident = incidentLibrary.find((item) => item.id === loadedIncidentId);
+  if (incident) selectIncident(incident, true);
+});
+els.retryLiveCameraBtn.addEventListener("click", () => startLiveCamera(true));
+els.liveCamera.addEventListener("load", () => {
+  els.liveCamera.classList.remove("hidden");
+  els.liveCameraPlaceholder.classList.add("hidden");
+});
+els.liveCamera.addEventListener("error", () => {
+  stopLiveCamera("Livebeeld kon niet worden geladen. Controleer de camerabron en probeer opnieuw.");
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) stopLiveCamera();
+  else if (activeTab === "camera") startLiveCamera(true);
+});
 
 document.querySelector("#enableCellBtn").addEventListener("click", async () => {
   robotActionPending = "enable";
@@ -498,4 +749,5 @@ els.ioOutputTests.addEventListener("click", async (event) => {
 els.ioTestEnable.addEventListener("change", renderAdvanced);
 
 setInterval(refresh, 700);
+activateTab(activeTab);
 refresh();

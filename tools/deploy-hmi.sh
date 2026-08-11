@@ -94,6 +94,13 @@ chown -R fairino:fairino \
   "$deploy_root/deploy" \
   "$deploy_root/package.json" \
   "$deploy_root/package-lock.json"
+chmod -R u=rwX,go=rX \
+  "$deploy_root/hmi" \
+  "$deploy_root/tests" \
+  "$deploy_root/tools" \
+  "$deploy_root/deploy"
+chmod 0644 "$deploy_root/package.json" "$deploy_root/package-lock.json"
+chmod 0755 "$deploy_root/tools/start_hmi_modbus.sh"
 
 echo "Restarting $service_name..."
 systemctl restart "$service_name"

@@ -11,7 +11,7 @@
     "start": "node tools/start-hmi.mjs",
     "start:mock": "node tools/start-hmi.mjs --mode mock",
     "start:modbus": "node tools/start-hmi.mjs --mode modbus",
-    "check": "node --check hmi/server.mjs && node --check hmi/controller-status.mjs && node --check hmi/fairino-rpc.mjs && node --check hmi/modbus-client.mjs && node --check hmi/output-tests.mjs && node --check hmi/app.js && node --check tools/start-hmi.mjs && node --test tests/*.test.mjs",
+    "check": "node --check hmi/server.mjs && node --check hmi/camera-source.mjs && node --check hmi/controller-status.mjs && node --check hmi/cycle-video-recorder.mjs && node --check hmi/fairino-rpc.mjs && node --check hmi/modbus-client.mjs && node --check hmi/output-tests.mjs && node --check hmi/app.js && node --check tools/start-hmi.mjs && node --test tests/*.test.mjs",
     "check:deployed": "sh tools/check-hmi-sync.sh",
     "test": "node --test tests/*.test.mjs",
     "probe:modbus": "node tools/modbus_probe.mjs"

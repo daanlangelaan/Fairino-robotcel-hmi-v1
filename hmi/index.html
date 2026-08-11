@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fairino Cel HMI</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=20260811-camera-4">
 </head>
 <body>
   <header class="topbar">
@@ -25,6 +25,10 @@
   <nav class="tabs" aria-label="HMI tabs">
     <button class="tab active" data-tab="user">User</button>
     <button class="tab" data-tab="troubleshoot">Troubleshoot</button>
+    <button class="tab camera-tab" data-tab="camera">
+      Camera
+      <span id="cameraTabBadge" class="camera-tab-badge" aria-hidden="true"></span>
+    </button>
     <button class="tab" data-tab="advanced">Advanced</button>
   </nav>
 
@@ -63,6 +67,7 @@
           <button id="stopBtn" class="action">Stop</button>
           <button id="resetBtn" class="action">Reset</button>
           <button id="estopBtn" class="danger action">Noodstop</button>
+          <button id="viewFaultVideoBtn" class="action video-action hidden">Bekijk storingvideo</button>
           <p id="startupNotice" class="startup-notice hidden" role="status">
             Controleer of de cel vrij is. Inschakelen kan de robot direct naar de homepositie laten bewegen.
           </p>
@@ -189,6 +194,75 @@
       </section>
     </section>
 
+    <section id="cameraTab" class="tab-page">
+      <section class="camera-layout" aria-label="Camera en storingvideo's">
+        <div class="panel camera-panel live-camera-panel">
+          <div class="panel-header camera-panel-header">
+            <div>
+              <h2>Live camera</h2>
+              <p id="cameraStatusText">Video-opname niet geconfigureerd</p>
+            </div>
+            <div class="camera-status-group">
+              <span id="cameraSourceState" class="status-code">Bron offline</span>
+              <span id="cameraState" class="status-code">Uitgeschakeld</span>
+            </div>
+          </div>
+
+          <div class="live-camera-frame">
+            <div id="liveCameraPlaceholder" class="camera-placeholder">
+              Open de Camera-tab om het livebeeld te laden.
+            </div>
+            <img id="liveCamera" class="live-camera hidden" alt="Livebeeld van de robotcel">
+            <div class="live-camera-overlay" aria-hidden="true">
+              <span id="liveCameraResolution">1920×1080</span>
+              <span id="liveCameraRecording">Geen opname</span>
+            </div>
+          </div>
+
+          <div class="camera-details">
+            <span id="cameraBufferDetails">Buffer: 60 s vóór + 10 s na een fout</span>
+            <span id="cameraSourceDetails">Camerabron wordt gecontroleerd</span>
+            <button id="retryLiveCameraBtn" class="small">Livebeeld opnieuw laden</button>
+          </div>
+        </div>
+
+        <div class="panel camera-panel incident-library-panel">
+          <div class="panel-header camera-panel-header">
+            <div>
+              <h2>Storingsbibliotheek</h2>
+              <p id="incidentRetention">Maximaal 50 storingen en 30 dagen</p>
+            </div>
+            <span id="incidentCount" class="status-code">0 opnames</span>
+          </div>
+
+          <div class="incident-library-layout">
+            <div id="incidentList" class="incident-list" aria-label="Opgeslagen storingen">
+              <div class="incident-list-empty">Er zijn nog geen storingvideo's opgeslagen.</div>
+            </div>
+
+            <div class="incident-player">
+              <div id="incidentPlayerPlaceholder" class="camera-placeholder">
+                Selecteer een storing om de opname af te spelen.
+              </div>
+              <video id="faultVideo" class="fault-video hidden" controls preload="metadata">
+                Uw browser kan deze storingvideo niet afspelen.
+              </video>
+              <div class="incident-player-details">
+                <strong id="selectedIncidentTitle">Geen storing geselecteerd</strong>
+                <span id="selectedIncidentMessage"></span>
+                <span id="selectedIncidentDetails"></span>
+                <button id="reloadIncidentVideoBtn" class="small" disabled>Video opnieuw laden</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="camera-safety-note">
+            Livebeeld en opnames zijn uitsluitend bedoeld voor storingsdiagnose. Ze zijn geen veiligheidsfunctie en bewijzen niet dat de cel vrij is.
+          </p>
+        </div>
+      </section>
+    </section>
+
     <section id="advancedTab" class="tab-page">
       <section class="grid">
         <div class="panel wide-panel">
@@ -266,6 +340,6 @@
     </form>
   </dialog>
 
-  <script src="./app.js"></script>
+  <script src="./app.js?v=20260811-camera-4"></script>
 </body>
 </html>

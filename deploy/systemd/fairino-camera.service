@@ -1,0 +1,30 @@
+[Unit]
+Description=Fairino HMI local camera source
+After=local-fs.target
+Before=fairino-hmi.service
+
+[Service]
+Type=simple
+Environment=HMI_CAMERA_ENABLED=false
+Environment=HMI_CAMERA_DEVICE=/dev/v4l/by-id/usb-Jieli_Technology_USB_Composite_Device-video-index0
+Environment=HMI_CAMERA_WIDTH=1920
+Environment=HMI_CAMERA_HEIGHT=1080
+Environment=HMI_CAMERA_FPS=25
+Environment=HMI_CAMERA_SOURCE_PORT=8788
+EnvironmentFile=-/etc/fairino-hmi.env
+ExecCondition=/usr/bin/test ${HMI_CAMERA_ENABLED} = true
+ExecStart=/usr/bin/ustreamer --device ${HMI_CAMERA_DEVICE} --resolution ${HMI_CAMERA_WIDTH}x${HMI_CAMERA_HEIGHT} --format MJPEG --encoder HW --desired-fps ${HMI_CAMERA_FPS} --min-frame-size 1024 --host 127.0.0.1 --port ${HMI_CAMERA_SOURCE_PORT} --tcp-nodelay --persistent --no-log-colors
+Restart=always
+RestartSec=2
+User=fairino
+Group=fairino
+SupplementaryGroups=video
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
