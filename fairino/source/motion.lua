@@ -26,6 +26,19 @@ function move_home()
     return motion_guard()
 end
 
+-- Operate the mechanical zig-zag dispenser before picking a filter.
+-- The three A01x poses are dedicated teach-points for the dispenser handle.
+function dispense_filter_motion()
+    if motion_guard() == false then return false end
+    PTP(A012_SINGULATOR_HANDLE_APPROACH, SPEED_APPROACH, -1, 0)
+    if motion_guard() == false then return false end
+    Lin(A014_SINGULATOR_HANDLE_PUSH, SPEED_DISPENSER_PUSH, -1, 0, 0)
+    if motion_guard() == false then return false end
+    Lin(A016_SINGULATOR_HANDLE_RETRACT, SPEED_RETRACT, -1, 0, 0)
+    if motion_guard() == false then return false end
+    return true
+end
+
 function pick_filter_motion()
     if motion_guard() == false then return false end
     PTP(A020_FILTER_PICK_APPROACH, SPEED_APPROACH, -1, 0)
@@ -40,6 +53,9 @@ function pick_filter_motion()
 end
 
 function place_filter_in_clamp_motion()
+    if motion_guard() == false then return false end
+    -- Collision-clearance waypoint between the filter lift and clamp approach.
+    PTP(A045_FILTER_TO_CLAMP_CLEARANCE, SPEED_APPROACH, -1, 0)
     if motion_guard() == false then return false end
     PTP(A050_CLAMP_APPROACH, SPEED_TRANSPORT, -1, 0)
     if motion_guard() == false then return false end

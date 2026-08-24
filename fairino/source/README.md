@@ -9,7 +9,8 @@ so it stays readable.
 Suggested module layout:
 
 - `config.lua`: states, faults, IO numbers, parameters.
-- `io_remote_mirror.lua`: optional no-load Modbus TCP output mirror; disabled by default.
+- `io_remote_mirror_noop.lua`: normal controller-build layer without M31 database dependencies.
+- `io_remote_mirror.lua`: optional no-load Modbus TCP output mirror, included only when explicitly enabled.
 - `io_sim.lua`: simulator input helpers and lamp/output helpers.
 - `motion.lua`: robot movement routines.
 - `station_clamp.lua`: clamp station logic.

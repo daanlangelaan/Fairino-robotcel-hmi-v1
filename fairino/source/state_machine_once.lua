@@ -58,9 +58,20 @@ function raise_fault(code)
 end
 
 function state_init()
-    all_outputs_off()
+    local release_filter_at_home = gripper_is_commanded_closed()
+    all_outputs_off_except_gripper()
+    if release_filter_at_home then
+        set_output(DO_GRIPPER_CLOSE, true)
+    else
+        set_output(DO_GRIPPER_CLOSE, false)
+    end
     fault_code = FAULT_NONE
+    filter_dispenser_reset()
     if move_home() == false then return end
+    if release_filter_at_home then
+        set_output(DO_GRIPPER_CLOSE, false)
+        if guarded_wait(GRIPPER_CLOSE_TIME_MS) == false then return end
+    end
     current_state = S20_WAIT_READY
 end
 
@@ -97,7 +108,7 @@ end
 function state_dispense_filter()
     if filter_dispenser_prepare_pick() then
         current_state = S60_PICK_FILTER
-    else
+    elseif current_state == S50_DISPENSE_FILTER then
         raise_fault(F001_FILTER_NOT_AVAILABLE)
     end
 end
@@ -238,7 +249,7 @@ function state_batch_complete()
 end
 
 function state_fault()
-    all_outputs_off()
+    all_outputs_off_except_gripper()
     set_fault_lamps()
     if HMI_MODBUS_ENABLED == 1 then
         current_state = S910_WAIT_RESET
@@ -248,7 +259,7 @@ function state_fault()
 end
 
 function state_wait_reset()
-    all_outputs_off()
+    all_outputs_off_except_gripper()
     set_fault_lamps()
     if hmi_reset_requested() and sim_input("safety_ok") then
         stop_after_cycle_requested = 0

@@ -14,6 +14,17 @@
   - `A120_GLUE_START`
   - `A125_GLUE_END`
   - `A130_GLUE_RETRACT`
+- Zig-zag filter-dispenser points to teach in the point table:
+  - `A012_SINGULATOR_HANDLE_APPROACH`
+  - `A014_SINGULATOR_HANDLE_PUSH`
+  - `A016_SINGULATOR_HANDLE_RETRACT`
+- Existing filter-pick points to move to the new dispenser position:
+  - `A020_FILTER_PICK_APPROACH`
+  - `A030_FILTER_PICK`
+  - `A040_FILTER_LIFT`
+- Collision-free transfer from the lifted filter to the clamp:
+  - `A045_FILTER_TO_CLAMP_CLEARANCE`
+  - Teach and dry-run the route `A040 -> A045 -> A050` at reduced speed.
 - DO actions are visible in the simulator.
 
 ## Working method
@@ -46,23 +57,42 @@ Unique builds are written to `fairino/programs/releases/` and a convenient
    - Set `SIM_GRIPPER_FILTER_PRESENT = 0` in `io_sim.lua`.
    - Run `build_state_machine_once.ps1`.
    - Upload the generated file and verify red/fault behavior.
-   - Expected debug result:
-     - `DO4` on = fault active.
-     - `DO5` off = clamp was not accepted.
-     - `DO6` off = pick was not accepted.
-     - `DO7` off = place/clamp state was not entered.
+   - Verify the fault code and stopped process state in the HMI. Do not use
+     production outputs `DO5` through `DO7` as debug indicators.
 5. Restore `SIM_GRIPPER_FILTER_PRESENT = 1`.
 6. Test clamp fault:
    - Set `SIM_CLAMP_CLOSED = 0` in `io_sim.lua`.
    - Run `build_state_machine_once.cmd`.
    - Upload the generated file and verify red/fault behavior.
-   - Expected debug result:
-     - `DO4` on = fault active.
-     - `DO6` on = pick accepted.
-     - `DO7` on = place/clamp state entered.
-     - `DO5` off = clamp was not accepted.
+   - Verify the clamp fault code and stopped process state in the HMI.
 7. Restore `SIM_CLAMP_CLOSED = 1`.
-8. Add the filter dispenser routine.
+8. Teach and dry-run the zig-zag filter-dispenser points at reduced global
+   speed before running an automatic cycle.
+
+## Gripper fault recovery
+
+For an ordinary process or resettable controller fault, an already closed
+gripper remains closed during recovery homing and opens only after `A010_HOME`
+is reached. Keep a tested collection tray at home. Safety-stop and emergency-
+stop handling still uses `all_outputs_off()`; never treat the gripper hold as a
+safety function or as protection against loss of air or electrical power.
+
+## Zig-zag filter dispenser
+
+The filter cycle now starts with the mechanical handle and then continues with
+the existing filter-pick routine:
+
+```text
+A012 handle approach -> A014 push down -> A016 retract
+    -> A020 filter approach -> A030 filter pick -> A040 filter lift
+    -> A045 filter-to-clamp clearance -> A050 clamp approach
+```
+
+`A014_SINGULATOR_HANDLE_PUSH` is a slow linear contact move. Teach
+`A016_SINGULATOR_HANDLE_RETRACT` so the gripper clears the handle before it
+moves toward `A020_FILTER_PICK_APPROACH`. The source retries the complete handle
+stroke up to `MAX_FILTER_DISPENSE_RETRIES` times when `filter_present` remains
+false and then raises `F001_FILTER_NOT_AVAILABLE`.
 
 ## Full-cell expansion order
 
@@ -76,12 +106,16 @@ Unique builds are written to `fairino/programs/releases/` and a convenient
 7. Fault manager.
 8. HMI/register interface.
 
-## Debug output map
+## Production output map
 
-- `DO4`: fault/red lamp.
-- `DO5`: clamp accepted.
-- `DO6`: pick accepted.
-- `DO7`: place/clamp state entered.
+- `DO0`: gripper sluiten.
+- `DO1`: clamp sluiten.
+- `DO2`: groene lamp.
+- `DO3`: oranje lamp.
+- `DO4`: rode lamp.
+- `DO5`: keerklep aandrukker.
+- `DO6`: keerklep toevoer.
+- `DO7`: lijmtrigger.
 
 ## Glue station test
 
@@ -111,7 +145,8 @@ The older proven simulator test is `glue_servoj_home_test`. It tests
 `DO_GLUE_TRIGGER` plus a real J6 rotation using repeated `ServoJ` commands
 from the known valid home joint pose.
 
-During simulator testing the glue trigger is mirrored to visible `DO5`.
+The production glue trigger uses `DO7`; `DO5` is reserved for the keerklep
+aandrukker.
 
 Proven J6 route:
 

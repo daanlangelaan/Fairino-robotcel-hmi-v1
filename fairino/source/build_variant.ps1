@@ -24,9 +24,14 @@ if ($EnableHmiModbus) {
     $hmiLayer = "hmi_modbus.lua"
 }
 
+$remoteIoLayer = "io_remote_mirror_noop.lua"
+if ($EnableRemoteIoOutputMirror) {
+    $remoteIoLayer = "io_remote_mirror.lua"
+}
+
 $parts = @(
     "config.lua",
-    "io_remote_mirror.lua",
+    $remoteIoLayer,
     "io_sim.lua",
     $hmiLayer,
     "motion.lua",

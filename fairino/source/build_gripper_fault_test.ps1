@@ -4,7 +4,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $out = Join-Path $root "programs\mini_cell_gripper_fault_test_generated.lua"
 $parts = @(
     "config.lua",
-    "io_remote_mirror.lua",
+    "io_remote_mirror_noop.lua",
     "io_sim.lua",
     "motion.lua",
     "main_gripper_fault_test.lua"

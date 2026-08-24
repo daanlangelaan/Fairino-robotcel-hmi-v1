@@ -1,9 +1,14 @@
--- Filter dispenser skeleton for the next expansion step.
--- For now this models one simulated dispenser. Later this becomes 1..8.
+-- Mechanical zig-zag filter dispenser.
+-- For now this controls one dispenser. Later this becomes 1..8.
 
 filter_dispense_attempts = 0
 filter_dispenser_empty = 0
 active_filter_dispenser = 1
+
+function filter_dispenser_reset()
+    filter_dispense_attempts = 0
+    filter_dispenser_empty = 0
+end
 
 function filter_dispenser_has_filter_ready()
     return sim_input("filter_present")
@@ -24,13 +29,16 @@ function filter_dispenser_prepare_pick()
         return false
     end
 
-    if filter_dispenser_has_filter_ready() then
-        return true
-    end
-
     while filter_dispense_attempts < MAX_FILTER_DISPENSE_RETRIES do
-        -- Later: robot presses dispenser lever here.
+        if dispense_filter_motion() == false then
+            return false
+        end
+
         filter_dispense_attempts = filter_dispense_attempts + 1
+
+        if guarded_wait(FILTER_DISPENSE_SETTLE_TIME_MS) == false then
+            return false
+        end
 
         if filter_dispenser_has_filter_ready() then
             return true

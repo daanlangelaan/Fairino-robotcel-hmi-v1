@@ -14,7 +14,23 @@ SIM_CLAMP_CLOSED = 1
 OUTPUT_ACTIVE_LEVEL = 0
 OUTPUT_INACTIVE_LEVEL = 1
 
+-- Preserve an already closed gripper across a stopped-program/controller-fault
+-- restart. GetDO reads the physical control-box output level; this survives the
+-- Lua variable reset that occurs when the program starts again.
+GRIPPER_COMMAND_CLOSED = 0
+if GetDO(DO_GRIPPER_CLOSE, 0) == OUTPUT_ACTIVE_LEVEL then
+    GRIPPER_COMMAND_CLOSED = 1
+end
+
 function set_output(port, active)
+    if port == DO_GRIPPER_CLOSE then
+        if active then
+            GRIPPER_COMMAND_CLOSED = 1
+        else
+            GRIPPER_COMMAND_CLOSED = 0
+        end
+    end
+
     if active then
         SetDO(port, OUTPUT_ACTIVE_LEVEL, 0, 0)
     else
@@ -26,8 +42,11 @@ function set_output(port, active)
     remote_io_write_output(port, active)
 end
 
-function all_outputs_off()
-    set_output(DO_GRIPPER_CLOSE, false)
+function gripper_is_commanded_closed()
+    return GRIPPER_COMMAND_CLOSED == 1
+end
+
+function all_outputs_off_except_gripper()
     set_output(DO_CLAMP_CLOSE, false)
     set_output(DO_CHECK_VALVE_PRESS, false)
     set_output(DO_CHECK_VALVE_FEED, false)
@@ -38,6 +57,11 @@ function all_outputs_off()
     set_output(DO_DEBUG_PLACE_ENTERED, false)
     set_output(DO_DEBUG_CLAMP_OK, false)
     set_output(DO_GLUE_TRIGGER, false)
+end
+
+function all_outputs_off()
+    set_output(DO_GRIPPER_CLOSE, false)
+    all_outputs_off_except_gripper()
 end
 
 function set_ready_lamps()
