@@ -1,9 +1,9 @@
 export const outputTestCoils = Object.freeze([
   { address: 300, output: "DO0", label: "Gripper sluiten" },
   { address: 301, output: "DO1", label: "Clamp sluiten" },
-  { address: 305, output: "DO5", label: "Debug clamp OK" },
-  { address: 306, output: "DO6", label: "Debug pick OK" },
-  { address: 307, output: "DO7", label: "Debug place entered" },
+  { address: 305, output: "DO5", label: "Keerklep aandrukker" },
+  { address: 306, output: "DO6", label: "Keerklep toevoer" },
+  { address: 307, output: "DO7", label: "Lijmtrigger" },
 ]);
 
 const allowedAddresses = new Set(outputTestCoils.map(({ address }) => address));

@@ -2,7 +2,12 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { CameraSourceClient, cameraSourceConfigFromEnv } from "./camera-source.mjs";
-import { controllerFaultMessage, overlayControllerFault } from "./controller-status.mjs";
+import { normalizeBatchTarget } from "./batch-selector.mjs";
+import {
+  controllerFaultInfo,
+  controllerFaultMessage,
+  overlayControllerFault,
+} from "./controller-status.mjs";
 import {
   CycleFaultVideoRecorder,
   serveThumbnail,
@@ -10,6 +15,10 @@ import {
   videoRecorderConfigFromEnv,
 } from "./cycle-video-recorder.mjs";
 import { FairinoRpcClient, FairinoRpcError, normalizeProgramName } from "./fairino-rpc.mjs";
+import {
+  heartbeatTimeoutConfigFromEnv,
+  luaHeartbeatStatus,
+} from "./heartbeat-status.mjs";
 import { createSingleFlight, ModbusTcpClient } from "./modbus-client.mjs";
 import {
   assertOutputTestInterlock,
@@ -18,6 +27,7 @@ import {
   parseBooleanFlag,
   parseOutputTestRequest,
 } from "./output-tests.mjs";
+import { RemoteIoStatusMonitor, remoteIoConfigFromEnv } from "./remote-io-status.mjs";
 
 const root = new URL(".", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const port = Number(process.env.PORT || 8787);
@@ -27,14 +37,16 @@ const fairinoHost = process.env.FAIRINO_HOST || "192.168.58.2";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
 const fairinoRpcPort = Number(process.env.FAIRINO_RPC_PORT || 20003);
 const fairinoProgramName = process.env.FAIRINO_PROGRAM_NAME
-  || "mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua";
+  || "mini_cell_gripper_recovery_hmi_20260821_181858.lua";
 const unitId = Number(process.env.FAIRINO_UNIT_ID || 1);
 const outputTestsEnabled = parseBooleanFlag(process.env.HMI_OUTPUT_TESTS_ENABLED);
+const heartbeatTimeouts = heartbeatTimeoutConfigFromEnv();
 
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
 };
 
@@ -164,10 +176,9 @@ function runRobotStartupAction(operation) {
 
 const enableCell = () => runRobotStartupAction(async () => {
   await readModbusSnapshot();
-  const [programState, controllerError, loadedProgram] = await Promise.all([
+  const [programState, controllerError] = await Promise.all([
     fairinoRpc.getProgramState(),
     fairinoRpc.getRobotErrorCode(),
-    fairinoRpc.getLoadedProgram(),
   ]);
 
   if (controllerError.mainCode !== 0 || controllerError.subCode !== 0) {
@@ -183,6 +194,7 @@ const enableCell = () => runRobotStartupAction(async () => {
     );
   }
   if (programState === 2) {
+    const loadedProgram = await fairinoRpc.getLoadedProgram();
     if (normalizeProgramName(loadedProgram) !== normalizeProgramName(fairinoProgramName)) {
       throw new FairinoRpcError(
         `Cel inschakelen geweigerd: onverwacht programma actief (${loadedProgram})`,
@@ -375,6 +387,9 @@ function pushLog(message) {
 
 const cameraSource = new CameraSourceClient(cameraSourceConfigFromEnv());
 await cameraSource.refresh();
+
+const remoteIoMonitor = new RemoteIoStatusMonitor(remoteIoConfigFromEnv());
+await remoteIoMonitor.refresh();
 
 const videoRecorder = new CycleFaultVideoRecorder(videoRecorderConfigFromEnv(), {
   onEvent: ({ message }) => pushLog(message),
@@ -625,9 +640,13 @@ async function createSnapshot() {
   const controllerProgramMatches = controllerLoadedProgram === null
     ? null
     : normalizeProgramName(controllerLoadedProgram) === normalizeProgramName(fairinoProgramName);
-  const luaHeartbeatFresh = bridgeMode === "mock"
-    ? null
-    : lastLuaHeartbeatChangeAt > 0 && Date.now() - lastLuaHeartbeatChangeAt < 5000;
+  const heartbeatStatus = luaHeartbeatStatus({
+    lastChangeAt: lastLuaHeartbeatChangeAt,
+    running: Boolean(values.discreteInputs.CELL_RUNNING),
+    idleTimeoutMs: heartbeatTimeouts.idleMs,
+    motionTimeoutMs: heartbeatTimeouts.motionMs,
+  });
+  const luaHeartbeatFresh = bridgeMode === "mock" ? null : heartbeatStatus.fresh;
 
   const effectiveStatus = overlayControllerFault({
     discreteInputs: discreteInputs.map((item) => ({ ...item, value: values.discreteInputs[item.name] })),
@@ -646,8 +665,10 @@ async function createSnapshot() {
   const effectiveFaultActive = effectiveStatus.discreteInputs
     .find((item) => item.name === "CELL_FAULT_ACTIVE")?.value;
   videoRecorder.observe({
-    productionActive: effectiveStatus.discreteInputs
-      .find((item) => item.name === "CELL_RUNNING")?.value,
+    // Fairino motion instructions block the Lua state loop. Keep using the raw
+    // production bit so a temporarily unchanged heartbeat cannot discard the
+    // cycle buffer while the robot is still moving.
+    productionActive: Boolean(values.discreteInputs.CELL_RUNNING),
     faultActive: effectiveFaultActive,
     faultCode: effectiveStatus.faultCode,
     faultMessage: controllerFaultMessage(controllerError)
@@ -661,12 +682,15 @@ async function createSnapshot() {
     controller: {
       rpcConnected: controllerRpcConnected,
       error: controllerError,
+      fault: controllerFaultInfo(controllerError),
       faultMessage: controllerFaultMessage(controllerError),
       programState: controllerProgramState,
       expectedProgram: fairinoProgramName,
       loadedProgram: controllerLoadedProgram,
       programMatches: controllerProgramMatches,
       luaHeartbeatFresh,
+      luaHeartbeatAgeMs: heartbeatStatus.ageMs,
+      luaHeartbeatTimeoutMs: heartbeatStatus.timeoutMs,
     },
     capabilities: {
       cellEnable: {
@@ -697,6 +721,7 @@ async function createSnapshot() {
       ...videoRecorder.status(),
       source: cameraSource.status(),
     },
+    remoteIo: remoteIoMonitor.status(),
   };
 }
 
@@ -707,6 +732,9 @@ const recorderMonitor = setInterval(() => {
 const cameraSourceMonitor = setInterval(() => {
   cameraSource.refresh().catch((error) => pushLog(`Camerabroncontrole fout: ${error.message}`));
 }, 2000);
+const remoteIoStatusTimer = setInterval(() => {
+  remoteIoMonitor.refresh().catch((error) => pushLog(`M31-statuscontrole fout: ${error.message}`));
+}, 5000);
 
 function sendJson(res, status, body) {
   res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
@@ -854,15 +882,18 @@ async function handleApi(req, res, url) {
 
   if (req.method === "POST" && url.pathname === "/api/holding") {
     const body = await readJson(req);
+    const value = body.name === "HMI_BATCH_TARGET"
+      ? normalizeBatchTarget(body.value)
+      : Number(body.value || 0);
     if (bridgeMode === "modbus") {
       const address = addressOf(holdingRegisters, body.name);
-      if (address !== undefined) await writeHoldingRegister(address, body.value);
+      if (address !== undefined) await writeHoldingRegister(address, value);
       sendJson(res, 200, await snapshot());
       return true;
     }
 
     if (Object.hasOwn(values.holdingRegisters, body.name)) {
-      values.holdingRegisters[body.name] = Number(body.value || 0);
+      values.holdingRegisters[body.name] = value;
     }
     sendJson(res, 200, await snapshot());
     return true;
@@ -979,6 +1010,7 @@ async function shutdown(signal) {
   clearInterval(heartbeatTimer);
   clearInterval(recorderMonitor);
   clearInterval(cameraSourceMonitor);
+  clearInterval(remoteIoStatusTimer);
   console.log(`HMI afsluiten na ${signal}`);
   await videoRecorder.shutdown().catch((error) => console.error(error));
   hmiServer.close(() => process.exit(0));

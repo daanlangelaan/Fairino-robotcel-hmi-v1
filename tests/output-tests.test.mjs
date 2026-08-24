@@ -10,7 +10,13 @@ import {
 } from "../hmi/output-tests.mjs";
 
 test("uses Daan's exact active-low output-test allowlist", () => {
-  assert.deepEqual(outputTestCoils.map(({ address }) => address), [300, 301, 305, 306, 307]);
+  assert.deepEqual(outputTestCoils, [
+    { address: 300, output: "DO0", label: "Gripper sluiten" },
+    { address: 301, output: "DO1", label: "Clamp sluiten" },
+    { address: 305, output: "DO5", label: "Keerklep aandrukker" },
+    { address: 306, output: "DO6", label: "Keerklep toevoer" },
+    { address: 307, output: "DO7", label: "Lijmtrigger" },
+  ]);
 });
 
 test("requires the server feature flag and explicit UI confirmation", () => {

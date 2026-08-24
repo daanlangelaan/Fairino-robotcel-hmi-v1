@@ -1,3 +1,12 @@
+import { StationTimingModel } from "./station-timing.mjs";
+import {
+  BATCH_MAX,
+  BATCH_MIN,
+  batchRowHeightFromElement,
+  batchValueFromScroll,
+  normalizeBatchTarget,
+} from "./batch-selector.mjs";
+
 const stateByValue = new Map();
 let snapshot = null;
 const requestedTab = new URLSearchParams(window.location.search).get("tab");
@@ -5,21 +14,31 @@ let activeTab = ["user", "troubleshoot", "camera", "advanced"].includes(requeste
   ? requestedTab
   : "user";
 let batchTargetEditing = false;
-let lastRobotHeartbeat = null;
-let lastRobotHeartbeatAt = 0;
+let batchWheelValue = 10;
+let batchWheelRowHeight = 48;
+let batchWheelSuppressClickUntil = 0;
+let batchWheelPointer = null;
+let keypadDigits = "10";
+let keypadReplaceOnNextDigit = true;
 let operatorNotice = null;
 let robotActionPending = null;
 let loadedIncidentId = null;
 let incidentLibrary = [];
 let incidentLibrarySignature = "";
 let incidentRefreshPending = null;
-let liveCameraActive = false;
+let liveCameraActive = null;
+let lastFaultActive = null;
+let faultPrompt = null;
+const stationTiming = new StationTimingModel({ storage: window.localStorage });
 
 const els = {
   runState: document.querySelector("#runState"),
   activeState: document.querySelector("#activeState"),
   cycleCount: document.querySelector("#cycleCount"),
   bridgeState: document.querySelector("#bridgeState"),
+  bridgeLamp: document.querySelector("#bridgeLamp"),
+  remoteIoState: document.querySelector("#remoteIoState"),
+  remoteIoLamp: document.querySelector("#remoteIoLamp"),
   modbusState: document.querySelector("#modbusState"),
   modbusLamp: document.querySelector("#modbusLamp"),
   robotCommsState: document.querySelector("#robotCommsState"),
@@ -32,9 +51,14 @@ const els = {
   resetBtn: document.querySelector("#resetBtn"),
   startupNotice: document.querySelector("#startupNotice"),
   stopNotice: document.querySelector("#stopNotice"),
-  batchTarget: document.querySelector("#batchTarget"),
+  batchWheel: document.querySelector("#batchWheel"),
   batchTargetView: document.querySelector("#batchTargetView"),
   batchDone: document.querySelector("#batchDone"),
+  batchKeypadDialog: document.querySelector("#batchKeypadDialog"),
+  batchKeypadDisplay: document.querySelector("#batchKeypadDisplay"),
+  batchKeypadStatus: document.querySelector("#batchKeypadStatus"),
+  batchKeypad: document.querySelector("#batchKeypad"),
+  acceptBatchKeypadBtn: document.querySelector("#acceptBatchKeypadBtn"),
   lampRed: document.querySelector("#lampRed"),
   lampAmber: document.querySelector("#lampAmber"),
   lampGreen: document.querySelector("#lampGreen"),
@@ -50,17 +74,12 @@ const els = {
   ioOutputTests: document.querySelector("#ioOutputTests"),
   ioTestEnable: document.querySelector("#ioTestEnable"),
   ioTestStatus: document.querySelector("#ioTestStatus"),
-  cameraTabBadge: document.querySelector("#cameraTabBadge"),
-  cameraStatusText: document.querySelector("#cameraStatusText"),
-  cameraSourceState: document.querySelector("#cameraSourceState"),
   cameraState: document.querySelector("#cameraState"),
-  liveCameraPlaceholder: document.querySelector("#liveCameraPlaceholder"),
-  liveCamera: document.querySelector("#liveCamera"),
-  liveCameraResolution: document.querySelector("#liveCameraResolution"),
-  liveCameraRecording: document.querySelector("#liveCameraRecording"),
-  cameraBufferDetails: document.querySelector("#cameraBufferDetails"),
-  cameraSourceDetails: document.querySelector("#cameraSourceDetails"),
-  retryLiveCameraBtn: document.querySelector("#retryLiveCameraBtn"),
+  cameraLamp: document.querySelector("#cameraLamp"),
+  userLiveCameraPlaceholder: document.querySelector("#userLiveCameraPlaceholder"),
+  userLiveCamera: document.querySelector("#userLiveCamera"),
+  userLiveCameraResolution: document.querySelector("#userLiveCameraResolution"),
+  userLiveCameraRecording: document.querySelector("#userLiveCameraRecording"),
   incidentRetention: document.querySelector("#incidentRetention"),
   incidentCount: document.querySelector("#incidentCount"),
   incidentList: document.querySelector("#incidentList"),
@@ -70,7 +89,14 @@ const els = {
   selectedIncidentMessage: document.querySelector("#selectedIncidentMessage"),
   selectedIncidentDetails: document.querySelector("#selectedIncidentDetails"),
   reloadIncidentVideoBtn: document.querySelector("#reloadIncidentVideoBtn"),
-  viewFaultVideoBtn: document.querySelector("#viewFaultVideoBtn"),
+  faultVideoDialog: document.querySelector("#faultVideoDialog"),
+  closeFaultVideoDialogBtn: document.querySelector("#closeFaultVideoDialogBtn"),
+  faultVideoDialogTitle: document.querySelector("#faultVideoDialogTitle"),
+  faultVideoDialogMessage: document.querySelector("#faultVideoDialogMessage"),
+  faultVideoDialogStatus: document.querySelector("#faultVideoDialogStatus"),
+  openFaultVideoBtn: document.querySelector("#openFaultVideoBtn"),
+  faultVideoDialogPlayer: document.querySelector("#faultVideoDialogPlayer"),
+  faultPopupVideo: document.querySelector("#faultPopupVideo"),
 };
 
 async function api(path, options = {}) {
@@ -114,6 +140,86 @@ function getHoldingRegister(name) {
 function getState() {
   const value = getInputRegister("CELL_STATE");
   return stateByValue.get(value) || snapshot?.machine?.state || { code: "UNKNOWN", value, label: "Onbekend" };
+}
+
+function updateBatchWheelAppearance() {
+  els.batchWheel.querySelectorAll(".batch-wheel-option").forEach((option) => {
+    const value = Number(option.dataset.value);
+    option.classList.toggle("selected", value === batchWheelValue);
+    option.classList.toggle("near-before", value === batchWheelValue - 1);
+    option.classList.toggle("near-after", value === batchWheelValue + 1);
+    option.setAttribute("aria-selected", String(value === batchWheelValue));
+  });
+  els.batchWheel.setAttribute("aria-activedescendant", `batchOption${batchWheelValue}`);
+}
+
+function setBatchWheelValue(value, { behavior = "smooth", scroll = true } = {}) {
+  batchWheelValue = normalizeBatchTarget(value, batchWheelValue);
+  updateBatchWheelAppearance();
+  if (scroll) {
+    els.batchWheel.scrollTo({
+      top: (batchWheelValue - BATCH_MIN) * batchWheelRowHeight,
+      behavior,
+    });
+  }
+}
+
+function initializeBatchWheel() {
+  const fragment = document.createDocumentFragment();
+  for (let value = BATCH_MIN; value <= BATCH_MAX; value += 1) {
+    const option = document.createElement("button");
+    option.type = "button";
+    option.id = `batchOption${value}`;
+    option.className = "batch-wheel-option";
+    option.dataset.value = String(value);
+    option.setAttribute("role", "option");
+    option.tabIndex = -1;
+    option.textContent = String(value);
+    fragment.append(option);
+  }
+  els.batchWheel.append(fragment);
+  const firstOption = els.batchWheel.querySelector(".batch-wheel-option");
+  // offsetHeight is the layout height. getBoundingClientRect() includes the
+  // barrel's visual scale transform and caused the selected value to drift.
+  batchWheelRowHeight = batchRowHeightFromElement(firstOption);
+  setBatchWheelValue(batchWheelValue, { behavior: "auto" });
+}
+
+function renderBatchKeypad() {
+  const value = Number(keypadDigits);
+  const valid = /^\d+$/.test(keypadDigits) && value >= BATCH_MIN && value <= BATCH_MAX;
+  els.batchKeypadDisplay.textContent = keypadDigits || "—";
+  els.acceptBatchKeypadBtn.disabled = !valid;
+  els.batchKeypadStatus.classList.toggle("error", keypadDigits !== "" && !valid);
+  els.batchKeypadStatus.textContent = keypadDigits !== "" && !valid
+    ? `Gebruik een waarde van ${BATCH_MIN} tot en met ${BATCH_MAX}.`
+    : `Kies een waarde van ${BATCH_MIN} tot en met ${BATCH_MAX}.`;
+}
+
+function openBatchKeypad() {
+  keypadDigits = String(batchWheelValue);
+  keypadReplaceOnNextDigit = true;
+  renderBatchKeypad();
+  if (!els.batchKeypadDialog.open) els.batchKeypadDialog.showModal();
+}
+
+function closeBatchKeypad() {
+  if (els.batchKeypadDialog.open) els.batchKeypadDialog.close();
+}
+
+function enterBatchKey(key) {
+  if (key === "clear") {
+    keypadDigits = "";
+    keypadReplaceOnNextDigit = false;
+  } else if (key === "backspace") {
+    keypadDigits = keypadReplaceOnNextDigit ? "" : keypadDigits.slice(0, -1);
+    keypadReplaceOnNextDigit = false;
+  } else if (/^\d$/.test(key)) {
+    keypadDigits = keypadReplaceOnNextDigit ? key : `${keypadDigits}${key}`;
+    keypadDigits = keypadDigits.replace(/^0+(?=\d)/, "").slice(0, 3);
+    keypadReplaceOnNextDigit = false;
+  }
+  renderBatchKeypad();
 }
 
 function faultCodeText() {
@@ -174,25 +280,28 @@ function renderStatus() {
   els.runState.textContent = title;
   els.activeState.textContent = state.code;
   els.cycleCount.textContent = `Cycles ${cycleCount}`;
-  els.bridgeState.textContent = snapshot?.mode === "mock"
-    ? "Bridge mock"
-    : `Bridge Modbus ${snapshot.connected ? "online" : "offline"}`;
+  const bridgeOnline = Boolean(snapshot?.connected);
+  els.bridgeLamp.classList.toggle("on", bridgeOnline);
+  els.bridgeLamp.classList.toggle("error", !bridgeOnline);
+  els.bridgeState.title = bridgeOnline
+    ? "Bridge heeft een actieve Modbus TCP-verbinding met de Fairino-controller"
+    : "Bridge heeft geen Modbus TCP-verbinding met de Fairino-controller";
+  const remoteIoOnline = snapshot?.remoteIo?.connected === true;
+  els.remoteIoLamp.classList.toggle("on", remoteIoOnline);
+  els.remoteIoLamp.classList.toggle("error", !remoteIoOnline);
+  els.remoteIoState.title = remoteIoOnline
+    ? `M31 Remote IO bereikbaar op ${snapshot.remoteIo.host}:${snapshot.remoteIo.port}`
+    : (snapshot?.remoteIo?.error || "M31 Remote IO is niet bereikbaar");
   els.operatorTitle.textContent = title;
   els.operatorMessage.textContent = message;
   els.batchDone.textContent = String(getInputRegister("CELL_BATCH_DONE") || getInputRegister("CELL_CYCLE_COUNT"));
-  els.batchTargetView.textContent = String(getHoldingRegister("HMI_BATCH_TARGET"));
-  if (!batchTargetEditing && document.activeElement !== els.batchTarget) {
-    els.batchTarget.value = String(getHoldingRegister("HMI_BATCH_TARGET"));
-  }
+  const currentBatchTarget = normalizeBatchTarget(getHoldingRegister("HMI_BATCH_TARGET"), batchWheelValue);
+  els.batchTargetView.textContent = String(currentBatchTarget);
+  if (!batchTargetEditing) setBatchWheelValue(currentBatchTarget, { behavior: "auto" });
   const hmiHeartbeat = getHoldingRegister("HMI_HEARTBEAT");
   const robotHeartbeat = getInputRegister("CELL_ROBOT_HEARTBEAT");
   const robotPulse = getDiscrete("CELL_COMMS_OK") ? 1 : 0;
-  if (robotHeartbeat !== lastRobotHeartbeat) {
-    lastRobotHeartbeat = robotHeartbeat;
-    lastRobotHeartbeatAt = Date.now();
-  }
-  const robotHeartbeatFresh = robotHeartbeat > 0 && Date.now() - lastRobotHeartbeatAt < 10000;
-  const robotOnline = snapshot?.connected && (robotHeartbeatFresh || getDiscrete("CELL_READY") || getDiscrete("CELL_RUNNING"));
+  const robotOnline = snapshot?.connected && snapshot?.controller?.luaHeartbeatFresh === true;
 
   els.modbusLamp.classList.toggle("on", Boolean(snapshot?.connected));
   els.modbusState.title = snapshot?.connected ? "Modbus TCP bridge heeft verbinding" : "Geen Modbus TCP verbinding";
@@ -200,8 +309,18 @@ function renderStatus() {
   els.robotCommsLamp.classList.toggle("warn", snapshot?.connected && !robotOnline);
   els.robotCommsState.title = robotOnline
     ? "Lua status/heartbeat komt binnen"
-    : "Modbus TCP is online, maar de Lua status-loop draait niet of schrijft nog niet";
-  els.heartbeatView.textContent = `HMI HB ${hmiHeartbeat} / Robot pulse ${robotPulse} / Robot HB ${robotHeartbeat}`;
+    : "Modbus TCP is online, maar de Lua-heartbeat is langer dan de toegestane tijd niet gewijzigd";
+  const heartbeatAgeValue = snapshot?.controller?.luaHeartbeatAgeMs;
+  const heartbeatTimeoutValue = snapshot?.controller?.luaHeartbeatTimeoutMs;
+  const heartbeatAgeMs = Number(heartbeatAgeValue);
+  const heartbeatTimeoutMs = Number(heartbeatTimeoutValue);
+  const heartbeatTiming = heartbeatAgeValue !== null
+    && heartbeatAgeValue !== undefined
+    && Number.isFinite(heartbeatAgeMs)
+    && Number.isFinite(heartbeatTimeoutMs)
+    ? ` / Leeftijd ${(heartbeatAgeMs / 1000).toFixed(1)}s / Limiet ${(heartbeatTimeoutMs / 1000).toFixed(0)}s`
+    : "";
+  els.heartbeatView.textContent = `HMI HB ${hmiHeartbeat} / Robot pulse ${robotPulse} / Robot HB ${robotHeartbeat}${heartbeatTiming}`;
   els.stateValueView.textContent = `STATE ${state.value}`;
 
   els.faultBanner.classList.toggle("hidden", !fault);
@@ -214,6 +333,11 @@ function renderStatus() {
   const cellEnableConfigured = Boolean(snapshot?.capabilities?.cellEnable?.enabled);
   const programState = snapshot?.controller?.programState;
   const programMatches = snapshot?.controller?.programMatches;
+  const controllerError = snapshot?.controller?.error;
+  const controllerFaultActive = Boolean(controllerError
+    && (controllerError.mainCode !== 0 || controllerError.subCode !== 0));
+  const controllerResetBlocked = controllerFaultActive
+    && snapshot?.controller?.fault?.resettable !== true;
   const cellAlreadyEnabled = programState === 2
     && programMatches === true
     && snapshot?.controller?.luaHeartbeatFresh === true;
@@ -233,8 +357,13 @@ function renderStatus() {
     : "De cel kan alleen vanuit een foutvrije, gestopte programmastatus worden ingeschakeld";
   els.startupNotice.classList.toggle("hidden", !canEnableCell || robotActionPending !== null);
   els.startBtn.disabled = robotActionPending !== null || fault || !cellAlreadyEnabled;
-  els.resetBtn.disabled = robotActionPending !== null;
-  els.resetBtn.textContent = robotActionPending === "reset" ? "Resetten..." : "Reset";
+  els.resetBtn.disabled = robotActionPending !== null || controllerResetBlocked;
+  els.resetBtn.textContent = robotActionPending === "reset"
+    ? "Resetten..."
+    : (controllerResetBlocked ? "Reset geblokkeerd" : "Reset");
+  els.resetBtn.title = controllerResetBlocked
+    ? "Deze controllerstoring is niet als resetbaar gedocumenteerd; schakel technisch personeel in"
+    : "Herstel een resetbare storing vanuit de HMI";
   els.stopNotice.classList.toggle(
     "hidden",
     !getCoil("HMI_STOP_REQ") || !running || fault,
@@ -243,9 +372,36 @@ function renderStatus() {
 
 function renderStations() {
   const state = getState();
-  document.querySelectorAll(".station").forEach((station) => {
-    station.classList.toggle("active", station.dataset.state === state.code);
-    station.classList.remove("done");
+  const stations = Array.from(document.querySelectorAll(".station"));
+  const stationCodes = stations.map((station) => station.dataset.state);
+  const now = Date.now();
+  stationTiming.observe(state.code, stationCodes, now);
+  const activeIndex = stations.findIndex((station) => station.dataset.state === state.code);
+  const cycleComplete = state.code === "S190_CHECK_NEXT_CYCLE"
+    || state.code === "S850_BATCH_COMPLETE";
+
+  stations.forEach((station, index) => {
+    const active = index === activeIndex;
+    const done = cycleComplete || (activeIndex >= 0 && index < activeIndex);
+    const wasDone = station.classList.contains("done");
+    if (active) {
+      const timing = stationTiming.stats(state.code);
+      station.style.setProperty("--station-progress", String(stationTiming.progress(state.code, now)));
+      station.title = timing.sampleCount > 0
+        ? `Gemeten stapduur: ${(timing.durationMs / 1000).toFixed(1)} s (${timing.sampleCount} metingen)`
+        : `Verwachte stapduur: ${(timing.durationMs / 1000).toFixed(1)} s; wordt automatisch ingemeten`;
+    } else {
+      station.style.removeProperty("--station-progress");
+      station.removeAttribute("title");
+    }
+    if (active && wasDone) {
+      station.classList.add("progress-reset");
+      window.requestAnimationFrame(() => station.classList.remove("progress-reset"));
+    }
+    station.classList.toggle("active", active);
+    station.classList.toggle("done", done);
+    if (active) station.setAttribute("aria-current", "step");
+    else station.removeAttribute("aria-current");
   });
 }
 
@@ -360,7 +516,7 @@ function selectIncident(incident, force = false) {
   els.faultVideo.classList.remove("hidden");
   els.incidentPlayerPlaceholder.classList.add("hidden");
   els.reloadIncidentVideoBtn.disabled = false;
-  els.selectedIncidentTitle.textContent = `Fout ${incident.faultCode ?? "?"} · ${incidentMoment(incident)}`;
+  els.selectedIncidentTitle.textContent = incidentMoment(incident);
   els.selectedIncidentMessage.textContent = incident.faultMessage || "Geen storingsomschrijving opgeslagen";
   const duration = Number.isFinite(Number(incident.durationSeconds))
     ? `${Math.round(Number(incident.durationSeconds))} s`
@@ -402,12 +558,10 @@ function renderIncidentList() {
     const text = document.createElement("span");
     text.className = "incident-item-text";
     const title = document.createElement("strong");
-    title.textContent = `Fout ${incident.faultCode ?? "?"}`;
-    const moment = document.createElement("span");
-    moment.textContent = incidentMoment(incident);
+    title.textContent = incidentMoment(incident);
     const message = document.createElement("span");
     message.textContent = incident.faultMessage || "Geen omschrijving";
-    text.append(title, moment, message);
+    text.append(title, message);
     button.append(text);
     els.incidentList.append(button);
   });
@@ -451,77 +605,142 @@ function clearIncidentPlayer() {
   els.selectedIncidentDetails.textContent = "";
 }
 
-function stopLiveCamera(message = "Open de Camera-tab om het livebeeld te laden.") {
-  if (liveCameraActive) els.liveCamera.removeAttribute("src");
-  liveCameraActive = false;
-  els.liveCamera.classList.add("hidden");
-  els.liveCameraPlaceholder.classList.remove("hidden");
-  els.liveCameraPlaceholder.textContent = message;
+function clearFaultPopupVideo() {
+  els.faultPopupVideo.pause();
+  els.faultPopupVideo.removeAttribute("src");
+  els.faultPopupVideo.load();
+  els.faultVideoDialogPlayer.classList.add("hidden");
+  els.faultVideoDialog.classList.remove("expanded");
+}
+
+function dismissFaultPrompt() {
+  if (faultPrompt) faultPrompt.dismissed = true;
+  clearFaultPopupVideo();
+  if (els.faultVideoDialog.open) els.faultVideoDialog.close();
+}
+
+function beginFaultPrompt() {
+  const camera = snapshot?.camera || {};
+  const activeFault = camera.activeFault || null;
+  faultPrompt = {
+    baselineIncidentId: camera.latestIncident?.id || null,
+    faultAt: activeFault?.faultAt || null,
+    incidentId: activeFault?.incidentId || null,
+    code: faultCodeText(),
+    message: faultMessage(),
+    dismissed: false,
+  };
+
+  clearFaultPopupVideo();
+  els.faultVideoDialogTitle.textContent = `Error ${faultPrompt.code}`;
+  els.faultVideoDialogMessage.textContent = faultPrompt.message;
+  if (!els.faultVideoDialog.open) els.faultVideoDialog.showModal();
+}
+
+function faultVideoPreparationText(camera) {
+  if (!camera.enabled || camera.state === "disabled") {
+    return "De camera-opname is uitgeschakeld; voor deze storing is geen video beschikbaar.";
+  }
+  if (camera.error || camera.source?.error) {
+    return camera.error || camera.source.error;
+  }
+  if (camera.state === "post-fault") {
+    const remainingMs = Date.parse(camera.postFaultUntil || "") - Date.now();
+    const seconds = Math.max(1, Math.ceil(remainingMs / 1000));
+    return `De storingvideo wordt voorbereid (nog ongeveer ${seconds} s).`;
+  }
+  if (camera.state === "finalizing") return "De storingvideo wordt opgeslagen…";
+  if (camera.recording) return "De storingvideo wordt voorbereid…";
+  return "Voor deze storing is nog geen nieuwe opname beschikbaar.";
+}
+
+function updateFaultPrompt() {
+  const faultActive = getDiscrete("CELL_FAULT_ACTIVE");
+  if (faultActive && lastFaultActive !== true) beginFaultPrompt();
+  lastFaultActive = faultActive;
+
+  if (!faultPrompt || faultPrompt.dismissed || !els.faultVideoDialog.open) return;
+  if (faultActive) {
+    faultPrompt.code = faultCodeText();
+    faultPrompt.message = faultMessage();
+    els.faultVideoDialogTitle.textContent = `Error ${faultPrompt.code}`;
+    els.faultVideoDialogMessage.textContent = faultPrompt.message;
+  }
+  const camera = snapshot?.camera || { enabled: false, state: "disabled" };
+  const activeFault = camera.activeFault;
+  if (activeFault?.faultAt) faultPrompt.faultAt = activeFault.faultAt;
+  if (activeFault?.incidentId) faultPrompt.incidentId = activeFault.incidentId;
+
+  const latest = camera.latestIncident;
+  const latestMatchesFault = latest && (
+    (faultPrompt.faultAt && latest.faultAt === faultPrompt.faultAt)
+    || (!faultPrompt.faultAt && latest.id !== faultPrompt.baselineIncidentId)
+  );
+  if (latestMatchesFault) faultPrompt.incidentId = latest.id;
+
+  const videoReady = Boolean(faultPrompt.incidentId);
+  els.openFaultVideoBtn.disabled = !videoReady;
+  els.faultVideoDialogStatus.textContent = videoReady
+    ? "De storingvideo is gereed."
+    : faultVideoPreparationText(camera);
+}
+
+function liveCameraViews() {
+  return [
+    {
+      tab: "user",
+      image: els.userLiveCamera,
+      placeholder: els.userLiveCameraPlaceholder,
+      inactiveMessage: "Open de User-tab om het livebeeld te laden.",
+    },
+  ];
+}
+
+function stopLiveCamera(message = null) {
+  liveCameraViews().forEach((view) => {
+    view.image.removeAttribute("src");
+    view.image.classList.add("hidden");
+    view.placeholder.classList.remove("hidden");
+    view.placeholder.textContent = message || view.inactiveMessage;
+  });
+  liveCameraActive = null;
 }
 
 function startLiveCamera(force = false) {
   const source = snapshot?.camera?.source;
-  if (activeTab !== "camera" || document.hidden || !source?.online) {
+  const view = liveCameraViews().find((item) => item.tab === activeTab);
+  if (!view || document.hidden || !source?.online) {
     stopLiveCamera(source?.error || "Livebeeld is niet beschikbaar.");
     return;
   }
-  if (liveCameraActive && !force) return;
+  if (liveCameraActive === activeTab && !force) return;
   stopLiveCamera("Livebeeld wordt geladen…");
-  liveCameraActive = true;
+  liveCameraActive = activeTab;
   // An MJPEG response never completes, so Chromium does not reliably emit a
   // normal image `load` event. Reveal the element as soon as the stream starts.
-  els.liveCamera.classList.remove("hidden");
-  els.liveCameraPlaceholder.classList.add("hidden");
-  els.liveCamera.src = `/api/video/live?v=${Date.now()}`;
+  view.image.classList.remove("hidden");
+  view.placeholder.classList.add("hidden");
+  view.image.src = `/api/video/live?v=${Date.now()}`;
 }
 
 function renderCamera() {
   const camera = snapshot?.camera || { enabled: false, state: "disabled" };
   const source = camera.source || { online: false };
-  const stateLabels = {
-    disabled: "Uitgeschakeld",
-    idle: "Gereed",
-    buffering: "Buffer actief",
-    "post-fault": "Na-opname",
-    finalizing: "Video verwerken",
-    "fault-ready": "Bibliotheek gereed",
-    error: "Opnamefout",
-  };
+  const cameraLive = source.online === true;
+  els.cameraLamp.classList.toggle("on", cameraLive);
+  els.cameraLamp.classList.toggle("error", !cameraLive);
+  els.cameraState.title = cameraLive
+    ? "Live camerabron is online"
+    : (source.error || "Live camerabron is offline");
 
-  els.cameraState.textContent = stateLabels[camera.state] || camera.state;
-  els.cameraSourceState.textContent = source.online ? "Bron online" : "Bron offline";
-  els.cameraTabBadge.className = "camera-tab-badge";
-  if (camera.error || source.error) els.cameraTabBadge.classList.add("error");
-  else if (camera.recording) els.cameraTabBadge.classList.add("recording");
-  else if (camera.incidentCount > 0) els.cameraTabBadge.classList.add("available");
-
-  if (!camera.enabled) {
-    els.cameraStatusText.textContent = "Video-opname is uitgeschakeld in de serviceconfiguratie";
-  } else if (camera.error) {
-    els.cameraStatusText.textContent = camera.error;
-  } else if (camera.state === "buffering") {
-    els.cameraStatusText.textContent = `Laatste ${camera.bufferSeconds} seconden van de productiecyclus worden tijdelijk onthouden`;
-  } else if (camera.state === "post-fault") {
-    els.cameraStatusText.textContent = `Storing gezien; nog ${camera.postFaultSeconds} seconden na de fout worden vastgelegd`;
-  } else if (camera.state === "finalizing") {
-    els.cameraStatusText.textContent = "Foutfragment wordt veilig samengesteld; dit kan enkele seconden duren";
-  } else if (camera.incidentCount > 0) {
-    els.cameraStatusText.textContent = "Livebeeld is beschikbaar en opgeslagen storingen kunnen worden teruggekeken";
-  } else {
-    els.cameraStatusText.textContent = "De opname start automatisch zodra een productiecyclus begint";
-  }
-
-  els.liveCameraResolution.textContent = `${source.resolution || camera.resolution || "onbekend"} @ ${source.desiredFps || camera.fps || "?"} fps`;
-  els.liveCameraRecording.textContent = camera.recording ? "Opnamebuffer actief" : "Geen opname";
-  els.cameraBufferDetails.textContent = `Buffer: ${camera.bufferSeconds || 60} s vóór + ${camera.postFaultSeconds || 0} s na een fout`;
-  els.cameraSourceDetails.textContent = source.online
-    ? `USB-camera online${Number.isFinite(source.capturedFps) ? ` · werkelijk ${source.capturedFps.toLocaleString("nl-NL", { maximumFractionDigits: 1 })} fps` : ""}`
-    : (source.error || "Camerabron niet bereikbaar");
+  const resolutionText = `${source.resolution || camera.resolution || "onbekend"} @ ${source.desiredFps || camera.fps || "?"} fps`;
+  const recordingText = camera.recording ? "Opnamebuffer actief" : "Geen opname";
+  els.userLiveCameraResolution.textContent = resolutionText;
+  els.userLiveCameraRecording.textContent = recordingText;
   els.incidentRetention.textContent = `Maximaal ${camera.maxIncidents || 50} storingen en ${camera.retentionDays || 30} dagen`;
   els.incidentCount.textContent = `${camera.incidentCount || 0} ${(camera.incidentCount || 0) === 1 ? "opname" : "opnames"}`;
-  els.viewFaultVideoBtn.classList.toggle("hidden", !camera.incidentCount);
 
-  if (activeTab === "camera") startLiveCamera();
+  if (activeTab === "user") startLiveCamera();
   const signature = `${camera.incidentCount || 0}:${camera.latestIncident?.id || ""}`;
   if (signature !== incidentLibrarySignature) {
     incidentLibrarySignature = signature;
@@ -540,6 +759,7 @@ function render() {
   renderAdvanced();
   renderLog();
   renderCamera();
+  updateFaultPrompt();
 }
 
 async function refresh() {
@@ -549,7 +769,10 @@ async function refresh() {
   } catch {
     els.runState.className = "status-pill status-fault";
     els.runState.textContent = "Offline";
-    els.bridgeState.textContent = "Bridge offline";
+    els.bridgeLamp.classList.remove("on");
+    els.bridgeLamp.classList.add("error");
+    els.remoteIoLamp.classList.remove("on");
+    els.remoteIoLamp.classList.add("error");
   }
 }
 
@@ -563,11 +786,11 @@ function activateTab(tabName) {
       els.ioTestEnable.checked = false;
       renderAdvanced();
     }
-    if (activeTab === "camera") {
+    if (activeTab === "user") {
       startLiveCamera();
-      loadIncidentLibrary();
     } else {
       stopLiveCamera();
+      if (activeTab === "camera") loadIncidentLibrary();
     }
 }
 
@@ -581,25 +804,37 @@ document.querySelector("#startBtn").addEventListener("click", () => command("sta
 document.querySelector("#stopBtn").addEventListener("click", () => command("stop"));
 document.querySelector("#estopBtn").addEventListener("click", () => command("estop"));
 document.querySelector("#ackBtn").addEventListener("click", () => command("ack"));
-els.viewFaultVideoBtn.addEventListener("click", async () => {
-  activateTab("camera");
-  await loadIncidentLibrary({ forceSelection: true });
+els.closeFaultVideoDialogBtn.addEventListener("click", dismissFaultPrompt);
+els.faultVideoDialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  dismissFaultPrompt();
+});
+els.openFaultVideoBtn.addEventListener("click", () => {
+  if (!faultPrompt?.incidentId) return;
+  els.faultVideoDialog.classList.add("expanded");
+  els.faultVideoDialogPlayer.classList.remove("hidden");
+  els.faultPopupVideo.src = `/api/video/incidents/${encodeURIComponent(faultPrompt.incidentId)}?v=${Date.now()}`;
+  els.faultPopupVideo.load();
+  els.faultPopupVideo.play().catch(() => {});
 });
 els.reloadIncidentVideoBtn.addEventListener("click", () => {
   const incident = incidentLibrary.find((item) => item.id === loadedIncidentId);
   if (incident) selectIncident(incident, true);
 });
-els.retryLiveCameraBtn.addEventListener("click", () => startLiveCamera(true));
-els.liveCamera.addEventListener("load", () => {
-  els.liveCamera.classList.remove("hidden");
-  els.liveCameraPlaceholder.classList.add("hidden");
-});
-els.liveCamera.addEventListener("error", () => {
-  stopLiveCamera("Livebeeld kon niet worden geladen. Controleer de camerabron en probeer opnieuw.");
+liveCameraViews().forEach((view) => {
+  view.image.addEventListener("load", () => {
+    if (liveCameraActive !== view.tab) return;
+    view.image.classList.remove("hidden");
+    view.placeholder.classList.add("hidden");
+  });
+  view.image.addEventListener("error", () => {
+    if (liveCameraActive !== view.tab) return;
+    stopLiveCamera("Livebeeld kon niet worden geladen. Controleer de camerabron en probeer opnieuw.");
+  });
 });
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) stopLiveCamera();
-  else if (activeTab === "camera") startLiveCamera(true);
+  else if (activeTab === "user") startLiveCamera(true);
 });
 
 document.querySelector("#enableCellBtn").addEventListener("click", async () => {
@@ -632,6 +867,8 @@ document.querySelector("#enableCellBtn").addEventListener("click", async () => {
 
 document.querySelector("#resetBtn").addEventListener("click", async () => {
   robotActionPending = "reset";
+  els.resetBtn.classList.remove("reset-progress-complete");
+  els.resetBtn.classList.add("reset-progress-running");
   operatorNotice = {
     title: "Robot resetten en herstarten",
     message: "Fout wissen, automatische modus inschakelen en Lua-programma starten",
@@ -646,6 +883,9 @@ document.querySelector("#resetBtn").addEventListener("click", async () => {
       message: "Robotfout gewist; automatische modus en Lua-programma actief",
       expiresAt: Date.now() + 5000,
     };
+    els.resetBtn.classList.remove("reset-progress-running");
+    els.resetBtn.classList.add("reset-progress-complete");
+    await new Promise((resolve) => window.setTimeout(resolve, 320));
   } catch (error) {
     operatorNotice = {
       title: "Reset mislukt",
@@ -653,6 +893,7 @@ document.querySelector("#resetBtn").addEventListener("click", async () => {
       expiresAt: Date.now() + 10000,
     };
   } finally {
+    els.resetBtn.classList.remove("reset-progress-running", "reset-progress-complete");
     robotActionPending = null;
     renderStatus();
   }
@@ -676,25 +917,97 @@ document.querySelector("#confirmExitHmiBtn").addEventListener("click", (event) =
 
 document.querySelector("#setBatchBtn").addEventListener("click", () => {
   batchTargetEditing = false;
-  els.batchTarget.blur();
   post("/api/holding", {
     name: "HMI_BATCH_TARGET",
-    value: Number(els.batchTarget.value || 1),
+    value: normalizeBatchTarget(batchWheelValue),
   });
 });
 
-els.batchTarget.addEventListener("focus", () => {
+els.batchWheel.addEventListener("pointerdown", (event) => {
   batchTargetEditing = true;
+  batchWheelPointer = {
+    id: event.pointerId,
+    y: event.clientY,
+    scrollTop: els.batchWheel.scrollTop,
+  };
 });
 
-els.batchTarget.addEventListener("blur", () => {
-  batchTargetEditing = false;
+els.batchWheel.addEventListener("pointerup", (event) => {
+  if (!batchWheelPointer || batchWheelPointer.id !== event.pointerId) return;
+  const dragged = Math.abs(event.clientY - batchWheelPointer.y) > 8
+    || Math.abs(els.batchWheel.scrollTop - batchWheelPointer.scrollTop) > 5;
+  if (dragged) batchWheelSuppressClickUntil = Date.now() + 300;
+  batchWheelPointer = null;
 });
 
-els.batchTarget.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    document.querySelector("#setBatchBtn").click();
+els.batchWheel.addEventListener("pointercancel", () => {
+  batchWheelSuppressClickUntil = Date.now() + 300;
+  batchWheelPointer = null;
+});
+
+els.batchWheel.addEventListener("wheel", () => {
+  batchTargetEditing = true;
+}, { passive: true });
+
+els.batchWheel.addEventListener("scroll", () => {
+  const value = batchValueFromScroll(els.batchWheel.scrollTop, batchWheelRowHeight);
+  if (value !== batchWheelValue) {
+    batchWheelValue = value;
+    updateBatchWheelAppearance();
   }
+}, { passive: true });
+
+els.batchWheel.addEventListener("click", (event) => {
+  const option = event.target.closest(".batch-wheel-option");
+  if (!option || Date.now() < batchWheelSuppressClickUntil) return;
+  const value = normalizeBatchTarget(option.dataset.value);
+  batchTargetEditing = true;
+  if (value === batchWheelValue) openBatchKeypad();
+  else setBatchWheelValue(value);
+});
+
+els.batchWheel.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+    event.preventDefault();
+    batchTargetEditing = true;
+    const direction = event.key === "ArrowDown" ? 1 : -1;
+    setBatchWheelValue(batchWheelValue + direction);
+  } else if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    openBatchKeypad();
+  }
+});
+
+els.batchKeypad.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-key]");
+  if (button) enterBatchKey(button.dataset.key);
+});
+
+els.batchKeypadDialog.addEventListener("keydown", (event) => {
+  if (/^\d$/.test(event.key)) {
+    event.preventDefault();
+    enterBatchKey(event.key);
+  } else if (event.key === "Backspace") {
+    event.preventDefault();
+    enterBatchKey("backspace");
+  } else if (event.key === "Enter" && !els.acceptBatchKeypadBtn.disabled) {
+    event.preventDefault();
+    els.acceptBatchKeypadBtn.click();
+  }
+});
+
+document.querySelector("#closeBatchKeypadBtn").addEventListener("click", closeBatchKeypad);
+document.querySelector("#cancelBatchKeypadBtn").addEventListener("click", closeBatchKeypad);
+els.batchKeypadDialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  closeBatchKeypad();
+});
+els.acceptBatchKeypadBtn.addEventListener("click", () => {
+  const value = Number(keypadDigits);
+  if (!Number.isFinite(value) || value < BATCH_MIN || value > BATCH_MAX) return;
+  batchTargetEditing = true;
+  setBatchWheelValue(value);
+  closeBatchKeypad();
 });
 
 document.querySelector("#resetCountersBtn").addEventListener("click", () => {
@@ -749,5 +1062,6 @@ els.ioOutputTests.addEventListener("click", async (event) => {
 els.ioTestEnable.addEventListener("change", renderAdvanced);
 
 setInterval(refresh, 700);
+initializeBatchWheel();
 activateTab(activeTab);
 refresh();

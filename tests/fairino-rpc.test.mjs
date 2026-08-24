@@ -81,7 +81,29 @@ test("loads and verifies the configured Lua program while stopped", async (t) =>
   assert.equal(result.changed, true);
   assert.equal(result.loadedAfter, "/fruser/cell&main.lua");
   assert.match(fake.calls[2].body, /<methodName>ProgramLoad<\/methodName>/);
-  assert.match(fake.calls[2].body, /<string>cell&amp;main\.lua<\/string>/);
+  assert.match(fake.calls[2].body, /<string>\/fruser\/cell&amp;main\.lua<\/string>/);
+});
+
+test("loads the configured Lua program when Fairino has no selected user job", async (t) => {
+  const fake = await startFakeRpcServer([
+    arrayResponse([0, 1]),
+    arrayResponse([-1, ""]),
+    scalarResponse(0),
+    arrayResponse([0, "/fruser/cell.lua"]),
+  ]);
+  t.after(() => fake.server.close());
+
+  const client = new FairinoRpcClient({ host: "127.0.0.1", port: fake.port, timeout: 1000 });
+  const result = await client.ensureProgramLoaded("cell.lua");
+
+  assert.deepEqual(result, {
+    programState: 1,
+    loadedBefore: "",
+    loadedAfter: "/fruser/cell.lua",
+    changed: true,
+  });
+  assert.match(fake.calls[2].body, /<methodName>ProgramLoad<\/methodName>/);
+  assert.match(fake.calls[2].body, /<string>\/fruser\/cell\.lua<\/string>/);
 });
 
 test("refuses to load a Lua program unless the controller program is stopped", async (t) => {

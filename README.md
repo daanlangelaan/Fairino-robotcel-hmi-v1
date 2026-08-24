@@ -36,11 +36,19 @@ After testing a workspace change, deploy it on the HMI PC with:
 sudo ./tools/deploy-hmi.sh
 ```
 
+On the production MiniPC, the **Rebuild HMI** desktop launcher runs this same
+guarded deployment in a visible terminal. It asks for sudo authorization,
+refuses deployment while the robot program is running, and reopens the HMI
+window after a successful service restart. **Close HMI** and **Start HMI** only
+manage the browser window and do not deploy source changes.
+
 The deployment script runs the repository checks, verifies through Fairino RPC
 that the controller program is stopped, backs up the previous runtime,
 synchronizes only the HMI runtime files, restarts `fairino-hmi`, and verifies
-the local API. Commit and push accepted workspace changes so GitHub remains
-reproducible.
+the local API. When the API itself is temporarily unavailable, deployment uses
+the configured controller address for the same direct Fairino RPC safety check;
+it still refuses every state other than stopped (`1`). Commit and push accepted
+workspace changes so GitHub remains reproducible.
 
 Robot programming and Fairino teaching assets remain in their existing project
 folders. The HMI is an operator interface and Modbus bridge; safety and motion
@@ -157,7 +165,7 @@ manual output tests.
 | `HMI_CAMERA_FPS` | `25` | Recorded frames per second. |
 | `HMI_CAMERA_SOURCE_PORT` | `8788` | Loopback-only port for the shared local MJPEG source. |
 | `HMI_CAMERA_SOURCE_URL` | `http://127.0.0.1:8788/stream` | Fixed local source used by the recorder. |
-| `HMI_CAMERA_BUFFER_SECONDS` | `60` | Approximate pre-fault video window. |
+| `HMI_CAMERA_BUFFER_SECONDS` | `120` | Approximate pre-fault video window. |
 | `HMI_CAMERA_POSTFAULT_SECONDS` | `10` | Video retained after the fault edge. |
 | `HMI_CAMERA_SEGMENT_SECONDS` | `4` | Internal rolling segment duration. |
 | `HMI_CAMERA_RETENTION_DAYS` | `30` | Maximum incident age. |
@@ -166,7 +174,9 @@ manual output tests.
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
-| `FAIRINO_PROGRAM_NAME` | `mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua` | Exact production Lua job that **Cel inschakelen** and Reset are allowed to load and run. |
+| `FAIRINO_PROGRAM_NAME` | `mini_cell_gripper_recovery_hmi_20260821_181858.lua` | Exact production Lua job that **Cel inschakelen** and Reset are allowed to load and run. |
+| `HMI_LUA_HEARTBEAT_IDLE_TIMEOUT_MS` | `5000` | Maximum unchanged Lua heartbeat while the state loop is idle. |
+| `HMI_LUA_HEARTBEAT_MOTION_TIMEOUT_MS` | `30000` | Maximum unchanged Lua heartbeat during a running cycle; allows for blocking Fairino motion instructions. |
 
 ## Linux service
 
@@ -188,7 +198,7 @@ docs/linux_hmi_service.md
 
 The optional local camera source opens the USB camera once and shares its
 loopback-only MJPEG stream between live HMI viewing and recording. The recorder
-starts on the rising edge of `CELL_RUNNING`, retains an approximately 60-second
+starts on the rising edge of `CELL_RUNNING`, retains an approximately 120-second
 rolling window without audio, and continues for 10 seconds after a rising
 `CELL_FAULT_ACTIVE` status. A normal cycle stop discards the temporary ring.
 
@@ -201,10 +211,10 @@ HMI but never changes robot state or blocks machine control. Video is diagnostic
 evidence only and is not a safety function.
 
 The installed Full HD mode produced approximately 9.7 MB for 12.1 seconds in a
-commissioning test, or roughly 48 MB per minute at that scene complexity. Allow
-at least 150 MB of temporary headroom while the ring, previous clip, and atomic
-replacement can briefly coexist; actual H.264 size varies with movement and
-image detail.
+commissioning test, or roughly 48 MB per minute at that scene complexity. Later
+production clips reached roughly 94 MB per minute. Allow at least 600 MB of
+temporary headroom while the 120-second ring, final clip, and atomic replacement
+can briefly coexist; actual H.264 size varies with movement and image detail.
 
 Linux requires `ffmpeg`, `v4l-utils`, `ustreamer`, camera access for the
 `fairino` service account, and a private state directory. Keep both HTTP services
@@ -260,9 +270,14 @@ returns state `2` and the Lua heartbeat changes.
 The live HMI status also reads `GetRobotErrorCode()` directly from the
 controller. A nonzero controller error overrides stale Lua/Modbus running data,
 turns off the green running indication, and presents the controller main/sub
-code as an error. Known controller codes also receive an operator-facing
-explanation; `4/1` is shown as an axis-collision warning with instructions to
-remove the obstruction and check that the arm can move freely.
+code as an error. `hmi/controller-status.mjs` contains a Dutch transcription of
+every main/sub motion-controller fault in the [Fairino 3.9.8 Appendix
+20.1](https://fairino-doc-en.readthedocs.io/latest/CobotsManual/appendix.html).
+For example, `4/2` is shown as a resettable collision on axis 2. The HMI also
+uses the documented resetability: Reset remains available for resettable faults
+and is blocked for non-resettable, unspecified, and unknown controller faults.
+Those cases direct the operator to technical personnel without sending the
+operator to the Fairino WebApp.
 
 The live status also reads `GetProgramState()`. Controller state `1` overrides a
 stale Lua `CELL_RUNNING` bit, so a failed start is shown as **Cel niet

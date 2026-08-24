@@ -13,7 +13,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 2
 fi
 
-for command_name in curl diff node npm rsync systemctl tar; do
+for command_name in awk curl diff node npm rsync systemctl tar; do
   if ! command -v "$command_name" >/dev/null 2>&1; then
     echo "Required command is missing: $command_name" >&2
     exit 2
@@ -36,19 +36,63 @@ npm --prefix "$repo_root" run check
 status_file=$(mktemp)
 trap 'rm -f "$status_file"' EXIT HUP INT TERM
 
-if ! curl --fail --silent --show-error --max-time 5 "$live_api_url" >"$status_file"; then
-  echo "Deployment refused: the live HMI API is unavailable for the safety check." >&2
+controller_host=${FAIRINO_HOST:-}
+rpc_port=${FAIRINO_RPC_PORT:-}
+environment_file=${FAIRINO_ENV_FILE:-/etc/fairino-hmi.env}
+
+read_environment_value() {
+  setting_name=$1
+  [ -r "$environment_file" ] || return 1
+  awk -F= -v name="$setting_name" '
+    $1 == name {
+      value = substr($0, index($0, "=") + 1)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", value)
+      gsub(/^"|"$/, "", value)
+      print value
+      exit
+    }
+  ' "$environment_file"
+}
+
+if [ -z "$controller_host" ]; then
+  controller_host=$(read_environment_value FAIRINO_HOST || true)
+fi
+if [ -z "$rpc_port" ]; then
+  rpc_port=$(read_environment_value FAIRINO_RPC_PORT || true)
+fi
+rpc_port=${rpc_port:-20003}
+
+# The API can be the component being repaired. Use it only as a last-resort
+# source for the controller address; the actual safety gate is always the
+# direct Fairino RPC program-state query below.
+: >"$status_file"
+if [ -z "$controller_host" ]; then
+  if ! curl --fail --silent --show-error --max-time 10 "$live_api_url" >"$status_file"; then
+    echo "Deployment refused: neither service configuration nor live HMI API provides the controller address." >&2
+    exit 3
+  fi
+  controller_host=$(node -e '
+    const fs = require("node:fs");
+    const snapshot = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+    const host = String(snapshot.endpoint || "").split(":")[0];
+    if (!host) process.exit(1);
+    process.stdout.write(host);
+  ' "$status_file")
+fi
+
+if [ -z "$controller_host" ]; then
+  echo "Deployment refused: the controller address is unavailable for the direct safety check." >&2
   exit 3
 fi
 
-controller_host=$(node -e '
-  const fs = require("node:fs");
-  const snapshot = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
-  const host = String(snapshot.endpoint || "").split(":")[0];
-  if (!host) process.exit(1);
-  process.stdout.write(host);
-' "$status_file")
-rpc_port=${FAIRINO_RPC_PORT:-20003}
+case "$rpc_port" in
+  ''|*[!0-9]*)
+    echo "Deployment refused: invalid Fairino RPC port: $rpc_port" >&2
+    exit 3
+    ;;
+esac
+
+echo "Checking controller program state directly at $controller_host:$rpc_port..."
 program_state=$(node --input-type=module -e '
   const { pathToFileURL } = await import("node:url");
   const moduleUrl = pathToFileURL(process.argv[1]).href;
@@ -66,6 +110,7 @@ if [ "$program_state" -ne 1 ]; then
   echo "Deployment refused: controller program state is $program_state, not stopped (1)." >&2
   exit 3
 fi
+echo "Controller program is stopped (state 1); deployment is permitted."
 
 timestamp=$(date +%Y%m%d_%H%M%S)
 install -d -m 0755 "$backup_root"
@@ -107,7 +152,7 @@ systemctl restart "$service_name"
 
 attempt=0
 while [ "$attempt" -lt 15 ]; do
-  if curl --fail --silent --show-error --max-time 2 "$live_api_url" >"$status_file"; then
+  if curl --fail --silent --show-error --max-time 5 "$live_api_url" >"$status_file"; then
     break
   fi
   attempt=$((attempt + 1))

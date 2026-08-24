@@ -90,6 +90,7 @@ test("camera configuration uses the live source and bounded library defaults", (
   assert.equal(defaults.sourceUrl, "http://127.0.0.1:8788/stream");
   assert.equal(defaults.width, 1920);
   assert.equal(defaults.height, 1080);
+  assert.equal(defaults.bufferSeconds, 120);
   assert.equal(defaults.postFaultSeconds, 10);
   assert.equal(defaults.retentionDays, 30);
   assert.equal(defaults.maxIncidents, 50);
@@ -146,11 +147,16 @@ test("post-fault capture remains active for the configured delay", async (t) => 
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(recorder.status().state, "post-fault");
   assert.equal(recorder.status().recording, true);
+  assert.equal(recorder.status().activeFault.faultCode, 9);
+  assert.equal(recorder.status().activeFault.incidentId, null);
   assert.deepEqual(captures[0].signals, []);
   releasePostFault();
   await preserving;
   assert.deepEqual(captures[0].signals, ["SIGINT"]);
   assert.equal(recorder.status().incidentCount, 1);
+  assert.equal(recorder.status().activeFault.incidentId, recorder.status().latestIncident.id);
+  await recorder.observe({ productionActive: false, faultActive: false });
+  assert.equal(recorder.status().activeFault, null);
   await recorder.shutdown();
 });
 

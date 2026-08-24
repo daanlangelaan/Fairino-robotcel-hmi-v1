@@ -35,7 +35,7 @@ export function videoRecorderConfigFromEnv(env = process.env) {
     width: numberSetting(env.HMI_CAMERA_WIDTH, 1920, { min: 320, max: 3840 }),
     height: numberSetting(env.HMI_CAMERA_HEIGHT, 1080, { min: 240, max: 2160 }),
     fps: numberSetting(env.HMI_CAMERA_FPS, 25, { min: 1, max: 60 }),
-    bufferSeconds: numberSetting(env.HMI_CAMERA_BUFFER_SECONDS, 60, { min: 10, max: 600 }),
+    bufferSeconds: numberSetting(env.HMI_CAMERA_BUFFER_SECONDS, 120, { min: 10, max: 600 }),
     postFaultSeconds: numberSetting(env.HMI_CAMERA_POSTFAULT_SECONDS, 10, { min: 0, max: 120 }),
     segmentSeconds: numberSetting(env.HMI_CAMERA_SEGMENT_SECONDS, 4, { min: 1, max: 30 }),
     retentionDays: numberSetting(env.HMI_CAMERA_RETENTION_DAYS, 30, { min: 1, max: 3650 }),
@@ -180,6 +180,7 @@ export class CycleFaultVideoRecorder {
     this.incidents = [];
     this.lastProductionActive = false;
     this.lastFaultActive = false;
+    this.activeFault = null;
     this.postFaultUntil = null;
     this.pruneTimer = null;
     this.operation = Promise.resolve();
@@ -262,9 +263,12 @@ export class CycleFaultVideoRecorder {
     const productionRising = production && !this.lastProductionActive;
     const productionFalling = !production && this.lastProductionActive;
     const faultRising = fault && !this.lastFaultActive;
+    const faultFalling = !fault && this.lastFaultActive;
 
     this.lastProductionActive = production;
     this.lastFaultActive = fault;
+
+    if (faultFalling) this.activeFault = null;
 
     if (faultRising) {
       return this.enqueue(() => this.preserveFault({ faultCode, faultMessage }));
@@ -290,6 +294,7 @@ export class CycleFaultVideoRecorder {
     this.error = null;
     this.captureError = "";
     this.postFaultUntil = null;
+    this.activeFault = null;
     this.state = "buffering";
 
     let child;
@@ -329,6 +334,13 @@ export class CycleFaultVideoRecorder {
   async preserveFault({ faultCode, faultMessage }) {
     if (!this.captureProcess && this.state !== "buffering") return;
     const faultAt = this.now().toISOString();
+    const activeFault = {
+      faultAt,
+      faultCode: Number(faultCode || 0),
+      faultMessage: faultMessage ? String(faultMessage).slice(0, 500) : null,
+      incidentId: null,
+    };
+    this.activeFault = activeFault;
     if (this.config.postFaultSeconds > 0) {
       this.state = "post-fault";
       this.postFaultUntil = new Date(
@@ -396,6 +408,7 @@ export class CycleFaultVideoRecorder {
       committed = true;
 
       this.incidents.unshift({ ...metadata, clipPath, thumbnailPath });
+      activeFault.incidentId = id;
       await this.enforceRetention();
       this.error = null;
       this.state = "fault-ready";
@@ -538,6 +551,7 @@ export class CycleFaultVideoRecorder {
       clipAvailable: Boolean(latest),
       incidentCount: this.incidents.length,
       latestIncident: publicIncident(latest),
+      activeFault: this.activeFault ? { ...this.activeFault } : null,
       bufferSeconds: this.config.bufferSeconds,
       postFaultSeconds: this.config.postFaultSeconds,
       postFaultUntil: this.postFaultUntil,

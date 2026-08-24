@@ -121,7 +121,7 @@ journalctl -u fairino-camera -u fairino-hmi -f
 | `HMI_CAMERA_FPS` | `25` | Capture rate. |
 | `HMI_CAMERA_SOURCE_PORT` | `8788` | Loopback-only shared MJPEG source port. |
 | `HMI_CAMERA_SOURCE_URL` | `http://127.0.0.1:8788/stream` | Fixed local stream used by FFmpeg. |
-| `HMI_CAMERA_BUFFER_SECONDS` | `60` | Approximate pre-fault window. |
+| `HMI_CAMERA_BUFFER_SECONDS` | `120` | Approximate pre-fault window. |
 | `HMI_CAMERA_POSTFAULT_SECONDS` | `10` | Retained video after the fault edge. |
 | `HMI_CAMERA_SEGMENT_SECONDS` | `4` | Rolling segment size. |
 | `HMI_CAMERA_RETENTION_DAYS` | `30` | Maximum incident age. |
@@ -131,6 +131,8 @@ journalctl -u fairino-camera -u fairino-hmi -f
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
 | `FAIRINO_PROGRAM_NAME` | `mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua` | Exact production Lua job that the HMI may load and run. |
+| `HMI_LUA_HEARTBEAT_IDLE_TIMEOUT_MS` | `5000` | Maximum unchanged Lua heartbeat outside an active motion cycle. |
+| `HMI_LUA_HEARTBEAT_MOTION_TIMEOUT_MS` | `30000` | Longer watchdog window during a cycle because Fairino motion calls block the Lua state loop. |
 
 ## Advanced output tests
 
@@ -181,7 +183,7 @@ The recorder is disabled by default. Before enabling it:
    ```
 
 Recording starts on the rising `CELL_RUNNING` status. A normal stop discards
-the temporary ring. A fault preserves approximately 60 seconds before and 10
+the temporary ring. A fault preserves approximately 120 seconds before and 10
 seconds after the fault. Each incident has an MP4, JSON metadata file, and
 normally a JPEG thumbnail in `/var/lib/fairino-hmi/camera/incidents`. The newest
 50 incidents younger than 30 days are retained by default; retention is applied
@@ -276,3 +278,15 @@ The deployment creates a timestamped backup under
 restart unless the program is stopped, synchronizes the runtime files, restarts
 the service, and checks the local API. After live verification, commit and push
 the same workspace changes to GitHub.
+
+If the local HMI API is the component that has stalled, the deployment reads
+`FAIRINO_HOST` and `FAIRINO_RPC_PORT` from `/etc/fairino-hmi.env` and performs
+the stopped-state check directly against the controller. This is a fallback for
+API availability only: controller program state must still equal `1`, otherwise
+deployment is refused.
+
+The MiniPC desktop shortcut **Rebuild HMI** starts
+`tools/rebuild-hmi-desktop.sh` in a terminal and uses this same deployment
+procedure. The terminal remains open when a check fails so the reason is
+visible. After a successful update it closes and reopens the Chromium HMI
+window, ensuring that both backend modules and browser assets are reloaded.

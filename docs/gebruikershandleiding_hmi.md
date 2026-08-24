@@ -3,7 +3,7 @@
 - Status: levende gebruikershandleiding
 - Laatste wijziging: 11 augustus 2026
 - HMI-softwareversie: werkversie `main`
-- Actief productieprogramma: `mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua`
+- Actief productieprogramma: `mini_cell_gripper_recovery_hmi_20260821_181858.lua`
 
 ## 1. Doel en doelgroep
 
@@ -60,6 +60,14 @@ De HMI meldt de cel pas als ingeschakeld wanneer:
 Wanneer het juiste programma al draait, gebruikt de HMI dit programma zonder
 een tweede startcommando te sturen.
 
+Tijdens een productiecyclus werkt ieder blok in de procesflow als
+voortgangsindicatie. Het actieve blok vult groen van links naar rechts op basis
+van recent gemeten doorlooptijden van die specifieke robotstap. De HMI bewaart
+de laatste zeven geldige metingen per stap en gebruikt de mediaan, zodat een
+eenmalige vertraging de volgende cyclus niet vertekent. Afgeronde stappen blijven
+volledig groen en toekomstige stappen blijven donker. De tekst blijft boven de
+groene vulling zichtbaar.
+
 ## 4. Bedieningsknoppen
 
 | Knop | Functie | Belangrijk gedrag |
@@ -69,20 +77,24 @@ een tweede startcommando te sturen.
 | **Stop** | Vraagt een gecontroleerde productiestop aan. | De actieve cyclus wordt afgemaakt. De melding **Laatste cyclus wordt afgerond…** pulseert totdat de cyclus klaar is. Er wordt geen volgende cyclus gestart. |
 | **Reset** | Herstelt een resetbare storing en start de robotruntime opnieuw. | Wist de controllerfout, controleert of laadt het productieprogramma, kiest automatische modus en voert play uit. Kan direct beweging veroorzaken. |
 | **Noodstop** | Stopt het actieve Lua-programma direct via de controller. | Softwarematige programmastop; geen vervanging voor de fysieke cel-noodstop. Daarna is normaal **Reset** nodig. |
-| **Instellen** | Slaat het ingevoerde batchaantal op. | Gebruik een waarde tussen 1 en 9999. |
+| **Batchwiel** | Kies het batchaantal door het wiel omhoog of omlaag te vegen. Een snelle veeg draait verder door. Tik op het middelste getal voor het numerieke toetsenblok. | Gebruik een waarde tussen 1 en 250. |
+| **Instellen** | Slaat het gekozen batchaantal op. | Controleer vóór het instellen het getoonde doel. |
 
 ## 5. Betekenis van lampen en hoofdstatus
 
 | Indicatie | Betekenis | Actie operator |
 | --- | --- | --- |
-| Rood knipperend, **Error** | Een controller-, proces- of HMI-noodstopfout is actief. | Lees foutcode en uitleg, verhelp de oorzaak en gebruik daarna Reset. |
+| Rood knipperend, **Error** | Een controller-, proces- of HMI-noodstopfout is actief. | Lees foutcode en uitleg. Gebruik Reset alleen wanneer de HMI de storing als resetbaar toont; schakel anders technisch personeel in. |
 | Oranje, **Ready** | Robotruntime is actief en de cel wacht op Start. | Controleer materiaal en batchaantal; druk daarna op Start. |
 | Groen, **Draait** | Een productiecyclus is actief. | Houd de celstatus in de gaten. |
 | **Cel niet ingeschakeld** | Het Lua-programma draait niet. | Controleer de cel en druk op Cel inschakelen. |
 | **Laatste cyclus wordt afgerond…** | Stop is aangevraagd, maar de actieve cyclus is nog bezig. | Wacht totdat de cyclus gereed is. |
 | **Batch klaar** | Het ingestelde batchdoel is bereikt. | Verwerk de gereedmelding en stel zo nodig een nieuw batchdoel in. |
 | **Offline** | De HMI heeft geen verbinding met de bridge/controller. | Start niet; controleer voeding, netwerk en vraag technisch personeel om hulp. |
-| **Lua communicatie ontbreekt** | De controller meldt het programma actief, maar de heartbeat verandert niet. | Start niet; stop de runtime veilig en laat de communicatie controleren. |
+| **Modbus** / **Bridge Modbus** | Groen betekent dat de HMI-bridge via Modbus TCP met de Fairino-controller communiceert; rood betekent dat die verbinding ontbreekt. | Start niet wanneer een van deze verbindingen rood is. |
+| **Camera** | Groen betekent dat de live camerabron online is; rood betekent dat deze niet bereikbaar is. | De camera is alleen voor diagnose en heeft geen veiligheidsfunctie. |
+| **M31 remote IO** | Groen betekent dat de M31 Modbus TCP-service op het ingestelde netwerkadres bereikbaar is; rood betekent dat de M31 niet bereikbaar is. | Controleer voeding en netwerkverbinding voordat de cel wordt gebruikt. |
+| **Lua communicatie ontbreekt** | De controller meldt het programma actief, maar de heartbeat verandert ook buiten de toegestane tijd voor een blokkerende robotbeweging niet. | Start niet; stop de runtime veilig en laat de communicatie controleren. |
 | **Programma controleren** | Er is een ander Lua-programma geladen dan het vastgelegde productieprogramma. | Druk alleen bij een vrije cel op Cel inschakelen; de HMI probeert het juiste programma te laden. |
 | **Programma gepauzeerd** | De controller meldt programmastatus `3`. | Laat technisch personeel het programma veilig stoppen voordat opnieuw wordt ingeschakeld. |
 
@@ -101,9 +113,17 @@ fysieke veiligheidssituatie dit toelaat.
 
 ## 7. Storing herstellen
 
-### 7.1 Asbotsing of shaft collision
+### 7.1 Controllerstoring of asbotsing
 
-De HMI kan bijvoorbeeld foutcode `4/1` met een uitleg over een asbotsing tonen.
+De HMI vertaalt de door Fairino gedocumenteerde hoofd- en subfoutcodes naar een
+Nederlandse omschrijving. Zo betekent `4/1` een botsing op as 1 en `4/2` een
+botsing op as 2. De HMI toont ook of de fout volgens Fairino resetbaar is.
+
+- Bij een resetbare storing blijft **Reset** beschikbaar en toont de HMI eerst
+  welke oorzaak gecontroleerd moet worden.
+- Bij een niet-resetbare, ongedocumenteerde of onbekende controllerstoring wordt
+  **Reset geblokkeerd**. Schakel dan technisch personeel in.
+- De operator hoeft voor storingsherstel de Fairino WebApp niet te openen.
 
 1. Stop de werkzaamheden en controleer waar de robot contact heeft gemaakt.
 2. Verwijder het obstakel of de oorzaak van de botsing.
@@ -111,7 +131,13 @@ De HMI kan bijvoorbeeld foutcode `4/1` met een uitleg over een asbotsing tonen.
 4. Zorg dat niemand zich in de cel bevindt.
 5. Druk eenmaal op **Reset**.
 6. Houd rekening met een directe home-beweging.
-7. Controleer dat de HMI weer **Ready** meldt voordat Start wordt gebruikt.
+7. Als de grijper bij de storing gesloten was, blijft hij tijdens deze
+   home-beweging gesloten en opent hij pas op home. Houd het opvangbakje bij
+   home leeg en correct geplaatst.
+8. Controleer dat de HMI weer **Ready** meldt voordat Start wordt gebruikt.
+
+Deze productherstelvolgorde geldt niet als garantie bij een fysieke noodstop,
+safety-stop of verlies van pneumatiek/voeding. De grijper is geen veiligheidsfunctie.
 
 Wanneer Reset mislukt, lees dan de melding. Druk niet blind opnieuw; controleer
 de foutstatus en raadpleeg technisch personeel wanneer de fout terugkomt.
@@ -140,12 +166,14 @@ veiligheidsreset.
 
 Wanneer de video-optie door technisch personeel is vrijgegeven, start de HMI
 automatisch een tijdelijke videobuffer zodra de productiecyclus begint. Alleen
-de laatste ongeveer 60 seconden worden onthouden; er wordt geen audio opgenomen.
+de laatste ongeveer 120 seconden worden onthouden; er wordt geen audio opgenomen.
 
 Bij een fout blijft de opname nog ongeveer 10 seconden lopen. Daarna stelt de
-HMI het fragment in enkele seconden samen. Open **Camera**, of gebruik **Bekijk
-storingvideo** wanneer die knop zichtbaar is. Kies de storing op datum en tijd
-in de bibliotheek en gebruik de afspeelknoppen om terug te kijken en te zoeken.
+HMI het fragment in enkele seconden samen. De foutmelding verschijnt direct in
+een venster. Sluit het venster met **×** om de melding over te slaan. Zodra de
+bijbehorende opname gereed is, wordt **Bekijk storingvideo** actief. Met die knop
+wordt hetzelfde venster groter en speelt de opname van deze specifieke storing
+af. Eerdere opnames blijven op datum en tijd beschikbaar in **Camera**.
 
 - Een normale cyclus zonder fout wordt niet bewaard.
 - De bibliotheek bewaart standaard maximaal 50 storingen en maximaal 30 dagen;
@@ -171,11 +199,11 @@ mislukt.
 
 ### Camera
 
-Dit tabblad toont het lokale livebeeld en de storingsbibliotheek. Het livebeeld
-wordt alleen geladen terwijl dit tabblad open is. Een rode stip betekent dat
-tijdens een productiecyclus een tijdelijke buffer actief is; groen betekent dat
-opnames beschikbaar zijn; oranje meldt een camerafout. Iedere opname toont
-datum, tijd, foutcode en waar beschikbaar een thumbnail en foutomschrijving.
+Het lokale livebeeld staat uitsluitend op de **User**-pagina. Dit tabblad toont
+alleen de storingsbibliotheek. Een rode stip betekent dat tijdens een
+productiecyclus een tijdelijke buffer actief is; groen betekent dat opnames
+beschikbaar zijn; oranje meldt een camerafout. De titel van iedere opname toont
+datum en tijd; daaronder staan waar beschikbaar een thumbnail en foutomschrijving.
 Gebruik **Video opnieuw laden** wanneer de browser het gekozen fragment niet
 direct toont. Er wordt geen audio opgenomen.
 
@@ -213,5 +241,8 @@ de Markdown-versie blijft leidend voor verdere ontwikkeling.
 
 | Datum | Softwareversie | Wijziging handleiding |
 | --- | --- | --- |
-| 2026-08-11 | werkversie `main` | Live Full-HD camerabeeld en een begrensde storingsbibliotheek met 60 s vóór en 10 s na de fout toegevoegd. |
+| 2026-08-11 | werkversie `main` | Heartbeatbewaking houdt tijdens een actieve cyclus rekening met blokkerende Fairino-bewegingen, zodat geen kortstondige valse communicatiemelding ontstaat. |
+| 2026-08-11 | werkversie `main` | Alle gedocumenteerde Fairino hoofd-/subfoutcodes krijgen Nederlandse HMI-tekst; Reset wordt geblokkeerd wanneer een controllerfout niet als resetbaar is gedocumenteerd. |
+| 2026-08-21 | werkversie `main` | Storingsbibliotheek uitgebreid naar 120 s vóór en 10 s na de fout. |
+| 2026-08-11 | werkversie `main` | Live Full-HD camerabeeld en een begrensde storingsbibliotheek toegevoegd. |
 | 2026-08-10 | `04e0ba9` | Eerste gebruikershandleiding: centrale celopstart, normale bediening, Stop, Reset, softwarematige Noodstop, statussen en foutafhandeling. |

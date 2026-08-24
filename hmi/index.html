@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fairino Cel HMI</title>
-  <link rel="stylesheet" href="./styles.css?v=20260811-camera-4">
+  <link rel="stylesheet" href="./styles.css?v=20260814-reset-progress">
 </head>
 <body>
   <header class="topbar">
@@ -17,18 +17,17 @@
       <span id="activeState" class="status-code">S00_INIT</span>
       <span id="cycleCount" class="status-code">Cycles 0</span>
       <span id="modbusState" class="status-code comm-status"><span id="modbusLamp" class="comm-lamp"></span>Modbus</span>
+      <span id="cameraState" class="status-code comm-status"><span id="cameraLamp" class="comm-lamp error"></span>Camera</span>
       <span id="robotCommsState" class="status-code comm-status"><span id="robotCommsLamp" class="comm-lamp"></span>Robot HB</span>
-      <span id="bridgeState" class="status-code">Bridge mock</span>
+      <span id="bridgeState" class="status-code comm-status"><span id="bridgeLamp" class="comm-lamp error"></span>Bridge Modbus</span>
+      <span id="remoteIoState" class="status-code comm-status"><span id="remoteIoLamp" class="comm-lamp error"></span>M31 remote IO</span>
     </div>
   </header>
 
   <nav class="tabs" aria-label="HMI tabs">
     <button class="tab active" data-tab="user">User</button>
     <button class="tab" data-tab="troubleshoot">Troubleshoot</button>
-    <button class="tab camera-tab" data-tab="camera">
-      Camera
-      <span id="cameraTabBadge" class="camera-tab-badge" aria-hidden="true"></span>
-    </button>
+    <button class="tab" data-tab="camera">Camera</button>
     <button class="tab" data-tab="advanced">Advanced</button>
   </nav>
 
@@ -50,10 +49,20 @@
         </div>
 
         <div class="batch-panel">
-          <label for="batchTarget">Batch aantal</label>
+          <span class="batch-label">Batch aantal</span>
           <div class="batch-controls">
-            <input id="batchTarget" type="number" min="1" max="9999" value="10">
-            <button id="setBatchBtn">Instellen</button>
+            <div class="batch-wheel-frame">
+              <div
+                id="batchWheel"
+                class="batch-wheel"
+                role="listbox"
+                tabindex="0"
+                aria-label="Batch aantal, 1 tot en met 250"
+                aria-activedescendant="batchOption10"
+              ></div>
+              <span class="batch-wheel-selection" aria-hidden="true"></span>
+            </div>
+            <button id="setBatchBtn" class="action">Instellen</button>
           </div>
           <div class="batch-counts">
             <span><strong id="batchDone">0</strong> gereed</span>
@@ -67,7 +76,6 @@
           <button id="stopBtn" class="action">Stop</button>
           <button id="resetBtn" class="action">Reset</button>
           <button id="estopBtn" class="danger action">Noodstop</button>
-          <button id="viewFaultVideoBtn" class="action video-action hidden">Bekijk storingvideo</button>
           <p id="startupNotice" class="startup-notice hidden" role="status">
             Controleer of de cel vrij is. Inschakelen kan de robot direct naar de homepositie laten bewegen.
           </p>
@@ -77,15 +85,30 @@
         </div>
       </section>
 
-      <section class="machine-band" aria-label="Machine overzicht">
-        <div class="machine-band-header">
-          <div>
-            <h2>Procesflow</h2>
-            <p>Filter en keerklep worden apart aangeboden, daarna verlijmd en afgevoerd naar de droogrij.</p>
+      <section class="user-overview-grid" aria-label="Live camera en machineoverzicht">
+        <section class="panel user-live-camera-panel" aria-label="Live camera">
+          <div class="live-camera-frame user-live-camera-frame">
+            <div id="userLiveCameraPlaceholder" class="camera-placeholder">
+              Livebeeld wordt geladen…
+            </div>
+            <img id="userLiveCamera" class="live-camera hidden" alt="Livebeeld van de robotcel">
+            <span class="user-live-camera-label">Live camera · geen veiligheidsfunctie</span>
+            <div class="live-camera-overlay" aria-hidden="true">
+              <span id="userLiveCameraResolution">1920×1080</span>
+              <span id="userLiveCameraRecording">Geen opname</span>
+            </div>
           </div>
-          <span class="status-code">Auto cycle</span>
-        </div>
-        <div class="cell-view">
+        </section>
+
+        <section class="machine-band" aria-label="Machine overzicht">
+          <div class="machine-band-header">
+            <div>
+              <h2>Procesflow</h2>
+              <p>Filter en keerklep worden apart aangeboden, daarna verlijmd en afgevoerd naar de droogrij.</p>
+            </div>
+            <span class="status-code">Auto cycle</span>
+          </div>
+          <div class="cell-view">
           <div class="station" data-state="S40_SELECT_FILTER_DISPENSER">
             <strong>Filter dispenser</strong>
             <span>Selecteren</span>
@@ -146,7 +169,8 @@
             <strong>Cyclus klaar</strong>
             <span>Terug naar ready</span>
           </div>
-        </div>
+          </div>
+        </section>
       </section>
     </section>
 
@@ -195,37 +219,7 @@
     </section>
 
     <section id="cameraTab" class="tab-page">
-      <section class="camera-layout" aria-label="Camera en storingvideo's">
-        <div class="panel camera-panel live-camera-panel">
-          <div class="panel-header camera-panel-header">
-            <div>
-              <h2>Live camera</h2>
-              <p id="cameraStatusText">Video-opname niet geconfigureerd</p>
-            </div>
-            <div class="camera-status-group">
-              <span id="cameraSourceState" class="status-code">Bron offline</span>
-              <span id="cameraState" class="status-code">Uitgeschakeld</span>
-            </div>
-          </div>
-
-          <div class="live-camera-frame">
-            <div id="liveCameraPlaceholder" class="camera-placeholder">
-              Open de Camera-tab om het livebeeld te laden.
-            </div>
-            <img id="liveCamera" class="live-camera hidden" alt="Livebeeld van de robotcel">
-            <div class="live-camera-overlay" aria-hidden="true">
-              <span id="liveCameraResolution">1920×1080</span>
-              <span id="liveCameraRecording">Geen opname</span>
-            </div>
-          </div>
-
-          <div class="camera-details">
-            <span id="cameraBufferDetails">Buffer: 60 s vóór + 10 s na een fout</span>
-            <span id="cameraSourceDetails">Camerabron wordt gecontroleerd</span>
-            <button id="retryLiveCameraBtn" class="small">Livebeeld opnieuw laden</button>
-          </div>
-        </div>
-
+      <section class="camera-layout" aria-label="Storingvideo's">
         <div class="panel camera-panel incident-library-panel">
           <div class="panel-header camera-panel-header">
             <div>
@@ -257,7 +251,7 @@
           </div>
 
           <p class="camera-safety-note">
-            Livebeeld en opnames zijn uitsluitend bedoeld voor storingsdiagnose. Ze zijn geen veiligheidsfunctie en bewijzen niet dat de cel vrij is.
+            Storingopnames zijn uitsluitend bedoeld voor diagnose. Ze zijn geen veiligheidsfunctie en bewijzen niet dat de cel vrij is.
           </p>
         </div>
       </section>
@@ -297,7 +291,7 @@
             </div>
             <div class="output-test-row" data-address="305">
               <span class="reg-address">DO5</span>
-              <strong>Debug clamp OK</strong>
+              <strong>Keerklep aandrukker</strong>
               <span>Coil 305</span>
               <button data-output-action="on">Aan</button>
               <button data-output-action="off">Uit</button>
@@ -305,7 +299,7 @@
             </div>
             <div class="output-test-row" data-address="306">
               <span class="reg-address">DO6</span>
-              <strong>Debug pick OK</strong>
+              <strong>Keerklep toevoer</strong>
               <span>Coil 306</span>
               <button data-output-action="on">Aan</button>
               <button data-output-action="off">Uit</button>
@@ -313,7 +307,7 @@
             </div>
             <div class="output-test-row" data-address="307">
               <span class="reg-address">DO7</span>
-              <strong>Debug place entered</strong>
+              <strong>Lijmtrigger</strong>
               <span>Coil 307</span>
               <button data-output-action="on">Aan</button>
               <button data-output-action="off">Uit</button>
@@ -324,6 +318,54 @@
       </section>
     </section>
   </main>
+
+  <dialog id="batchKeypadDialog" class="batch-keypad-dialog" aria-labelledby="batchKeypadTitle">
+    <div class="batch-keypad-shell">
+      <button id="closeBatchKeypadBtn" class="batch-keypad-close" type="button" aria-label="Toetsenblok sluiten">×</button>
+      <h2 id="batchKeypadTitle">Batch aantal invoeren</h2>
+      <output id="batchKeypadDisplay" class="batch-keypad-display" aria-live="polite">10</output>
+      <p id="batchKeypadStatus" class="batch-keypad-status">Kies een waarde van 1 tot en met 250.</p>
+      <div id="batchKeypad" class="batch-keypad" aria-label="Numeriek toetsenblok">
+        <button type="button" data-key="1">1</button>
+        <button type="button" data-key="2">2</button>
+        <button type="button" data-key="3">3</button>
+        <button type="button" data-key="4">4</button>
+        <button type="button" data-key="5">5</button>
+        <button type="button" data-key="6">6</button>
+        <button type="button" data-key="7">7</button>
+        <button type="button" data-key="8">8</button>
+        <button type="button" data-key="9">9</button>
+        <button type="button" data-key="clear" class="batch-keypad-function">Wissen</button>
+        <button type="button" data-key="0">0</button>
+        <button type="button" data-key="backspace" class="batch-keypad-function" aria-label="Laatste cijfer wissen">⌫</button>
+      </div>
+      <div class="batch-keypad-actions">
+        <button id="cancelBatchKeypadBtn" type="button">Annuleren</button>
+        <button id="acceptBatchKeypadBtn" class="primary" type="button">Overnemen</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="faultVideoDialog" class="fault-video-dialog" aria-labelledby="faultVideoDialogTitle">
+    <div class="fault-video-dialog-shell">
+      <button id="closeFaultVideoDialogBtn" class="fault-video-dialog-close" type="button" aria-label="Melding sluiten">×</button>
+      <div class="fault-video-dialog-copy">
+        <span class="fault-video-dialog-kicker">Storing gedetecteerd</span>
+        <h2 id="faultVideoDialogTitle">Error</h2>
+        <p id="faultVideoDialogMessage"></p>
+        <p id="faultVideoDialogStatus" class="fault-video-dialog-status" role="status" aria-live="polite"></p>
+        <button id="openFaultVideoBtn" class="primary fault-video-dialog-action" type="button">Bekijk storingvideo</button>
+      </div>
+      <div id="faultVideoDialogPlayer" class="fault-video-dialog-player hidden">
+        <video id="faultPopupVideo" controls preload="metadata">
+          Uw browser kan deze storingvideo niet afspelen.
+        </video>
+        <p class="camera-safety-note">
+          Storingopnames zijn uitsluitend bedoeld voor diagnose. Controleer altijd zelf of de cel veilig en vrij is.
+        </p>
+      </div>
+    </div>
+  </dialog>
 
   <dialog id="exitHmiDialog" class="exit-dialog" aria-labelledby="exitHmiTitle">
     <form method="dialog">
@@ -340,6 +382,6 @@
     </form>
   </dialog>
 
-  <script src="./app.js?v=20260811-camera-4"></script>
+  <script type="module" src="./app.js?v=20260814-reset-progress"></script>
 </body>
 </html>

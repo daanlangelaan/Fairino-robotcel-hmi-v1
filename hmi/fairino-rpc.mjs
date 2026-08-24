@@ -185,12 +185,23 @@ export class FairinoRpcClient {
       );
     }
 
-    const loadedBefore = await this.getLoadedProgram();
+    let loadedBefore = "";
+    try {
+      loadedBefore = await this.getLoadedProgram();
+    } catch (error) {
+      // Fairino returns [-1, ""] when no user program is currently selected.
+      // In stopped state this is a valid condition: load the configured job.
+      if (!(error instanceof FairinoRpcError)
+        || !/GetLoadedProgram failed: \[-1,""\]/.test(error.message)) {
+        throw error;
+      }
+    }
     if (normalizeProgramName(loadedBefore) === expectedProgram) {
       return { programState, loadedBefore, loadedAfter: loadedBefore, changed: false };
     }
 
-    const result = await this.call("ProgramLoad", [expectedProgram]);
+    const expectedPath = `/fruser/${expectedProgram}`;
+    const result = await this.call("ProgramLoad", [expectedPath]);
     if (result !== 0) {
       throw new FairinoRpcError(`ProgramLoad was rejected with code ${result}`);
     }

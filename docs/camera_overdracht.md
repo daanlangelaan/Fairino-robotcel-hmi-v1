@@ -6,11 +6,12 @@ bedoeld als startpunt voor een nieuwe Codex-taak op de MiniPC.
 
 ## Huidige werking
 
-- De tab **Camera** toont het livebeeld van de aangesloten Jieli USB-camera.
+- De pagina **User** toont het livebeeld naast de procesflow; de tab **Camera**
+  toont alleen de storingsbibliotheek.
 - De camera wordt één keer geopend door `fairino-camera`; de HMI en recorder
   gebruiken de gedeelde MJPEG-bron via loopback op `127.0.0.1:8788`.
 - Opname start bij de opgaande flank van `CELL_RUNNING`.
-- Er blijft ongeveer 60 seconden video vóór een fout beschikbaar en er wordt na
+- Er blijft ongeveer 120 seconden video vóór een fout beschikbaar en er wordt na
   een opgaande `CELL_FAULT_ACTIVE` nog 10 seconden opgenomen.
 - Een normale cyclus zonder fout wordt niet bewaard.
 - Storingsopnamen worden als MP4 met JSON-metadata en normaal een thumbnail
@@ -25,6 +26,9 @@ bedoeld als startpunt voor een nieuwe Codex-taak op de MiniPC.
   gericht.
 - De HMI rapporteerde tijdens de visuele test ongeveer 22 fps bij `1920x1080`.
 - De Camera-tab kan rechtstreeks worden geopend met `?tab=camera`.
+- Een nieuwe storing opent een wegklikbaar meldingsvenster. De videoknop wordt
+  pas actief zodra de opname van precies die storing is opgeslagen; daarna
+  vergroot het venster en speelt het fragment daarin af.
 - De eerder vastgelopen laadweergave is verholpen door `.hidden` altijd
   `display: none !important` te laten toepassen en door versiegebonden CSS/JS te
   laden.
@@ -75,7 +79,7 @@ curl -fsS http://127.0.0.1:8788/state
 
 1. Camera definitief richten met robot en actuatoren veilig stil.
 2. Eén volledige testcyclus met gesimuleerde of gecontroleerde fout uitvoeren.
-3. Controleren dat de clip circa 60 seconden vóór en 10 seconden na de fout bevat,
+3. Controleren dat de clip circa 120 seconden vóór en 10 seconden na de fout bevat,
    afspeelbaar en doorzoekbaar is en de juiste datum, tijd en foutmetadata toont.
 4. Opslagverbruik en retentie na meerdere clips controleren.
 5. Remote toegang pas als apart beveiligingsontwerp toevoegen.
