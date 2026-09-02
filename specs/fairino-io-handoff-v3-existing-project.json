@@ -1,0 +1,547 @@
+{
+  "schemaVersion": 3,
+  "handoffType": "fairino-to-electrical-schema-app",
+  "flow": {
+    "direction": "fairino-to-electrical-schema-app",
+    "mode": "existing-schema-project",
+    "handoffScope": "process-field-devices-functions-and-io",
+    "schemaAppAction": "apply-field-device-data-preserve-existing-cabinet",
+    "schemaProjectRead": false,
+    "fieldDeviceSelectionOwner": "fairino-project",
+    "internalComponentSelectionOwner": "electrical-schema-app",
+    "finalNumberingOwner": "electrical-schema-app"
+  },
+  "project": {
+    "id": "fairino-filter-check-valve-cell",
+    "name": "Robotcel filter en keerklep verlijming",
+    "revision": "V3-rc19"
+  },
+  "robotPlatform": {
+    "manufacturer": "FAIRINO",
+    "model": "FR5"
+  },
+  "library": {
+    "catalogId": "rd-technical-library",
+    "catalogVersion": "0.1.0-rc.19",
+    "commit": "2a31700e3c8ee1d3a2f05cf1cc621b62783dfa85"
+  },
+  "fieldDevices": [
+    {
+      "id": "gripper-valve",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "functionDescription": "Grijper sluiten en openen"
+    },
+    {
+      "id": "filter-clamp-valve",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "functionDescription": "Filter inklemmen en vrijgeven"
+    },
+    {
+      "id": "check-valve-press-valve",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "functionDescription": "Keerklep inpersen en pers terugbrengen"
+    },
+    {
+      "id": "check-valve-feed-valve",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "functionDescription": "Geteste gecombineerde bediening van bufferklem en keerklepvrijgave"
+    },
+    {
+      "id": "glue-dispenser",
+      "libraryItemId": "unbranded-mt-410-peristaltic-dispenser",
+      "libraryVersion": 1,
+      "functionDescription": "Lijmdosering starten via een potentiaalvrij maakcontact",
+      "catalogReviewAcceptance": "accepted-for-project-use"
+    },
+    {
+      "id": "status-tower",
+      "libraryItemId": "zdnyi-dh50-4w-j-signal-tower",
+      "libraryVersion": 1,
+      "functionDescription": "Visuele machine-status en akoestische signalering",
+      "catalogReviewAcceptance": "accepted-for-project-use"
+    },
+    {
+      "id": "check-valve-pick-sensor",
+      "libraryItemId": "gtric-e3x-na41",
+      "libraryVersion": 1,
+      "functionDescription": "Keerklep op de pickpositie detecteren"
+    },
+    {
+      "id": "gripper-filter-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Filteraanwezigheid in de grijper detecteren"
+    },
+    {
+      "id": "gripper-check-valve-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Keerklepaanwezigheid in de grijper detecteren"
+    },
+    {
+      "id": "filter-clamp-open-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Open stand van de filterklem detecteren"
+    },
+    {
+      "id": "filter-clamp-closed-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Gesloten stand van de filterklem detecteren"
+    },
+    {
+      "id": "press-home-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Teruggetrokken thuisstand van de perscilinder detecteren"
+    },
+    {
+      "id": "press-inserted-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Volledig ingeperste stand van de perscilinder detecteren"
+    },
+    {
+      "id": "check-valve-buffer-extended-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Uitgeschoven stand van de keerklep-bufferklem detecteren"
+    },
+    {
+      "id": "check-valve-buffer-retracted-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Ingeschoven stand van de keerklep-bufferklem detecteren"
+    },
+    {
+      "id": "check-valve-gate-open-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Open stand van de keerklepschuif detecteren"
+    },
+    {
+      "id": "check-valve-gate-closed-sensor",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "functionDescription": "Gesloten stand van de keerklepschuif detecteren"
+    }
+  ],
+  "ioAssignments": [
+    {
+      "id": "io-gripper-valve",
+      "direction": "digital-output",
+      "signalName": "DO_GRIPPER_CLOSE",
+      "description": "Bekrachtigt het grijperventiel",
+      "deviceEndpoint": {
+        "fieldDeviceId": "gripper-valve",
+        "portIds": ["coil-command"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO1",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO1" },
+          { "namespace": "modbus-coil-zero-based", "value": "0" },
+          { "namespace": "fairino-mirror", "value": "DO0" }
+        ]
+      },
+      "safeState": "de-energized"
+    },
+    {
+      "id": "io-filter-clamp-valve",
+      "direction": "digital-output",
+      "signalName": "DO_CLAMP_CLOSE",
+      "description": "Bekrachtigt het filterklemventiel",
+      "deviceEndpoint": {
+        "fieldDeviceId": "filter-clamp-valve",
+        "portIds": ["coil-command"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO2",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO2" },
+          { "namespace": "modbus-coil-zero-based", "value": "1" },
+          { "namespace": "fairino-mirror", "value": "DO1" }
+        ]
+      },
+      "safeState": "de-energized"
+    },
+    {
+      "id": "io-status-green",
+      "direction": "digital-output",
+      "signalName": "DO_LAMP_GREEN",
+      "description": "Activeert groen voor automatische cyclus actief",
+      "deviceEndpoint": {
+        "fieldDeviceId": "status-tower",
+        "portIds": ["terminal-green"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO3",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO3" },
+          { "namespace": "modbus-coil-zero-based", "value": "2" },
+          { "namespace": "fairino-mirror", "value": "DO2" }
+        ]
+      },
+      "safeState": "off"
+    },
+    {
+      "id": "io-status-yellow",
+      "direction": "digital-output",
+      "signalName": "DO_LAMP_ORANGE",
+      "description": "Activeert de fysieke gele laag voor de bestaande softwarestatus gereed of wachten",
+      "deviceEndpoint": {
+        "fieldDeviceId": "status-tower",
+        "portIds": ["terminal-yellow"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO4",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO4" },
+          { "namespace": "modbus-coil-zero-based", "value": "3" },
+          { "namespace": "fairino-mirror", "value": "DO3" }
+        ]
+      },
+      "safeState": "off"
+    },
+    {
+      "id": "io-status-red",
+      "direction": "digital-output",
+      "signalName": "DO_LAMP_RED",
+      "description": "Activeert rood voor procesfout of safety-indicatie",
+      "deviceEndpoint": {
+        "fieldDeviceId": "status-tower",
+        "portIds": ["terminal-red"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO5",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO5" },
+          { "namespace": "modbus-coil-zero-based", "value": "4" },
+          { "namespace": "fairino-mirror", "value": "DO4" }
+        ]
+      },
+      "safeState": "off"
+    },
+    {
+      "id": "io-check-valve-press-valve",
+      "direction": "digital-output",
+      "signalName": "DO_CHECK_VALVE_PRESS",
+      "description": "Bekrachtigt het keerklep-persventiel",
+      "deviceEndpoint": {
+        "fieldDeviceId": "check-valve-press-valve",
+        "portIds": ["coil-command"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO6",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO6" },
+          { "namespace": "modbus-coil-zero-based", "value": "5" },
+          { "namespace": "fairino-mirror", "value": "DO5" }
+        ]
+      },
+      "safeState": "de-energized"
+    },
+    {
+      "id": "io-check-valve-feed-valve",
+      "direction": "digital-output",
+      "signalName": "DO_CHECK_VALVE_FEED",
+      "description": "Bekrachtigt de geteste gecombineerde bufferklem en keerklepvrijgave",
+      "deviceEndpoint": {
+        "fieldDeviceId": "check-valve-feed-valve",
+        "portIds": ["coil-command"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO7",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO7" },
+          { "namespace": "modbus-coil-zero-based", "value": "6" },
+          { "namespace": "fairino-mirror", "value": "DO6" }
+        ]
+      },
+      "safeState": "de-energized"
+    },
+    {
+      "id": "io-glue-trigger",
+      "direction": "digital-output",
+      "signalName": "DO_GLUE_TRIGGER",
+      "description": "Sluit het potentiaalvrije startcontact van de lijmdispenser",
+      "deviceEndpoint": {
+        "fieldDeviceId": "glue-dispenser",
+        "portIds": ["terminal-start-1", "terminal-start-2"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO8",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO8" },
+          { "namespace": "modbus-coil-zero-based", "value": "7" },
+          { "namespace": "fairino-mirror", "value": "DO7" }
+        ]
+      },
+      "safeState": "start-contact-open"
+    },
+    {
+      "id": "io-status-blue",
+      "direction": "digital-output",
+      "signalName": "DO_LAMP_BLUE",
+      "description": "Activeert blauw voor materiaal bijvullen",
+      "deviceEndpoint": {
+        "fieldDeviceId": "status-tower",
+        "portIds": ["terminal-blue"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO9",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO9" },
+          { "namespace": "modbus-coil-zero-based", "value": "8" },
+          { "namespace": "fairino-mirror", "value": "DO8" }
+        ]
+      },
+      "safeState": "off"
+    },
+    {
+      "id": "io-status-buzzer",
+      "direction": "digital-output",
+      "signalName": "DO_BUZZER",
+      "description": "Activeert de zoemer; procesfunctie wordt later in FAIRINO vastgelegd",
+      "deviceEndpoint": {
+        "fieldDeviceId": "status-tower",
+        "portIds": ["terminal-buzzer-orange"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-do",
+        "channelId": "DO10",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DO10" },
+          { "namespace": "modbus-coil-zero-based", "value": "9" },
+          { "namespace": "fairino-mirror", "value": "DO9" }
+        ]
+      },
+      "safeState": "off"
+    },
+    {
+      "id": "io-check-valve-pick-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_CHECK_VALVE_PRESENT",
+      "description": "Keerklep aanwezig op de pickpositie",
+      "deviceEndpoint": {
+        "fieldDeviceId": "check-valve-pick-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI8",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI8" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "7" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-gripper-filter-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_GRIPPER_FILTER_PRESENT",
+      "description": "Filter aanwezig in de grijper",
+      "deviceEndpoint": {
+        "fieldDeviceId": "gripper-filter-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI9",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI9" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "8" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-gripper-check-valve-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_GRIPPER_VALVE_PRESENT",
+      "description": "Keerklep aanwezig in de grijper",
+      "deviceEndpoint": {
+        "fieldDeviceId": "gripper-check-valve-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI10",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI10" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "9" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-filter-clamp-open-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_CLAMP_OPEN",
+      "description": "Filterklem staat open",
+      "deviceEndpoint": {
+        "fieldDeviceId": "filter-clamp-open-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI11",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI11" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "10" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-filter-clamp-closed-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_CLAMP_CLOSED",
+      "description": "Filterklem staat gesloten",
+      "deviceEndpoint": {
+        "fieldDeviceId": "filter-clamp-closed-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI12",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI12" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "11" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-press-home-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_PRESS_HOME",
+      "description": "Perscilinder staat in de thuisstand",
+      "deviceEndpoint": {
+        "fieldDeviceId": "press-home-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI13",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI13" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "12" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-press-inserted-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_PRESS_INSERTED",
+      "description": "Perscilinder staat volledig ingeperst",
+      "deviceEndpoint": {
+        "fieldDeviceId": "press-inserted-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI14",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI14" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "13" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-check-valve-buffer-extended-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_CV_CLAMP_EXT",
+      "description": "Keerklep-bufferklem staat uitgeschoven",
+      "deviceEndpoint": {
+        "fieldDeviceId": "check-valve-buffer-extended-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI15",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI15" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "14" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-check-valve-buffer-retracted-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_CV_CLAMP_RET",
+      "description": "Keerklep-bufferklem staat ingetrokken",
+      "deviceEndpoint": {
+        "fieldDeviceId": "check-valve-buffer-retracted-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-host",
+        "channelId": "DI16",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI16" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "15" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-check-valve-gate-open-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_CV_GATE_OPEN",
+      "description": "Keerklepschuif staat open",
+      "deviceEndpoint": {
+        "fieldDeviceId": "check-valve-gate-open-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-expansion",
+        "channelId": "DI1",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI1" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "16" },
+          { "namespace": "project-global-input", "value": "DI17" }
+        ]
+      },
+      "safeState": "inactive"
+    },
+    {
+      "id": "io-check-valve-gate-closed-sensor",
+      "direction": "digital-input",
+      "signalName": "DI_CV_GATE_CLOSED",
+      "description": "Keerklepschuif staat gesloten",
+      "deviceEndpoint": {
+        "fieldDeviceId": "check-valve-gate-closed-sensor",
+        "portIds": ["terminal-signal"]
+      },
+      "controllerEndpoint": {
+        "controllerId": "existing-m31-di-expansion",
+        "channelId": "DI2",
+        "addresses": [
+          { "namespace": "m31-physical", "value": "DI2" },
+          { "namespace": "modbus-discrete-input-zero-based", "value": "17" },
+          { "namespace": "project-global-input", "value": "DI18" }
+        ]
+      },
+      "safeState": "inactive"
+    }
+  ]
+}
