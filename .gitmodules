@@ -1,0 +1,3 @@
+[submodule "vendor/shared-data"]
+	path = vendor/shared-data
+	url = https://github.com/daanlangelaan/SHARED_DATA_SCHEMA_FAIRINO.git

@@ -5,8 +5,8 @@
 Gebruik voor iedere FAIRINO → elektrisch-schema-app-overdracht uitsluitend:
 
 - repository: `https://github.com/daanlangelaan/SHARED_DATA_SCHEMA_FAIRINO`;
-- tag: `v0.1.0-rc.19`;
-- commit: `2a31700e3c8ee1d3a2f05cf1cc621b62783dfa85`;
+- tag: `v0.1.0-rc.21`;
+- commit: `c80b519b553f996b1710b2f7cbcb91b39b75d8bb`;
 - contract: `contracts/v3/fairino-io-handoff.schema.json`.
 
 De volledige pin en centrale documentpaden staan in
