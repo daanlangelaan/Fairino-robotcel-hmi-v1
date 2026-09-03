@@ -22,8 +22,8 @@
   },
   "library": {
     "catalogId": "rd-technical-library",
-    "catalogVersion": "0.1.0-rc.19",
-    "commit": "2a31700e3c8ee1d3a2f05cf1cc621b62783dfa85"
+    "catalogVersion": "0.1.0-rc.21",
+    "commit": "c80b519b553f996b1710b2f7cbcb91b39b75d8bb"
   },
   "fieldDevices": [
     {
@@ -53,14 +53,14 @@
     {
       "id": "glue-dispenser",
       "libraryItemId": "unbranded-mt-410-peristaltic-dispenser",
-      "libraryVersion": 1,
+      "libraryVersion": 2,
       "functionDescription": "Lijmdosering starten via een potentiaalvrij maakcontact",
       "catalogReviewAcceptance": "accepted-for-project-use"
     },
     {
       "id": "status-tower",
       "libraryItemId": "zdnyi-dh50-4w-j-signal-tower",
-      "libraryVersion": 1,
+      "libraryVersion": 2,
       "functionDescription": "Visuele machine-status en akoestische signalering",
       "catalogReviewAcceptance": "accepted-for-project-use"
     },
@@ -103,7 +103,7 @@
     {
       "id": "check-valve-pick-sensor",
       "libraryItemId": "gtric-e3x-na41",
-      "libraryVersion": 1,
+      "libraryVersion": 2,
       "functionDescription": "Keerklep op de pickpositie detecteren"
     },
     {
@@ -169,7 +169,7 @@
     {
       "id": "drying-position-product-sensor",
       "libraryItemId": "gtric-e3x-na41",
-      "libraryVersion": 1,
+      "libraryVersion": 2,
       "functionDescription": "Productaanwezigheid op de droog- en afvoerpositie detecteren"
     }
   ],
