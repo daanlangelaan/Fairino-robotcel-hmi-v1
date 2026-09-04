@@ -3,7 +3,7 @@
 - Status: levende gebruikershandleiding
 - Laatste wijziging: 11 augustus 2026
 - HMI-softwareversie: werkversie `main`
-- Actief productieprogramma: `mini_cell_gripper_recovery_hmi_20260821_181858.lua`
+- Actief productieprogramma na M31-inbedrijfstelling: `mini_cell_production_m31_latest.lua`
 
 ## 1. Doel en doelgroep
 
