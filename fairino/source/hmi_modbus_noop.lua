@@ -5,7 +5,7 @@ function hmi_read_batch_target()
 end
 
 function hmi_start_requested()
-    return sim_input("start")
+    return process_input("start")
 end
 
 function hmi_stop_requested()
@@ -17,7 +17,7 @@ function hmi_estop_requested()
 end
 
 function hmi_reset_requested()
-    return sim_input("reset")
+    return process_input("reset")
 end
 
 function hmi_publish_status()

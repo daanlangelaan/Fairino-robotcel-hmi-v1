@@ -130,7 +130,7 @@ journalctl -u fairino-camera -u fairino-hmi -f
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
-| `FAIRINO_PROGRAM_NAME` | `mini_cell_a_cycle_order_hmi_reset_home_20260715_172115.lua` | Exact production Lua job that the HMI may load and run. |
+| `FAIRINO_PROGRAM_NAME` | `mini_cell_production_m31_latest.lua` | Exact M31 production Lua job that the HMI may load and run after controller commissioning. |
 | `HMI_LUA_HEARTBEAT_IDLE_TIMEOUT_MS` | `5000` | Maximum unchanged Lua heartbeat outside an active motion cycle. |
 | `HMI_LUA_HEARTBEAT_MOTION_TIMEOUT_MS` | `30000` | Longer watchdog window during a cycle because Fairino motion calls block the Lua state loop. |
 

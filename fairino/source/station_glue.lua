@@ -28,14 +28,12 @@ end
 
 function glue_trigger_on()
     set_output(DO_GLUE_TRIGGER, true)
-    -- Simulator-visible mirror. On real hardware we will remove this or map it
-    -- to a spare lamp/output.
-    set_output(DO_GLUE_TRIGGER_VISIBLE_SIM, true)
+    set_debug_output("glue_trigger_visible", true)
 end
 
 function glue_trigger_off()
     set_output(DO_GLUE_TRIGGER, false)
-    set_output(DO_GLUE_TRIGGER_VISIBLE_SIM, false)
+    set_debug_output("glue_trigger_visible", false)
 end
 
 function glue_apply()

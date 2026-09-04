@@ -46,6 +46,15 @@ function gripper_is_commanded_closed()
     return GRIPPER_COMMAND_CLOSED == 1
 end
 
+function set_debug_output(name, active)
+    local port = -1
+    if name == "clamp_ok" then port = DO_DEBUG_CLAMP_OK end
+    if name == "pick_ok" then port = DO_DEBUG_PICK_OK end
+    if name == "place_entered" then port = DO_DEBUG_PLACE_ENTERED end
+    if name == "glue_trigger_visible" then port = DO_GLUE_TRIGGER_VISIBLE_SIM end
+    if port >= 0 then set_output(port, active) end
+end
+
 function all_outputs_off_except_gripper()
     set_output(DO_CLAMP_CLOSE, false)
     set_output(DO_CHECK_VALVE_PRESS, false)
@@ -82,7 +91,7 @@ function set_fault_lamps()
     set_output(DO_LAMP_RED, true)
 end
 
-function sim_input(name)
+function process_input(name)
     if name == "safety_ok" then return SIM_SAFETY_OK == 1 end
     if name == "start" then return SIM_START_BUTTON == 1 end
     if name == "reset" then return SIM_RESET_BUTTON == 1 end

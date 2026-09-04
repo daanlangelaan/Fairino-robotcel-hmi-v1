@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "repository": "https://github.com/daanlangelaan/SHARED_DATA_SCHEMA_FAIRINO",
-  "tag": "v0.1.0-rc.21",
-  "commit": "c80b519b553f996b1710b2f7cbcb91b39b75d8bb",
+  "tag": "v0.1.0-rc.23",
+  "commit": "fd26d46cdb2bc23d41874e210aa2ed4791e793a7",
   "catalog": "catalog/catalog.json",
-  "handoffContract": "contracts/v3/fairino-io-handoff.schema.json",
+  "handoffContract": "contracts/v4/fairino-field-device-handoff.schema.json",
   "ownershipDocument": "docs/HANDOFF_OWNERSHIP.md",
   "consumerIntegrationDocument": "docs/CONSUMER_INTEGRATION.md",
-  "existingProjectExample": "examples/fairino-io-handoff-v3-existing-project.example.json",
-  "futureDesignExample": "examples/fairino-io-handoff-v3.example.json"
+  "existingProjectExample": "examples/fairino-field-device-handoff-v4-existing-project.example.json",
+  "futureDesignExample": "examples/fairino-field-device-handoff-v4.example.json"
 }

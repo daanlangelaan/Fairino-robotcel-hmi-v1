@@ -24,7 +24,7 @@ function guard_cycle_control()
         return request_safety_stop(F991_HMI_ESTOP)
     end
 
-    if current_state ~= S990_SAFETY_STOP and sim_input("safety_ok") == false then
+    if current_state ~= S990_SAFETY_STOP and process_input("safety_ok") == false then
         return request_safety_stop(F990_SAFETY_STOP)
     end
 
@@ -35,14 +35,14 @@ function guard_cycle_control()
     return true
 end
 
-function wait_sim_input(name, timeout_ms)
+function wait_process_input(name, timeout_ms)
     local elapsed = 0
     while elapsed < timeout_ms do
         if guard_cycle_control() == false then
             return false
         end
 
-        if sim_input(name) then
+        if process_input(name) then
             return true
         end
 
@@ -76,7 +76,7 @@ function state_init()
 end
 
 function state_wait_ready()
-    if sim_input("safety_ok") then
+    if process_input("safety_ok") then
         current_state = S30_WAIT_START
     else
         current_state = S990_SAFETY_STOP
@@ -116,24 +116,24 @@ end
 function state_pick_filter()
     set_running_lamps()
 
-    if wait_sim_input("filter_present", PICK_SENSOR_TIMEOUT_MS) == false then
+    if wait_process_input("filter_present", PICK_SENSOR_TIMEOUT_MS) == false then
         raise_fault(F003_FILTER_NOT_PICKED)
         return
     end
 
     if pick_filter_motion() == false then return end
 
-    if wait_sim_input("gripper_filter_present", GRIPPER_SENSOR_TIMEOUT_MS) == false then
+    if wait_process_input("gripper_filter_present", GRIPPER_SENSOR_TIMEOUT_MS) == false then
         raise_fault(F003_FILTER_NOT_PICKED)
         return
     end
 
-    set_output(DO_DEBUG_PICK_OK, true)
+    set_debug_output("pick_ok", true)
     current_state = S70_PLACE_FILTER_IN_CLAMP
 end
 
 function state_place_filter_in_clamp()
-    set_output(DO_DEBUG_PLACE_ENTERED, true)
+    set_debug_output("place_entered", true)
     if place_filter_in_clamp_motion() == false then return end
     current_state = S80_CLAMP_FILTER
 end
@@ -261,7 +261,7 @@ end
 function state_wait_reset()
     all_outputs_off_except_gripper()
     set_fault_lamps()
-    if hmi_reset_requested() and sim_input("safety_ok") then
+    if hmi_reset_requested() and process_input("safety_ok") then
         stop_after_cycle_requested = 0
         current_state = S00_INIT
     end
@@ -271,7 +271,7 @@ function state_safety_stop()
     all_outputs_off()
     set_fault_lamps()
     if HMI_MODBUS_ENABLED == 1 then
-        if sim_input("safety_ok") and hmi_reset_requested() then
+        if process_input("safety_ok") and hmi_reset_requested() then
             stop_after_cycle_requested = 0
             current_state = S00_INIT
         end
