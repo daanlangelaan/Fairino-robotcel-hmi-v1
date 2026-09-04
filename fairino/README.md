@@ -9,14 +9,29 @@ This folder contains Fairino Lua programs and related controller-side notes.
 - External HMI is a thin interface only.
 - Safety remains hardware-based and separate from normal Lua/HMI logic.
 
-## M31 Remote IO commissioning
+## M31 Remote IO: test versus production
 
 The confirmed hardware is a `M31-AXXXA000G-U` 16DI Modbus host with
 `M31-GAXXXA000-U` 16DI and `M31-GXXAX00A0-U` 16DO expansions. Follow
 [the M31 hardware notes](../docs/hardware/remote_io_cdsenet_m31.md) before using
-`programs/remote_io_led_test.lua` or enabling the optional parallel output
-mirror. Existing Fairino controller IO remains authoritative until each remote
-channel has been commissioned.
+`programs/remote_io_led_test.lua`.
+
+The old optional output mirror remains available only to reproduce the finished
+optocoupler/M31 test phase. The definitive machine uses
+`programs/mini_cell_production_m31_latest.lua`: all ordinary process inputs and
+outputs are authoritative on the M31. Direct FAIRINO control-box field I/O is
+not present in that generated program. Safety remains hardwired and independent
+of ordinary Modbus I/O.
+
+The production signal names, device names, process locations and M31 addresses
+come from
+[`fairino-field-device-handoff-v4-existing-project.json`](../specs/fairino-field-device-handoff-v4-existing-project.json).
+Generate the matching Lua map and upload program from the repository root:
+
+```bash
+npm run generate:m31-io
+npm run build:fairino-production
+```
 
 ## HMI / VM recovery
 
@@ -39,7 +54,7 @@ Purpose:
 - Validate reset/fault flow.
 - Keep the program small before scaling to the full filter/check-valve cell.
 
-Important open check:
+Historical test check:
 
 - Confirm `GetDI(port) == 1` on the real/simulated controller. The local webapp generator uses this form for conditions. If needed, only `di_is_on(port)` should be adapted.
 

@@ -104,26 +104,20 @@ Zet pas daarna één signaal tegelijk fysiek over. Bevestig per kanaal:
 Noodstop, veiligheidsrelais en andere safety-functies blijven buiten gewone
 Remote IO en mogen niet via deze softwarelaag worden vervangen.
 
-## Voorlopige celsignaalmapping
+## Productie-I/O-referentie
 
-| Signaal | Nu | Remote kanaal |
-| --- | ---: | ---: |
-| Grijper sluiten | Fairino DO0 | DO1 / adres 0 |
-| Klem sluiten | Fairino DO1 | DO2 / adres 1 |
-| Groene lamp | Fairino DO2 | DO3 / adres 2 |
-| Oranje lamp | Fairino DO3 | DO4 / adres 3 |
-| Rode lamp | Fairino DO4 | DO5 / adres 4 |
-| Check-valve pers | Fairino DO5 | DO6 / adres 5 |
-| Check-valve toevoer | Fairino DO6 | DO7 / adres 6 |
-| Lijmtrigger | Fairino DO7 | DO8 / adres 7 |
-| Startknop | nog simulator/HMI | DI1 / adres 0 |
-| Resetknop | nog simulator/HMI | DI2 / adres 1 |
-| Filter aanwezig | nog simulator | DI3 / adres 2 |
-| Filter in grijper | nog simulator | DI4 / adres 3 |
-| Klem dicht | nog simulator | DI5 / adres 4 |
+De productie-indeling wordt niet meer dubbel in dit commissioningdocument
+bijgehouden. De actuele, automatisch uit de V4-overdracht gegenereerde tabel
+staat in [`m31-production-io-map.generated.md`](m31-production-io-map.generated.md).
+Daarin zijn apparaatnaam, proceslocatie, functie, signaalnaam, fysiek
+M31-kanaal, Modbusadres en library-item rechtstreeks gekoppeld.
 
-Kanaalnaam en wire-adres verschillen bewust één: fysiek `DO1` heeft
-Modbus-adres `0`.
+De bindende eenrichtings-overdracht voor de bestaande cel staat in
+[`fairino-field-device-handoff-v4-existing-project.json`](../../specs/fairino-field-device-handoff-v4-existing-project.json).
+De bindende centrale release en contractpaden staan in
+[`shared-data-release-lock.json`](../../config/shared-data-release-lock.json).
+Dit M31-document is uitsluitend een project- en commissioningreferentie en
+definieert zelf geen overdrachtscontract of eigenaarsgrens.
 
 ## Nog op de echte cel vastleggen
 

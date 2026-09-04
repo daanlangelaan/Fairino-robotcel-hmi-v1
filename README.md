@@ -15,8 +15,9 @@ hmi/
   server.mjs
 ```
 
-The project runs on Windows and Linux with Node.js 18 or newer. No external npm
-packages are required at the moment.
+The project runs on Windows and Linux with Node.js 18 or newer. Runtime code has
+no external npm dependencies; development validation uses the locked packages
+from `package-lock.json`.
 
 ## Source of truth and deployment
 
@@ -60,8 +61,11 @@ The Remote IO commissioning path uses the Modbus set
 `M31-AXXXA000G-U` + `M31-GAXXXA000-U` + `M31-GXXAX00A0-U`. Start with
 [the hardware and migration notes](docs/hardware/remote_io_cdsenet_m31.md) and
 [the TCP startcheck](docs/hardware/remote_io_tcp_startcheck.md). The Remote IO
-output mirror is disabled by default and may only be enabled after the
-standalone 16-output LED test succeeds with all actuator loads disconnected.
+output mirror is disabled by default and belongs only to the completed test
+phase. The definitive machine uses the generated M31-only program
+`fairino/programs/mini_cell_production_m31_latest.lua`. Its names and addresses
+are generated from the V4 field-device handoff, so the Lua program, electrical
+schema and documentation share one source.
 
 ## Quick start
 
@@ -174,7 +178,7 @@ manual output tests.
 | `FAIRINO_PORT` | `502` | Modbus TCP port. |
 | `FAIRINO_RPC_PORT` | `20003` | Fairino XML-RPC port used for verified controller-fault recovery and program restart. |
 | `FAIRINO_UNIT_ID` | `1` | Modbus unit id. |
-| `FAIRINO_PROGRAM_NAME` | `mini_cell_gripper_recovery_hmi_20260821_181858.lua` | Exact production Lua job that **Cel inschakelen** and Reset are allowed to load and run. |
+| `FAIRINO_PROGRAM_NAME` | `mini_cell_production_m31_latest.lua` | Exact M31 production Lua job that **Cel inschakelen** and Reset are allowed to load and run after controller commissioning. |
 | `HMI_LUA_HEARTBEAT_IDLE_TIMEOUT_MS` | `5000` | Maximum unchanged Lua heartbeat while the state loop is idle. |
 | `HMI_LUA_HEARTBEAT_MOTION_TIMEOUT_MS` | `30000` | Maximum unchanged Lua heartbeat during a running cycle; allows for blocking Fairino motion instructions. |
 

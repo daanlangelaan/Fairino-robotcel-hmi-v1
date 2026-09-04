@@ -37,7 +37,7 @@ const fairinoHost = process.env.FAIRINO_HOST || "192.168.58.2";
 const fairinoPort = Number(process.env.FAIRINO_PORT || 502);
 const fairinoRpcPort = Number(process.env.FAIRINO_RPC_PORT || 20003);
 const fairinoProgramName = process.env.FAIRINO_PROGRAM_NAME
-  || "mini_cell_gripper_recovery_hmi_20260821_181858.lua";
+  || "mini_cell_production_m31_latest.lua";
 const unitId = Number(process.env.FAIRINO_UNIT_ID || 1);
 const outputTestsEnabled = parseBooleanFlag(process.env.HMI_OUTPUT_TESTS_ENABLED);
 const heartbeatTimeouts = heartbeatTimeoutConfigFromEnv();

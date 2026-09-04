@@ -1,0 +1,960 @@
+{
+  "schemaVersion": 4,
+  "handoffType": "fairino-to-electrical-schema-app",
+  "projectMode": "existing-schema-project",
+  "project": {
+    "id": "fairino-filter-check-valve-cell",
+    "name": "Robotcel filter en keerklep verlijming",
+    "revision": "V4-rc23-productiemachine"
+  },
+  "robotPlatform": {
+    "manufacturer": "FAIRINO",
+    "model": "FR5"
+  },
+  "library": {
+    "catalogId": "rd-technical-library",
+    "catalogVersion": "0.1.0-rc.23",
+    "commit": "fd26d46cdb2bc23d41874e210aa2ed4791e793a7"
+  },
+  "fieldDevices": [
+    {
+      "id": "gripper-valve",
+      "deviceName": "Magneetventiel 1",
+      "processLocation": "Grijper",
+      "functionDescription": "Opent en sluit de pneumatische productgrijper",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "io": [
+        {
+          "direction": "digital-output",
+          "signalName": "DO_GRIPPER_CLOSE",
+          "signalDescription": "Bekrachtigt het grijperventiel",
+          "devicePortIds": [
+            "coil-command"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO1",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO1"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "0"
+              }
+            ]
+          },
+          "safeState": "de-energized"
+        }
+      ]
+    },
+    {
+      "id": "filter-clamp-valve",
+      "deviceName": "Magneetventiel 2",
+      "processLocation": "Filterklem",
+      "functionDescription": "Klemt het filter vast en geeft het weer vrij",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "io": [
+        {
+          "direction": "digital-output",
+          "signalName": "DO_CLAMP_CLOSE",
+          "signalDescription": "Bekrachtigt het filterklemventiel",
+          "devicePortIds": [
+            "coil-command"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO2",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO2"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "1"
+              }
+            ]
+          },
+          "safeState": "de-energized"
+        }
+      ]
+    },
+    {
+      "id": "check-valve-press-valve",
+      "deviceName": "Magneetventiel 3",
+      "processLocation": "Keerkleppers",
+      "functionDescription": "Beweegt de perscilinder voor het inpersen van de keerklep",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "io": [
+        {
+          "direction": "digital-output",
+          "signalName": "DO_CHECK_VALVE_PRESS",
+          "signalDescription": "Bekrachtigt het keerkleppersventiel",
+          "devicePortIds": [
+            "coil-command"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO6",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO6"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "5"
+              }
+            ]
+          },
+          "safeState": "de-energized"
+        }
+      ]
+    },
+    {
+      "id": "check-valve-feed-valve",
+      "deviceName": "Magneetventiel 4",
+      "processLocation": "Keerklepdispenser",
+      "functionDescription": "Bedient de geteste gecombineerde keerkleptoevoer en vrijgave",
+      "libraryItemId": "heschen-4v210-08-dc24v",
+      "libraryVersion": 2,
+      "io": [
+        {
+          "direction": "digital-output",
+          "signalName": "DO_CHECK_VALVE_FEED",
+          "signalDescription": "Bekrachtigt het ventiel voor de gecombineerde keerkleptoevoer en vrijgave",
+          "devicePortIds": [
+            "coil-command"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO7",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO7"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "6"
+              }
+            ]
+          },
+          "safeState": "de-energized"
+        }
+      ]
+    },
+    {
+      "id": "glue-dispenser",
+      "deviceName": "Lijmdispenser 1",
+      "processLocation": "Lijmstation",
+      "functionDescription": "Doseert lijm na een potentiaalvrij extern startsignaal",
+      "libraryItemId": "unbranded-mt-410-peristaltic-dispenser",
+      "libraryVersion": 2,
+      "catalogReviewAcceptance": "accepted-for-project-use",
+      "io": [
+        {
+          "direction": "digital-output",
+          "signalName": "DO_GLUE_TRIGGER",
+          "signalDescription": "Sluit via een door de schema-app te selecteren tussenrelais het potentiaalvrije startcontact",
+          "devicePortIds": [
+            "terminal-start-1",
+            "terminal-start-2"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO8",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO8"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "7"
+              }
+            ]
+          },
+          "safeState": "start-contact-open"
+        }
+      ]
+    },
+    {
+      "id": "status-tower",
+      "deviceName": "Signaaltoren 1",
+      "processLocation": "Robotcel",
+      "functionDescription": "Geeft de machine-status visueel en akoestisch weer",
+      "libraryItemId": "zdnyi-dh50-4w-j-signal-tower",
+      "libraryVersion": 2,
+      "catalogReviewAcceptance": "accepted-for-project-use",
+      "io": [
+        {
+          "direction": "digital-output",
+          "signalName": "DO_LAMP_GREEN",
+          "signalDescription": "Activeert groen voor automatische cyclus actief",
+          "devicePortIds": [
+            "terminal-green"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO3",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO3"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "2"
+              }
+            ]
+          },
+          "safeState": "off"
+        },
+        {
+          "direction": "digital-output",
+          "signalName": "DO_LAMP_ORANGE",
+          "signalDescription": "Activeert de fysieke gele laag voor gereed of wachten",
+          "devicePortIds": [
+            "terminal-yellow"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO4",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO4"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "3"
+              }
+            ]
+          },
+          "safeState": "off"
+        },
+        {
+          "direction": "digital-output",
+          "signalName": "DO_LAMP_RED",
+          "signalDescription": "Activeert rood voor procesfout of veiligheidsindicatie",
+          "devicePortIds": [
+            "terminal-red"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO5",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO5"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "4"
+              }
+            ]
+          },
+          "safeState": "off"
+        },
+        {
+          "direction": "digital-output",
+          "signalName": "DO_LAMP_BLUE",
+          "signalDescription": "Activeert blauw voor materiaal bijvullen",
+          "devicePortIds": [
+            "terminal-blue"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO9",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO9"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "8"
+              }
+            ]
+          },
+          "safeState": "off"
+        },
+        {
+          "direction": "digital-output",
+          "signalName": "DO_BUZZER",
+          "signalDescription": "Activeert de zoemer",
+          "devicePortIds": [
+            "terminal-buzzer-orange"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-do-expansion",
+            "channelId": "DO10",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DO10"
+              },
+              {
+                "namespace": "modbus-coil-zero-based",
+                "value": "9"
+              }
+            ]
+          },
+          "safeState": "off"
+        }
+      ]
+    },
+    {
+      "id": "filter-dispenser-1-sensor",
+      "deviceName": "Fotocelsensor 1",
+      "processLocation": "Filterdispenser 1",
+      "functionDescription": "Detecteert of een filter beschikbaar is in filterdispenser 1",
+      "libraryItemId": "gtric-e3f-18s10n1",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_DISPENSER_1_PRESENT",
+          "signalDescription": "Filter aanwezig in filterdispenser 1",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-expansion",
+            "channelId": "DI1",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI1"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "16"
+              },
+              {
+                "namespace": "project-global-input",
+                "value": "DI17"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "filter-dispenser-2-sensor",
+      "deviceName": "Fotocelsensor 2",
+      "processLocation": "Filterdispenser 2",
+      "functionDescription": "Detecteert of een filter beschikbaar is in filterdispenser 2",
+      "libraryItemId": "gtric-e3f-18s10n1",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_DISPENSER_2_PRESENT",
+          "signalDescription": "Filter aanwezig in filterdispenser 2",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-expansion",
+            "channelId": "DI2",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI2"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "17"
+              },
+              {
+                "namespace": "project-global-input",
+                "value": "DI18"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "filter-dispenser-3-sensor",
+      "deviceName": "Fotocelsensor 3",
+      "processLocation": "Filterdispenser 3",
+      "functionDescription": "Detecteert of een filter beschikbaar is in filterdispenser 3",
+      "libraryItemId": "gtric-e3f-18s10n1",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_DISPENSER_3_PRESENT",
+          "signalDescription": "Filter aanwezig in filterdispenser 3",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-expansion",
+            "channelId": "DI3",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI3"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "18"
+              },
+              {
+                "namespace": "project-global-input",
+                "value": "DI19"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "filter-dispenser-4-sensor",
+      "deviceName": "Fotocelsensor 4",
+      "processLocation": "Filterdispenser 4",
+      "functionDescription": "Detecteert of een filter beschikbaar is in filterdispenser 4",
+      "libraryItemId": "gtric-e3f-18s10n1",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_DISPENSER_4_PRESENT",
+          "signalDescription": "Filter aanwezig in filterdispenser 4",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-expansion",
+            "channelId": "DI4",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI4"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "19"
+              },
+              {
+                "namespace": "project-global-input",
+                "value": "DI20"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "filter-dispenser-5-sensor",
+      "deviceName": "Fotocelsensor 5",
+      "processLocation": "Filterdispenser 5",
+      "functionDescription": "Detecteert of een filter beschikbaar is in filterdispenser 5",
+      "libraryItemId": "gtric-e3f-18s10n1",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_DISPENSER_5_PRESENT",
+          "signalDescription": "Filter aanwezig in filterdispenser 5",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-expansion",
+            "channelId": "DI5",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI5"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "20"
+              },
+              {
+                "namespace": "project-global-input",
+                "value": "DI21"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "filter-dispenser-6-sensor",
+      "deviceName": "Fotocelsensor 6",
+      "processLocation": "Filterdispenser 6",
+      "functionDescription": "Detecteert of een filter beschikbaar is in filterdispenser 6",
+      "libraryItemId": "gtric-e3f-18s10n1",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_DISPENSER_6_PRESENT",
+          "signalDescription": "Filter aanwezig in filterdispenser 6",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-expansion",
+            "channelId": "DI6",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI6"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "21"
+              },
+              {
+                "namespace": "project-global-input",
+                "value": "DI22"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "check-valve-pick-sensor",
+      "deviceName": "Glasvezelsensor 1",
+      "processLocation": "Keerklep-pickpositie",
+      "functionDescription": "Detecteert of een keerklep gereedligt op de pickpositie",
+      "libraryItemId": "gtric-e3x-na41",
+      "libraryVersion": 2,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_CHECK_VALVE_PICK_PRESENT",
+          "signalDescription": "Keerklep aanwezig op de pickpositie",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI2",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI2"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "1"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "drying-position-product-sensor",
+      "deviceName": "Glasvezelsensor 2",
+      "processLocation": "Droog- en afvoerpositie",
+      "functionDescription": "Detecteert of een product aanwezig is op de droog- en afvoerpositie",
+      "libraryItemId": "gtric-e3x-na41",
+      "libraryVersion": 2,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_DRYING_POSITION_OCCUPIED",
+          "signalDescription": "Product aanwezig op de droog- en afvoerpositie",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI13",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI13"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "12"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "gripper-open-sensor",
+      "deviceName": "Cilindersensor 1",
+      "processLocation": "Grijper",
+      "functionDescription": "Detecteert dat de grijpercilinder volledig geopend is",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_GRIPPER_OPEN",
+          "signalDescription": "Grijpercilinder staat volledig open voor een nieuwe pick",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI3",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI3"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "2"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "gripper-filter-position-sensor",
+      "deviceName": "Cilindersensor 2",
+      "processLocation": "Grijper",
+      "functionDescription": "Detecteert de afgestelde grijpercilinderstand voor een correct geklemd filter",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_GRIPPER_FILTER_POSITION",
+          "signalDescription": "Grijpercilinder bereikt de afgestelde klemstand voor een filter",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI4",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI4"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "3"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "gripper-check-valve-position-sensor",
+      "deviceName": "Cilindersensor 3",
+      "processLocation": "Grijper",
+      "functionDescription": "Detecteert de afgestelde grijpercilinderstand voor een correct geklemde keerklep",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_GRIPPER_CHECK_VALVE_POSITION",
+          "signalDescription": "Grijpercilinder bereikt de afgestelde klemstand voor een keerklep",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI5",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI5"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "4"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "filter-clamp-open-sensor",
+      "deviceName": "Cilindersensor 4",
+      "processLocation": "Filterklem",
+      "functionDescription": "Detecteert de volledig geopende eindstand van de filterklem",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_CLAMP_OPEN",
+          "signalDescription": "Filterklem staat in de open eindstand",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI6",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI6"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "5"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "filter-clamp-closed-sensor",
+      "deviceName": "Cilindersensor 5",
+      "processLocation": "Filterklem",
+      "functionDescription": "Detecteert de volledig gesloten eindstand van de filterklem",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_FILTER_CLAMP_CLOSED",
+          "signalDescription": "Filterklem staat in de gesloten eindstand",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI7",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI7"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "6"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "press-home-sensor",
+      "deviceName": "Cilindersensor 6",
+      "processLocation": "Keerkleppers",
+      "functionDescription": "Detecteert de teruggetrokken thuisstand van de perscilinder",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_PRESS_HOME",
+          "signalDescription": "Perscilinder staat in de teruggetrokken thuisstand",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI8",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI8"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "7"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "press-inserted-sensor",
+      "deviceName": "Cilindersensor 7",
+      "processLocation": "Keerkleppers",
+      "functionDescription": "Detecteert de volledig ingeperste eindstand van de perscilinder",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_PRESS_INSERTED",
+          "signalDescription": "Perscilinder staat in de volledig ingeperste eindstand",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI9",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI9"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "8"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "check-valve-gate-open-sensor",
+      "deviceName": "Cilindersensor 8",
+      "processLocation": "Keerklepschuif",
+      "functionDescription": "Detecteert de volledig geopende eindstand van de keerklepschuif",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_CHECK_VALVE_GATE_OPEN",
+          "signalDescription": "Keerklepschuif staat in de open eindstand",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI10",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI10"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "9"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "check-valve-gate-closed-sensor",
+      "deviceName": "Cilindersensor 9",
+      "processLocation": "Keerklepschuif",
+      "functionDescription": "Detecteert de volledig gesloten eindstand van de keerklepschuif",
+      "libraryItemId": "dmsh-pnp-magnetic-cylinder-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_CHECK_VALVE_GATE_CLOSED",
+          "signalDescription": "Keerklepschuif staat in de gesloten eindstand",
+          "devicePortIds": [
+            "terminal-signal"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI11",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI11"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "10"
+              }
+            ]
+          },
+          "safeState": "inactive"
+        }
+      ]
+    },
+    {
+      "id": "air-pressure-sensor",
+      "deviceName": "Druksensor 1",
+      "processLocation": "Pneumatische hoofdtoevoer",
+      "functionDescription": "Bewaakt of voldoende persluchtdruk voor de machine beschikbaar is",
+      "libraryItemId": "ifm-pn3094-pressure-sensor",
+      "libraryVersion": 1,
+      "io": [
+        {
+          "direction": "digital-input",
+          "signalName": "DI_AIR_PRESSURE_OK",
+          "signalDescription": "IFM OUT1 is actief boven de bij inbedrijfstelling ingestelde minimumdruk",
+          "devicePortIds": [
+            "terminal-pin-4"
+          ],
+          "assignmentStatus": "assigned",
+          "controllerEndpoint": {
+            "controllerId": "existing-m31-di-host",
+            "channelId": "DI12",
+            "addresses": [
+              {
+                "namespace": "m31-physical",
+                "value": "DI12"
+              },
+              {
+                "namespace": "modbus-discrete-input-zero-based",
+                "value": "11"
+              }
+            ]
+          },
+          "safeState": "inactive-low-pressure-or-sensor-fault"
+        }
+      ]
+    }
+  ]
+}

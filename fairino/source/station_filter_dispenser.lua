@@ -11,7 +11,7 @@ function filter_dispenser_reset()
 end
 
 function filter_dispenser_has_filter_ready()
-    return sim_input("filter_present")
+    return process_input("filter_present")
 end
 
 function filter_dispenser_select()

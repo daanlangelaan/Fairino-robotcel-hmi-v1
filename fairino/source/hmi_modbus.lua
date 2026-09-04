@@ -42,7 +42,7 @@ function hmi_start_requested()
     if HMI_MODBUS_ENABLED == 1 then
         current = hmi_bool(ModbusSlaveReadDI(HMI_START_REQ, 1))
     end
-    if HMI_MODBUS_ENABLED ~= 1 and sim_input("start") then
+    if HMI_MODBUS_ENABLED ~= 1 and process_input("start") then
         current = 1
     end
 
@@ -75,7 +75,7 @@ function hmi_reset_requested()
     if HMI_MODBUS_ENABLED == 1 then
         current = hmi_bool(ModbusSlaveReadDI(HMI_RESET_REQ, 1))
     end
-    if HMI_MODBUS_ENABLED ~= 1 and sim_input("reset") then
+    if HMI_MODBUS_ENABLED ~= 1 and process_input("reset") then
         current = 1
     end
 
@@ -97,7 +97,7 @@ function hmi_publish_status()
     ModbusSlaveWriteDO(CELL_READY, 1, {current_state == S30_WAIT_START and fault_code == FAULT_NONE and 1 or 0})
     ModbusSlaveWriteDO(CELL_RUNNING, 1, {program_done == 0 and current_state ~= S30_WAIT_START and current_state ~= S850_BATCH_COMPLETE and fault_code == FAULT_NONE and 1 or 0})
     ModbusSlaveWriteDO(CELL_FAULT_ACTIVE, 1, {fault_code ~= FAULT_NONE and 1 or 0})
-    ModbusSlaveWriteDO(CELL_SAFETY_OK, 1, {sim_input("safety_ok") and fault_code ~= F991_HMI_ESTOP and 1 or 0})
+    ModbusSlaveWriteDO(CELL_SAFETY_OK, 1, {process_input("safety_ok") and fault_code ~= F991_HMI_ESTOP and 1 or 0})
     ModbusSlaveWriteDO(CELL_GLUE_ACTIVE, 1, {current_state == S110_APPLY_GLUE and 1 or 0})
     ModbusSlaveWriteDO(CELL_CLAMP_CLOSED, 1, {current_state >= S80_CLAMP_FILTER and current_state < S140_UNCLAMP_FILTER and fault_code == FAULT_NONE and 1 or 0})
     ModbusSlaveWriteDO(CELL_GRIPPER_OK, 1, {current_state >= S60_PICK_FILTER and current_state < S160_PLACE_IN_DRYING_ROW and fault_code == FAULT_NONE and 1 or 0})
